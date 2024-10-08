@@ -20,7 +20,7 @@ int main() {
     if (numberIn > 0) {
       ++count;
       sum += numberIn;
-      if (max < numberIn) max = numberIn;
+      max = (max < numberIn) ? numberIn : max;
       if (min > numberIn) min = numberIn;
     } else {
       cout << "error: input must be positive! try again..." << endl;
@@ -38,4 +38,6 @@ int main() {
     // print floating point to 2 decimal places (need <iomanip>)
     cout << "Average is " << (double)sum / count << endl;
   }
+
+  return 0;
 }
