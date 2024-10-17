@@ -7,8 +7,9 @@ int main() {
 
   // For each member called number of array numbers - read only
   for (int number : numbers) {
-    cout << number << endl;
+    cout << number << " ";
   }
+  cout << endl;
   cout << "next array is going to be modified" << endl;
   // To modify members, need to use reference (&)
   for (int &number : numbers) {
