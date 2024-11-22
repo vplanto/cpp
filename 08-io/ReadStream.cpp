@@ -14,3 +14,5 @@ void read_stream() {
     std::cout << "Unable to open file" << std::endl;
   }
 }
+
+int main() { read_stream(); }
