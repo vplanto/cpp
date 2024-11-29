@@ -1,14 +1,16 @@
 // basic file operations
-#include <fstream>
-#include <iostream>
 #include <unistd.h>
+
+#include <fstream>
 using namespace std;
 
 int write_stream() {
   ofstream myfile;
-  myfile.open("example_stream.txt");
+  myfile.open("example_stream.txt", ios::app);
   myfile << "Writing this to a file\n";
-  sleep(1); // Pauses the program for ? seconds
+  sleep(1);  // Pauses the program for ? seconds
   myfile.close();
   return 0;
 }
+
+int main() { return write_stream(); };
