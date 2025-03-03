@@ -9,7 +9,7 @@ class Parent {
 
   int getI() const { return i; }
 
-  void increment1() { i++; }  // increment2(); }
+  void increment1() { increment2(); }
 
   virtual void increment2() { i++; }
 };
