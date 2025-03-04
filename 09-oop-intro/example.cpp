@@ -21,10 +21,10 @@ class Example {
 };
 
 int main() {
-  Example obj1;         // Default constructor
-  Example obj2 = obj1;  // Copy constructor
-  Example obj3;         // Default constructor
-  obj3 = obj1;          // Copy assignment operator
-  Example obj4(obj1);   // Copy contructor
+  Example obj1;
+  Example obj2 = obj1;
+  Example obj3;
+  obj3 = obj1;
+  Example obj4(obj1);
   return 0;
 }
