@@ -23,3 +23,5 @@ void Circle::setColor(string c) { color = c; }
 
 // A public member function
 double Circle::getArea() const { return radius * radius * 3.14159265; }
+
+int main() { return 0; }
