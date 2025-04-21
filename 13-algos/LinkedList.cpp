@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory_resource>
 
 template <typename T> class Node {
 public:
@@ -28,13 +29,12 @@ public:
         index++;
         current = current->next;
       }
-      Node<T> addNode(data);
+      Node<T>* addNode=new Node<T>(data);
       auto temp = current->next;
-      current->next = &addNode;
-      addNode.next = temp;
+      current->next = addNode;
+      addNode->next = temp;
     } else {
-      Node<T> addNode(data);
-      head = &addNode;
+      head= new Node<T>(data);
     }
     size++;
   }
@@ -56,7 +56,7 @@ public:
       return;
     }
 
-    if (position == 1) {
+    if (position == 0) {
       auto temp = head->next;
       delete head;
       head = temp;
@@ -65,7 +65,7 @@ public:
     }
     Node<T> *current = head;
     int index = 0;
-    while (index != (position - 2)) {
+    for (int index = 0; index < position - 1; ++index) {
       index++;
       current = current->next;
     }
