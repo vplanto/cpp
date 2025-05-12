@@ -4,7 +4,14 @@
 #include <vector>
 using namespace std;
 
+struct Animal {
+  string color;
+};
+
 int main() {
+  vector<Animal> v0;
+  v0.push_back({"red"});
+
   vector<int> v1(5);  // Create a vector with 5 elements;
 
   // Assign values into v1, using array-like index []

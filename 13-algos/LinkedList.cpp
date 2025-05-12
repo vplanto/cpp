@@ -34,7 +34,7 @@ public:
       current->next = addNode;
       addNode->next = temp;
     } else {
-      head= new Node<T>(data);
+      head = new Node<T>(data);
     }
     size++;
   }
