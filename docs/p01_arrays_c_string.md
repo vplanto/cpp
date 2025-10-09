@@ -100,7 +100,7 @@ int main() {
 }
 ```
 
-\</details\>
+</details>
 
 -----
 

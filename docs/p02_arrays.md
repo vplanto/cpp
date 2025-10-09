@@ -155,8 +155,8 @@ int main() {
 
 ## Фінальний код (всі частини разом)
 
-\<details\>
-\<summary\>Натисніть, щоб побачити повний код\</summary\>
+<details\>
+<summary\>Натисніть, щоб побачити повний код</summary\>
 
 ```cpp
 #include <iostream>
