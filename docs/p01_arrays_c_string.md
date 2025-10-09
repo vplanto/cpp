@@ -91,7 +91,7 @@ int main() {
     }
 
     // --- Етап В: Виведення результату ---
-    std::cout << "\n==========================" << std::endl;
+    std::cout << "==========================" << std::endl;
     std::cout << "MVP матчу: " << nicknames[mvp_index] << std::endl;
     std::cout << "Кількість кілів: " << max_kills << std::endl;
     std::cout << "==========================" << std::endl;

@@ -38,7 +38,7 @@ int main() {
 
 ```cpp
     // Спосіб 1: цикл від кінця до початку
-    std::cout << "\nХарактеристики у зворотному порядку (спосіб 1):" << std::endl;
+    std::cout << "Характеристики у зворотному порядку (спосіб 1):" << std::endl;
     for (int i = STAT_COUNT - 1; i >= 0; --i) {
         std::cout << baseStats[i] << " ";
     }
@@ -50,7 +50,7 @@ int main() {
 
 ```cpp
     // Спосіб 2: "дзеркальний" індекс
-    std::cout << "\nХарактеристики у зворотному порядку (спосіб 2):" << std::endl;
+    std::cout << "Характеристики у зворотному порядку (спосіб 2):" << std::endl;
     for (int i = 0; i < STAT_COUNT; ++i) {
         // Коли i=0, індекс буде 3-1-0=2 (останній)
         // Коли i=1, індекс буде 3-1-1=1 (середній)
@@ -82,7 +82,7 @@ int main() {
         totalStats[i] = baseStats[i] + amuletStats[i];
     }
 
-    std::cout << "\nХарактеристики з амулетом:" << std::endl;
+    std::cout << "Характеристики з амулетом:" << std::endl;
     for (int i = 0; i < STAT_COUNT; ++i) {
         std::cout << totalStats[i] << " "; // Очікуваний результат: 12 5 9
     }
@@ -105,7 +105,7 @@ int main() {
     }
     
     // Розрахунок: (12 * 0) + (5 * 1) + (9 * 3) = 0 + 5 + 27 = 32
-    std::cout << "\nРейтинг спорідненості з посохом: " << affinityScore << std::endl;
+    std::cout << "Рейтинг спорідненості з посохом: " << affinityScore << std::endl;
 ```
 
 ### Нормування вектора: Визначення "білду" персонажа
@@ -132,7 +132,7 @@ int main() {
         normalizedStats[i] = totalStats[i] / magnitude;
     }
 
-    std::cout << "\nНормований вектор 'білду':" << std::endl;
+    std::cout << "Нормований вектор 'білду':" << std::endl;
     std::cout << std::fixed << std::setprecision(2); // Встановлюємо точність виводу
     for (int i = 0; i < STAT_COUNT; ++i) {
         std::cout << normalizedStats[i] << " "; // Показує розподіл характеристик
@@ -155,8 +155,8 @@ int main() {
 
 ## Фінальний код (всі частини разом)
 
-<details\>
-<summary\>Натисніть, щоб побачити повний код</summary\>
+<details>
+<summary>Натисніть, щоб побачити повний код</summary>
 
 ```cpp
 #include <iostream>
@@ -175,14 +175,14 @@ int main() {
     std::cout << std::endl;
 
     // Спосіб 1: цикл від кінця до початку
-    std::cout << "\nХарактеристики у зворотному порядку (спосіб 1):" << std::endl;
+    std::cout << "Характеристики у зворотному порядку (спосіб 1):" << std::endl;
     for (int i = STAT_COUNT - 1; i >= 0; --i) {
         std::cout << baseStats[i] << " ";
     }
     std::cout << std::endl;
 
     // Спосіб 2: "дзеркальний" індекс
-    std::cout << "\nХарактеристики у зворотному порядку (спосіб 2):" << std::endl;
+    std::cout << "Характеристики у зворотному порядку (спосіб 2):" << std::endl;
     for (int i = 0; i < STAT_COUNT; ++i) {
         std::cout << baseStats[STAT_COUNT - 1 - i] << " ";
     }
@@ -198,7 +198,7 @@ int main() {
         totalStats[i] = baseStats[i] + amuletStats[i];
     }
 
-    std::cout << "\nХарактеристики з амулетом:" << std::endl;
+    std::cout << "Характеристики з амулетом:" << std::endl;
     for (int i = 0; i < STAT_COUNT; ++i) {
         std::cout << totalStats[i] << " "; // Очікуваний результат: 12 5 9
     }
@@ -211,7 +211,7 @@ int main() {
     for (int i = 0; i < STAT_COUNT; ++i) {
         affinityScore += totalStats[i] * staffRequirements[i];
     }
-    std::cout << "\nРейтинг спорідненості з посохом: " << affinityScore << std::endl;
+    std::cout << "Рейтинг спорідненості з посохом: " << affinityScore << std::endl;
 
     // Нормування вектора
     double sumOfSquares = 0;
@@ -225,7 +225,7 @@ int main() {
         normalizedStats[i] = totalStats[i] / magnitude;
     }
 
-    std::cout << "\nНормований вектор 'білду':" << std::endl;
+    std::cout << "Нормований вектор 'білду':" << std::endl;
     std::cout << std::fixed << std::setprecision(2); // Встановлюємо точність виводу
     for (int i = 0; i < STAT_COUNT; ++i) {
         std::cout << normalizedStats[i] << " ";
@@ -236,4 +236,4 @@ int main() {
 }
 ```
 
-\</details\>
+</details>
