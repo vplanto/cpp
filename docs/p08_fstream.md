@@ -42,7 +42,7 @@
   * `file.open("ім'я файлу")`
   * `file.close()`
 
-<details markdown="1";>
+<details markdown="1">
 <summary>Натисніть, щоб побачити код "Save Game"</summary>
 
 ```cpp
@@ -115,7 +115,7 @@ saveFile.open("party.sav", std::ios::app);
 
 У файлі `WriteStreamExt.cpp` є дивний `sleep(60)`. Уявіть, що ви запустили код, який пише у файл 1000 рядків, а потім "зависає" на `sleep(60)`. Якщо ви відкриєте файл у Блокноті *під час* `sleep`, що ви там побачите?
 
-<details markdown="1" open>
+<details markdown="1">
 <summary>Міркуємо разом (Логіка з `WriteStreamExt.cpp`)</summary>
 
 **Відповідь:** Ви не побачите **нічого**. Файл буде порожнім.
@@ -143,7 +143,7 @@ saveFile.open("party.sav", std::ios::app);
   * `while (std::getline(file, line))` — найкращий спосіб читати файл по рядках.
   * `std::stringstream` — для "парсингу" рядка, який ми зчитали.
 
-<details markdown="1" open>
+<details markdown="1">
 <summary>Натисніть, щоб побачити код "Load Game"</summary>
 
 ```cpp
@@ -207,7 +207,7 @@ int main() {
 
 У файлі `ReadStreamExt.cpp` використовується цикл `while (!file.eof())`. Це дуже поширена помилка новачків. Чому цей код гірший, ніж наш `while (getline(..))`?
 
-<details markdown="1" open>
+<details markdown="1">
 <summary>Міркуємо разом...</summary>
 Прапор `eof()` (End of File) стає `true` **тільки після** того, як ми спробуємо зчитати щось *за* кінцем файлу.
 
@@ -235,7 +235,7 @@ int main() {
   * `tellg()` (tell get): **Повідомляє**, де зараз курсор читання.
   * **Режими:** `ios::beg` (початок), `ios::cur` (поточна позиція), `ios::end` (кінець).
 
-<details markdown="1" open>
+<details markdown="1">
 <summary>Натисніть, щоб побачити код "File Inspector" (з `FileSize.cpp`)</summary>
 
 ```cpp
@@ -296,7 +296,7 @@ int main() {
 4.  **Прапори.** Під час зчитування `file >> number;` користувач ввів "text". Який прапор стану (`bad`, `fail` чи `eof`) буде встановлено?
 5.  **Буферизація.** Ваша програма 10 хвилин писала дані у файл, але раптово "впала" (crashed), не виконавши `file.close()`. Ви відкриваєте файл і бачите, що він порожній. Чому так сталося, і які **дві** команди могли б запобігти цьому (якби їх викликали *до* падіння)?
 
-<details markdown="1" open>
+<details markdown="1">
 <summary>Натисніть, щоб побачити відповіді</summary>
 
 1.  Потрібно використати `std::ios::app` (append): `saveFile.open("scores.txt", std::ios::app);`.
