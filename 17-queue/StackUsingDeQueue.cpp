@@ -1,45 +1,39 @@
-// CPP Program to implement a stack
-// using dequeue
+// C++ програма для реалізації стеку за допомогою deque (double-ended queue)
 #include <bits/stdc++.h>
 using namespace std;
 
+// Клас стеку, реалізований за допомогою deque
+// deque дозволяє ефективні операції на обох кінцях (O(1))
 class Stack {
 private:
-  // Create an empty deque
-  deque<int> my_deque;
+  deque<int> my_deque;  // Двобічна черга (double-ended queue)
 
 public:
   void push(int item) {
-    // Append the item to the end of the deque
-    my_deque.push_back(item);
+    // Додавання елемента в кінець deque
+    my_deque.push_back(item);  // O(1)
   }
 
   int pop() {
-    // Remove and return the item from the end of the
-    // deque
-    int item = my_deque.back();
-    my_deque.pop_back();
-    return item;
+    // Видалення та повернення елемента з кінця deque
+    int item = my_deque.back();  // Отримання останнього елемента
+    my_deque.pop_back();         // Видалення останнього елемента
+    return item;                 // O(1)
   }
 
   int size() {
-    // Return size of deque
     return my_deque.size();
   }
 
   bool is_empty() {
-    // Return True if the deque is empty, and False
-    // otherwise
     return my_deque.empty();
   }
 
   int top() {
     if (is_empty()) {
-      // If the stack is empty, return -1
       return -1;
     } else {
-      // Return the last item in the deque
-      return my_deque.back();
+      return my_deque.back();  // Повернення останнього елемента без видалення
     }
   }
 };

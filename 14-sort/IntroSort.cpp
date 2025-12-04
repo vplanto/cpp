@@ -1,12 +1,12 @@
-/* A Program to sort the array using Introsort.
-The most popular C++ STL Algorithm- sort()
-uses Introsort. */
+/* Програма для сортування масиву за допомогою Introsort.
+Найпопулярніший алгоритм C++ STL - sort()
+використовує Introsort. */
 
 #include <bits/stdc++.h>
 using namespace std;
 
-// A utility function to swap the values pointed by
-// the two pointers
+// Утиліта для обміну значень, на які вказують два вказівники
+// УВАГА: ця функція обмінює вказівники, а не значення (помилка в реалізації)
 void swapValue(int *a, int *b) {
   int *temp = a;
   a = b;
@@ -14,20 +14,18 @@ void swapValue(int *a, int *b) {
   return;
 }
 
-/* Function to sort an array using insertion sort*/
+/* Функція сортування підмасиву за допомогою insertion sort*/
 void InsertionSort(int arr[], int *begin, int *end) {
-  // Get the left and the right index of the subarray
-  // to be sorted
-  int left = begin - arr;
+  // Отримання лівого та правого індексів підмасиву для сортування
+  int left = begin - arr;   // Арифметика вказівників: begin - arr дає індекс
   int right = end - arr;
 
   for (int i = left + 1; i <= right; i++) {
     int key = arr[i];
     int j = i - 1;
 
-    /* Move elements of arr[0..i-1], that are
-      greater than key, to one position ahead
-      of their current position */
+    /* Зсув елементів arr[0..i-1], що більші за key,
+      на одну позицію вперед від їх поточної позиції */
     while (j >= left && arr[j] > key) {
       arr[j + 1] = arr[j];
       j = j - 1;
@@ -38,29 +36,27 @@ void InsertionSort(int arr[], int *begin, int *end) {
   return;
 }
 
-// A function to partition the array and return
-// the partition point
+// Функція розбиття масиву (partition) та повернення точки розбиття
+// Використовується в Quick Sort
 int *Partition(int arr[], int low, int high) {
-  int pivot = arr[high]; // pivot
-  int i = (low - 1);     // Index of smaller element
+  int pivot = arr[high]; // Опорний елемент (pivot)
+  int i = (low - 1);     // Індекс меншого елемента
 
   for (int j = low; j <= high - 1; j++) {
-    // If current element is smaller than or
-    // equal to pivot
+    // Якщо поточний елемент менший або дорівнює опорному
     if (arr[j] <= pivot) {
-      // increment index of smaller element
+      // Збільшення індексу меншого елемента
       i++;
 
-      swap(arr[i], arr[j]);
+      swap(arr[i], arr[j]);  // Обмін елементів
     }
   }
-  swap(arr[i + 1], arr[high]);
-  return (arr + i + 1);
+  swap(arr[i + 1], arr[high]);  // Розміщення опорного елемента в правильну позицію
+  return (arr + i + 1);          // Повернення вказівника на позицію опорного елемента
 }
 
-// A function that find the middle of the
-// values pointed by the pointers a, b, c
-// and return that pointer
+// Функція знаходження медіани з трьох значень, на які вказують вказівники a, b, c
+// Повертає вказівник на медіану (використовується для вибору хорошого опорного елемента)
 int *MedianOfThree(int *a, int *b, int *c) {
   if (*a < *b && *b < *c)
     return (b);
@@ -81,63 +77,68 @@ int *MedianOfThree(int *a, int *b, int *c) {
     return (b);
 }
 
-// A Utility function to perform intro sort
+// Утиліта для виконання introsort
+// Introsort - гібридний алгоритм: Quick Sort + Heap Sort + Insertion Sort
+// depthLimit - обмеження глибини рекурсії для запобігання O(n²) у Quick Sort
 void IntrosortUtil(int arr[], int *begin, int *end, int depthLimit) {
-  // Count the number of elements
+  // Підрахунок кількості елементів
   int size = end - begin;
 
-  // If partition size is low then do insertion sort
+  // Якщо розмір підмасиву малий, використовуємо insertion sort
+  // Insertion sort ефективний для малих масивів
   if (size < 16) {
     InsertionSort(arr, begin, end);
     return;
   }
 
-  // If the depth is zero use heapsort
+  // Якщо глибина рекурсії досягла нуля, використовуємо heapsort
+  // Heapsort гарантує O(n log n) складність
   if (depthLimit == 0) {
-    make_heap(begin, end + 1);
-    sort_heap(begin, end + 1);
+    make_heap(begin, end + 1);  // Створення купи
+    sort_heap(begin, end + 1);  // Сортування купи
     return;
   }
 
-  // Else use a median-of-three concept to
-  // find a good pivot
+  // Інакше використовуємо концепцію медіани з трьох для знаходження хорошого опорного елемента
   int *pivot = MedianOfThree(begin, begin + size / 2, end);
 
-  // Swap the values pointed by the two pointers
+  // Обмін значень, на які вказують два вказівники
   swapValue(pivot, end);
 
-  // Perform Quick Sort
+  // Виконання Quick Sort
   int *partitionPoint = Partition(arr, begin - arr, end - arr);
+  // Рекурсивне сортування лівої та правої частин
   IntrosortUtil(arr, begin, partitionPoint - 1, depthLimit - 1);
   IntrosortUtil(arr, partitionPoint + 1, end, depthLimit - 1);
 
   return;
 }
 
-/* Implementation of introsort*/
+/* Реалізація introsort*/
 void Introsort(int arr[], int *begin, int *end) {
+  // Обчислення обмеження глибини: 2 * log(кількість елементів)
   int depthLimit = 2 * log(end - begin);
 
-  // Perform a recursive Introsort
+  // Виконання рекурсивного Introsort
   IntrosortUtil(arr, begin, end, depthLimit);
 
   return;
 }
 
-// A utility function ot print an array of size n
+// Утиліта для виведення масиву розміру n
 void printArray(int arr[], int n) {
   for (int i = 0; i < n; i++)
     printf("%d ", arr[i]);
   printf("\n");
 }
 
-// Driver program to test Introsort
+// Тестова програма для Introsort
 int main() {
   int arr[] = {3, 1, 23, -9, 233, 23, -313, 32, -9};
   int n = sizeof(arr) / sizeof(arr[0]);
 
-  // Pass the array, the pointer to the first element and
-  // the pointer to the last element
+  // Передача масиву, вказівника на перший елемент та
+  // вказівника на останній елемент
   Introsort(arr, arr, arr + n - 1);
   printArray(arr, n);
 

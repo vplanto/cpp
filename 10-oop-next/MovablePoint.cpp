@@ -1,31 +1,33 @@
-/* Implementation for Moving 3D Points with int coords (MovablePoint.cpp) */
-#include "MovablePoint.h"  // Include header containing the class declaration
+/* Файл реалізації для рухомих точок (MovablePoint.cpp) */
+#include "MovablePoint.h"  // Включення заголовочного файлу з оголошенням класу
 
 #include <iostream>
 using namespace std;
 
+// Конструктор похідного класу: викликає конструктор базового класу через список ініціалізації
 MovablePoint::MovablePoint(int x, int y, int xSpeed, int ySpeed)
-    : Point(x, y), xSpeed(xSpeed), ySpeed(ySpeed) {}
+    : Point(x, y), xSpeed(xSpeed), ySpeed(ySpeed) {}  // Point(x, y) - виклик конструктора базового класу
 
-// Getters
+// Геттери
 int MovablePoint::getXSpeed() const { return xSpeed; }
 int MovablePoint::getYSpeed() const { return ySpeed; }
 
-// Setters
+// Сеттери
 void MovablePoint::setXSpeed(int xs) { xSpeed = xs; }
 void MovablePoint::setYSpeed(int ys) { ySpeed = ys; }
 
-// Functions
+// Функції
 void MovablePoint::print() const {
   cout << "Movable";
-  Point::print();  // Invoke base class function via scope resolution operator
+  // Виклик функції базового класу через оператор розв'язання області видимості ::
+  Point::print();
   cout << " Speed="
        << "(" << xSpeed << "," << ySpeed << ")";
 }
 
 void MovablePoint::move() {
-  // Subclass cannot access private member of the superclass directly
-  // Need to go thru the public interface
+  // Похідний клас не може безпосередньо отримати доступ до приватних членів базового класу
+  // Потрібно використовувати публічний інтерфейс (геттери та сеттери)
   Point::setX(Point::getX() + xSpeed);
   Point::setY(Point::getY() + ySpeed);
 }

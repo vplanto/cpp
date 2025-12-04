@@ -1,64 +1,62 @@
-#include <bits/stdc++.h> // Include most standard library headers
-using namespace std; // Use names in the standard namespace without qualifying
-                     // them with std::
+#include <bits/stdc++.h> // Включення більшості стандартних бібліотек
+using namespace std;
 
-// Forward declaration of function to compute the longest proper prefix which is
-// also proper suffix array
+// Попереднє оголошення функції для обчислення масиву найдовшого власного префікса,
+// який також є власним суфіксом (LPS - Longest Proper Prefix which is also Suffix)
 void computeLPSArray(char *pat, int M, int *lps);
 
-// Function to search for a pattern pat in a text txt using the KMP algorithm
+// Функція пошуку патерну pat у тексті txt за допомогою алгоритму KMP (Knuth-Morris-Pratt)
+// Складність: O(N + M) - лінійна складність завдяки використанню LPS масиву
+// Переваги: не повертається назад у тексті, використовує інформацію про попередні порівняння
 void KMPSearch(char *pat, char *txt) {
-  int M = strlen(pat); // Calculate the length of the pattern
-  int N = strlen(txt); // Calculate the length of the text
+  int M = strlen(pat); // Довжина патерну
+  int N = strlen(txt); // Довжина тексту
 
-  int lps[M]; // Array to hold longest prefix suffix values for pattern
+  int lps[M]; // Масив для зберігання значень найдовшого префікса-суфікса для патерну
 
-  computeLPSArray(pat, M, lps); // Fill lps[] for given pattern string
+  computeLPSArray(pat, M, lps); // Заповнення lps[] для заданого патерну
 
-  int i = 0;      // Index for txt[]
-  int j = 0;      // Index for pat[]
-  while (i < N) { // Iterate over the text
-    if (pat[j] ==
-        txt[i]) { // If current characters match, increment both i and j
+  int i = 0;      // Індекс для txt[]
+  int j = 0;      // Індекс для pat[]
+  while (i < N) { // Прохід по тексту
+    if (pat[j] == txt[i]) { // Якщо поточні символи співпадають
       j++;
       i++;
     }
 
-    if (j == M) { // If we found a match
+    if (j == M) { // Якщо знайдено збіг
       printf("Found pattern at index %d \n", i - j);
-      j = lps[j - 1]; // Get the next state of pattern from lps[] array
+      j = lps[j - 1]; // Отримання наступного стану патерну з масиву lps[]
+                      // Пропуск вже перевірених символів
     }
 
-    else if (i < N && pat[j] != txt[i]) { // Mismatch after j matches
-      if (j != 0) // If j is not 0, start matching with the next character in
-                  // the pattern
-        j = lps[j - 1];
-      else // If j is 0, start matching with the next character in the text
+    else if (i < N && pat[j] != txt[i]) { // Невідповідність після j збігів
+      if (j != 0) // Якщо j не 0, починаємо з наступного символу в патерні
+        j = lps[j - 1];  // Використання LPS для пропуску непотрібних порівнянь
+      else // Якщо j = 0, починаємо з наступного символу в тексті
         i = i + 1;
     }
   }
 }
 
-// Function to compute the longest proper prefix which is also proper suffix
-// array
+// Функція обчислення масиву найдовшого власного префікса, який також є власним суфіксом
+// LPS допомагає KMP алгоритму не повертатися назад у тексті
 void computeLPSArray(char *pat, int M, int *lps) {
-  int len = 0; // Length of the previous longest prefix suffix
+  int len = 0; // Довжина попереднього найдовшого префікса-суфікса
 
-  lps[0] = 0; // lps[0] is always 0
+  lps[0] = 0; // lps[0] завжди 0
 
-  int i = 1; // Loop variable
-  // The loop calculates lps[i] for i = 1 to M-1
+  int i = 1; // Змінна циклу
+  // Цикл обчислює lps[i] для i = 1 до M-1
   while (i < M) {
-    if (pat[i] == pat[len]) { // If pat[i] == pat[len], increment len and assign
-                              // it to lps[i]
+    if (pat[i] == pat[len]) { // Якщо pat[i] == pat[len], збільшуємо len та присвоюємо lps[i]
       len++;
       lps[i] = len;
       i++;
-    } else {          // If pat[i] != pat[len]
-      if (len != 0) { // If len is not 0, then go back to the previous character
-        len = lps[len - 1];
-      } else { // If len is 0, then assign lps[i] = 0 and move to the next
-               // character
+    } else {          // Якщо pat[i] != pat[len]
+      if (len != 0) { // Якщо len не 0, повертаємося до попереднього символу
+        len = lps[len - 1];  // Використання вже обчислених значень
+      } else { // Якщо len = 0, присвоюємо lps[i] = 0 та переходимо до наступного символу
         lps[i] = 0;
         i++;
       }
@@ -66,10 +64,9 @@ void computeLPSArray(char *pat, int M, int *lps) {
   }
 }
 
-// Main function
 int main() {
-  char txt[] = "ABABDABACDABABCABAB"; // Define the text
-  char pat[] = "ABABCABAB";           // Define the pattern
-  KMPSearch(pat, txt); // Call the KMPSearch function with the pattern and text
-  return 0;            // Return 0 to indicate successful execution
+  char txt[] = "ABABDABACDABABCABAB"; // Текст
+  char pat[] = "ABABCABAB";           // Патерн
+  KMPSearch(pat, txt); // Виклик функції KMPSearch з патерном та текстом
+  return 0;
 }

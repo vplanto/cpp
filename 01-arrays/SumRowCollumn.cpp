@@ -1,37 +1,42 @@
-#include <iostream>
-using namespace std;
+#include <iostream>  // Бібліотека для вводу/виводу
+using namespace std; // Використання стандартного простору імен
 
 int main() {
-  // Declare and initialize a 2D array (matrix) with 3 rows and 3 columns
+  // Оголошення та ініціалізація двовимірного масиву (матриці) з 3 рядками та 3 стовпцями
+  // Двовимірний масив - це масив масивів, доступ до елемента: matrix[рядок][стовпець]
   int matrix[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
 
-  // Variables to hold sums of rows and columns
-  int rowSum[3] = {0, 0, 0};
-  int colSum[3] = {0, 0, 0};
+  // Масиви для зберігання сум рядків та стовпців
+  int rowSum[3] = {0, 0, 0};  // Суми для кожного рядка
+  int colSum[3] = {0, 0, 0};  // Суми для кожного стовпця
 
-  // Calculate the sum of each row
+  // Обчислення суми кожного рядка
+  // Зовнішній цикл проходить по рядках (i - індекс рядка)
   for (int i = 0; i < 3; i++) {
+    // Внутрішній цикл проходить по стовпцях (j - індекс стовпця)
     for (int j = 0; j < 3; j++) {
-      rowSum[i] += matrix[i][j];  // Add element to the corresponding row sum
+      rowSum[i] += matrix[i][j];  // Додаємо елемент до суми відповідного рядка
     }
   }
 
-  // Calculate the sum of each column
+  // Обчислення суми кожного стовпця
+  // Зовнішній цикл проходить по стовпцях (j - індекс стовпця)
   for (int j = 0; j < 3; j++) {
+    // Внутрішній цикл проходить по рядках (i - індекс рядка)
     for (int i = 0; i < 3; i++) {
-      colSum[j] += matrix[i][j];  // Add element to the corresponding column sum
+      colSum[j] += matrix[i][j];  // Додаємо елемент до суми відповідного стовпця
     }
   }
 
-  // Print the sum of each row
+  // Виведення суми кожного рядка
   for (int i = 0; i < 3; i++) {
     cout << "Sum of row " << i + 1 << ": " << rowSum[i] << endl;
   }
 
-  // Print the sum of each column
+  // Виведення суми кожного стовпця
   for (int j = 0; j < 3; j++) {
     cout << "Sum of column " << j + 1 << ": " << colSum[j] << endl;
   }
 
-  return 0;  // End of program
+  return 0;  // Успішне завершення програми
 }

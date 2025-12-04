@@ -1,12 +1,13 @@
-/* Header for Moving 3D Points with int coords (MovablePoint.h) */
+/* Заголовочний файл для рухомих точок (MovablePoint.h) */
 #ifndef MOVING_POINT_H
 #define MOVING_POINT_H
 
-#include "Point.h"  // Include header of the base class
+#include "Point.h"  // Включення заголовочного файлу базового класу
 
-class MovablePoint : public Point {  // MovablePoint is a subclass of Point
+// MovablePoint - похідний клас від Point (public наслідування)
+class MovablePoint : public Point {
  private:
-  int xSpeed, ySpeed;
+  int xSpeed, ySpeed;  // Швидкості руху по осях
 
  public:
   MovablePoint(int x, int y, int xSpeed = 0, int ySpeed = 0);
@@ -14,8 +15,8 @@ class MovablePoint : public Point {  // MovablePoint is a subclass of Point
   int getYSpeed() const;
   void setXSpeed(int xSpeed);
   void setYSpeed(int ySpeed);
-  void move();
-  virtual void print() const;
+  void move();  // Зміна позиції відповідно до швидкостей
+  virtual void print() const;  // Віртуальна функція для поліморфізму
 };
 
 #endif

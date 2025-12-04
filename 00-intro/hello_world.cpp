@@ -1,9 +1,9 @@
 /*
- * First C++ program that says hello (hello.cpp)
+ * Перша програма на C++, яка виводить привітання (hello.cpp)
  */
-#include <iostream>    // Needed to perform IO operations
-using namespace std;
- int main() {                        // Program entry point
-   cout << "hello, world" << endl;  // Say Hello
-   return 0;                        // Terminate main()
+#include <iostream>    // Підключення бібліотеки для операцій вводу/виводу
+using namespace std;   // Використання стандартного простору імен (дозволяє не писати std:: перед cout, cin тощо)
+ int main() {                        // Точка входу програми - функція main() завжди виконується першою
+   cout << "hello, world" << endl;  // cout - об'єкт для виводу на консоль; << - оператор вставки; endl - перехід на новий рядок
+   return 0;                        // Повертає 0, що означає успішне завершення програми
 }

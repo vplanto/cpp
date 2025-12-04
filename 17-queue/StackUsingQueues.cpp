@@ -1,48 +1,49 @@
-/* Program to implement a stack using
-two queue */
+/* Програма для реалізації стеку за допомогою двох черг */
 #include <bits/stdc++.h>
 
 using namespace std;
 
+// Клас стеку, реалізований за допомогою двох черг
+// Принцип: q1 містить елементи стеку, q2 використовується для перестановки
+// Складність push(): O(n), pop(): O(1)
 class Stack {
-  // Two inbuilt queues
-  queue<int> q1, q2;
+  // Дві вбудовані черги
+  queue<int> q1, q2;  // q1 - основна черга, q2 - допоміжна
 
 public:
   void push(int x) {
-    // Push x first in empty q2
+    // Спочатку додаємо x в порожню q2
     q2.push(x);
 
-    // Push all the remaining
-    // elements in q1 to q2.
+    // Переміщуємо всі елементи з q1 в q2
+    // Це забезпечує, що новий елемент буде на початку q2
     while (!q1.empty()) {
       q2.push(q1.front());
       q1.pop();
     }
 
-    // swap the names of two queues
+    // Обмін імен двох черг (q1 стає q2, q2 стає порожньою)
     queue<int> q = q1;
     q1 = q2;
     q2 = q;
   }
 
   void pop() {
-    // if no elements are there in q1
+    // Якщо немає елементів у q1
     if (q1.empty())
       return;
-    q1.pop();
+    q1.pop();  // Видалення з початку q1 (верх стеку)
   }
 
   int top() {
     if (q1.empty())
       return -1;
-    return q1.front();
+    return q1.front();  // Перший елемент q1 - верх стеку
   }
 
   int size() { return q1.size(); }
 };
 
-// Driver code
 int main() {
   Stack s;
   s.push(1);

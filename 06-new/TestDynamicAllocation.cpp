@@ -1,22 +1,23 @@
-// Dynamically allocate global pointers (TestDynamicAllocation.cpp)
+// Динамічне виділення пам'яті для глобальних вказівників (TestDynamicAllocation.cpp)
 #include <iostream>
 using namespace std;
 
-int *p1, *p2;  // Global int pointers
+int *p1, *p2;  // Глобальні вказівники на int
 
-// This function allocates storage for the int*
-// which is available outside the function
+// Функція виділяє пам'ять для int*
+// Пам'ять доступна поза функцією, бо вказівники глобальні
 void allocate() {
-  p1 = new int;      // Allocate memory, initial content unknown
-  *p1 = 88;          // Assign value into location pointed to by pointer
-  p2 = new int(99);  // Allocate and initialize
+  p1 = new int;      // new int - динамічне виділення пам'яті для одного int
+                     // Початковий вміст невизначений
+  *p1 = 88;          // Присвоєння значення за адресою, на яку вказує p1
+  p2 = new int(99);  // new int(99) - виділення та ініціалізація значенням 99
 }
 
 int main() {
   allocate();
   cout << *p1 << endl;  // 88
   cout << *p2 << endl;  // 99
-  delete p1;            // Deallocate
-  delete p2;
+  delete p1;            // delete - звільнення пам'яті, виділеної через new
+  delete p2;            // Кожен new має відповідний delete
   return 0;
 }

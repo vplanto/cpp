@@ -1,25 +1,25 @@
-/* The Circle class Header (Circle.h) */
-#include <string>  // using string
+/* Заголовочний файл класу Circle (Circle.h) */
+#include <string>
 using namespace std;
 
-// Circle class declaration
+// Оголошення класу Circle
 class Circle {
- private:  // Accessible by members of this class only
-  // private data members (variables)
+ private:  // Доступний тільки членам цього класу
+  // Приватні члени даних (інкапсуляція)
   double radius;
   string color;
 
- public:  // Accessible by ALL
-  // Declare prototype of member functions
-  // Constructor with default values
+ public:  // Доступний всім
+  // Оголошення прототипів функцій-членів
+  // Конструктор з параметрами за замовчуванням
   Circle(double radius = 1.0, string color = "red");
 
-  // Public getters & setters for private data members
+  // Публічні геттери та сеттери для приватних членів
   double getRadius() const;
   void setRadius(double radius);
   string getColor() const;
   void setColor(string color);
 
-  // Public member Function
+  // Публічна функція-член
   double getArea() const;
 };

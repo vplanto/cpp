@@ -1,21 +1,23 @@
 /*
- *  Print square pattern (PrintSquarePattern.cpp).
+ *  Виведення квадратного візерунка (PrintSquarePattern.cpp).
  */
-#include <iostream>
-using namespace std;
+#include <iostream>  // Бібліотека для вводу/виводу
+using namespace std; // Використання стандартного простору імен
 
 int main() {
-  int size = 8;
-  for (int row = 1; row <= size; ++row) {  // Outer loop to print all the rows
-    if ((row % 2) == 0) {  // print a leading space for even-numbered rows
-      cout << " ";
+  int size = 8;  // Розмір квадратного візерунка (8x8)
+  // Зовнішній цикл for для виведення всіх рядків
+  for (int row = 1; row <= size; ++row) {
+    // Для парних рядків (row % 2 == 0) додаємо початковий пробіл для зміщення
+    if ((row % 2) == 0) {  // Оператор % повертає залишок від ділення на 2
+      cout << " ";         // Виведення пробілу для візуального зміщення
     }
-    for (int col = 1; col <= size;
-         ++col) {  // Inner loop to print all the columns of each row
-      cout << "# ";
+    // Внутрішній цикл for для виведення всіх стовпців у поточному рядку
+    for (int col = 1; col <= size; ++col) {
+      cout << "# ";  // Виведення символу # та пробілу
     }
-    cout << endl;  // A row ended, bring the cursor to the next line
+    cout << endl;  // Завершення рядка - перехід курсора на новий рядок
   }
 
-  return 0;
+  return 0;  // Успішне завершення програми
 }

@@ -5,7 +5,7 @@
 using namespace std;
 
 int main() {
-  // Open the file for reading
+  // Відкриття файлу для читання
   ifstream file("example_stream.txt");
 
   if (!file) {
@@ -13,39 +13,44 @@ int main() {
     return 1;
   }
 
-  // Variables to hold file data
   string line;
 
-  // Read and process data
+  // Читання та обробка даних
   while (getline(file, line)) {
+    // Перевірка стану файлового потоку через прапорці стану:
     if (file.bad()) {
+      // bad() - критична помилка (наприклад, помилка диска)
       cerr << "Bad file operation." << endl;
       break;
     } else if (file.fail()) {
+      // fail() - помилка формату або логічна помилка (наприклад, некоректні дані)
       cerr << "Fail bit set - possible format error or read error." << endl;
-      file.clear();  // Reset fail state
-      file.ignore(numeric_limits<streamsize>::max(),
-                  '\n');  // Skip the problematic line
+      file.clear();  // Скидання прапорця помилки
+      // ignore() - пропуск символів до '\n' або до максимальної кількості
+      file.ignore(numeric_limits<streamsize>::max(), '\n');
     } else if (file.eof()) {
+      // eof() - досягнуто кінця файлу
       cout << "Reached end of file." << endl;
       break;
     } else if (file.good()) {
+      // good() - потік у нормальному стані, операція успішна
       cout << "Read line: " << line << endl;
     }
   }
 
-  // Clear flags and close the file
+  // Очищення прапорців та закриття файлу
   file.clear();
   file.close();
 
-  // Attempt to open the file for writing to demonstrate error handling
+  // Спроба відкриття файлу для запису для демонстрації обробки помилок
+  // ios::app - режим додавання (append)
   ofstream outfile("example_stream.txt", ios::app);
   if (!outfile) {
     cerr << "Error opening file for writing." << endl;
     return 1;
   }
 
-  // Simulate write operation and check state
+  // Симуляція операції запису та перевірка стану
   outfile << "Adding new line to file." << endl;
   if (outfile.bad()) {
     cerr << "Bad write operation." << endl;
@@ -55,7 +60,7 @@ int main() {
     cout << "Write operation successful." << endl;
   }
 
-  // Clear flags and close the file
+  // Очищення прапорців та закриття файлу
   outfile.clear();
   outfile.close();
 

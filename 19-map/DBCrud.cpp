@@ -1,32 +1,36 @@
-#include <iostream> // Include the I/O stream library
-#include <map>      // Include the map library
-#include <string>   // Include the string library
+#include <iostream>
+#include <map>      // std::map - асоціативний контейнер
+#include <string>
 
 struct Student {
-  std::string name;   // Student's name
-  int age;            // Student's age
-  std::string course; // Student's course
+  std::string name;   // Ім'я студента
+  int age;            // Вік студента
+  std::string course; // Курс студента
 };
 
-std::map<int, Student> DB; // Declare a map to simulate a database, with integer
-                           // keys (ID) and Student values
+// map для імітації бази даних з цілочисельними ключами (ID) та значеннями Student
+// std::map автоматично сортує ключі за зростанням
+std::map<int, Student> DB;
 
-bool exists(int id) { // Function to check if a student with the given ID exists
-                      // in the DB
+// Функція перевірки існування студента з заданим ID
+// find() повертає ітератор до елемента або end(), якщо не знайдено
+// Складність: O(log n)
+bool exists(int id) {
   return DB.find(id) != DB.end();
 }
 
+// Функція створення нового студента в БД
 int create(
     const std::string &name, int age,
-    const std::string &course) { // Function to add a new student to the DB
-  int id = DB.size() + 1; // Generate ID based on the current size of the DB
-  DB[id] = {name, age, course}; // Add the new student to the DB
-  return id;                    // Return the ID of the newly created record
+    const std::string &course) {
+  int id = DB.size() + 1; // Генерація ID на основі поточного розміру БД
+  DB[id] = {name, age, course}; // Додавання нового студента в БД
+  return id;                    // Повернення ID новоствореного запису
 }
 
-void read(int id) { // Function to retrieve and display a student's details from
-                    // the DB
-  if (exists(id)) { // Use the exists function to check if the student exists
+// Функція читання та виведення деталей студента з БД
+void read(int id) {
+  if (exists(id)) {
     std::cout << "ID: " << id << ", Name: " << DB[id].name
               << ", Age: " << DB[id].age << ", Course: " << DB[id].course
               << std::endl;
@@ -35,33 +39,37 @@ void read(int id) { // Function to retrieve and display a student's details from
   }
 }
 
+// Функція оновлення деталей студента в БД
 void update(int id, const std::string &name, int age,
-            const std::string
-                &course) { // Function to update a student's details in the DB
-  if (exists(id)) { // Use the exists function to check if the student exists
-    DB[id] = {name, age, course}; // Update the student's details in the DB
+            const std::string &course) {
+  if (exists(id)) {
+    DB[id] = {name, age, course}; // Оновлення деталей студента в БД
   } else {
     std::cout << "Student with ID: " << id << " not found." << std::endl;
   }
 }
 
-void remove(int id) { // Function to remove a student from the DB
-  if (exists(id)) {   // Use the exists function to check if the student exists
-    DB.erase(id);     // Remove the student from the DB
+// Функція видалення студента з БД
+// erase() видаляє елемент за ключем
+// Складність: O(log n)
+void remove(int id) {
+  if (exists(id)) {
+    DB.erase(id);     // Видалення студента з БД
   } else {
     std::cout << "Student with ID: " << id << " not found." << std::endl;
   }
 }
 
-int find(const std::string
-             &name) { // Function to find a student by name and return their ID
-  for (const auto &pair : DB) { // Loop over all elements in the DB
-    if (pair.second.name ==
-        name) { // If the name of the current student matches the given name
-      return pair.first; // Return the ID of the student
+// Функція пошуку студента за ім'ям та повернення його ID
+// НЕЕФЕКТИВНО: O(n) - лінійний пошук по всіх елементах
+// Краще використовувати додатковий map<string, int> для інвертованого індексу
+int find(const std::string &name) {
+  for (const auto &pair : DB) { // Прохід по всіх елементах БД
+    if (pair.second.name == name) { // Якщо ім'я поточного студента співпадає
+      return pair.first; // Повернення ID студента
     }
   }
-  return -1; // If no student with the given name was found, return -1
+  return -1; // Якщо студент з заданим ім'ям не знайдено, повертаємо -1
 }
 
 int main() { // Main function

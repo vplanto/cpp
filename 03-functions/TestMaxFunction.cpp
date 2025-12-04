@@ -1,19 +1,25 @@
-/* Testing max function (TestMaxFunction.cpp) */
-#include <iostream>
+/* Тестування функції максимуму (TestMaxFunction.cpp) */
+#include <iostream>  // Бібліотека для вводу/виводу
 using namespace std;
 
-int maximum(int, int);  // Function prototype (declaration)
+// Прототип функції (оголошення)
+// Імена параметрів у прототипі необов'язкові, достатньо типів
+int maximum(int, int);
 
 int main() {
-  cout << maximum(5, 8) << endl;  // Call maximum() with literals
+  // Виклик функції maximum() з числовими літералами як аргументами
+  cout << maximum(5, 8) << endl;  // Виклик з літералами
 
   int a = 6, b = 9, c;
-  c = maximum(a, b);  // Call maximum() with variables
+  // Виклик функції maximum() зі змінними як аргументами
+  c = maximum(a, b);  // Виклик зі змінними, результат зберігається в c
   cout << c << endl;
 
-  cout << maximum(c, 99) << endl;  // Call maximum()
+  // Виклик функції maximum() зі змінною та літералом
+  cout << maximum(c, 99) << endl;  // Виклик функції
 }
 
-// Function definition
-// A function that returns the maximum of two given int
+// Визначення функції
+// Функція, що повертає максимальне з двох заданих цілих чисел
+// Тернарний оператор: (умова) ? значення_якщо_істинно : значення_якщо_хибно
 int maximum(int num1, int num2) { return (num1 > num2) ? num1 : num2; }

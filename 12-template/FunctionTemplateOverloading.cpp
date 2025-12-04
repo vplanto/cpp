@@ -1,27 +1,30 @@
-/* Test Function Template Overloading (FunctionTemplateOverloading.cpp) */
+/* Тестування перевантаження шаблонів функцій (FunctionTemplateOverloading.cpp) */
 #include <iostream>
 using namespace std;
 
+// Шаблон функції для обміну двома змінними
 template <typename T>
 void mySwap(T &a, T &b);
-// Swap two variables of generic fundamental type
+// Обмін двома змінними узагальненого фундаментального типу
 
+// Перевантажений шаблон функції для обміну масивами
 template <typename T>
 void mySwap(T a[], T b[], int size);
-// Swap two arrays of generic type
+// Обмін двома масивами узагальненого типу
 
+// Шаблон функції для виведення масиву
 template <typename T>
 void print(const T *const array, int size);
-// Print an array of generic type
+// Виведення масиву узагальненого типу
 
 int main() {
   int i1 = 1, i2 = 2;
-  mySwap(i1, i2);  // Compiler generates mySwap(int &, int &)
+  mySwap(i1, i2);  // Викликається перша версія mySwap(T &, T &)
   cout << "i1 is " << i1 << ", i2 is " << i2 << endl;
 
   const int SIZE = 3;
   int ar1[] = {1, 2, 3}, ar2[] = {4, 5, 6};
-  mySwap(ar1, ar2, SIZE);
+  mySwap(ar1, ar2, SIZE);  // Викликається друга версія mySwap(T [], T [], int)
   print(ar1, SIZE);
   print(ar2, SIZE);
 }

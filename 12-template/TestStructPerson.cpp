@@ -1,4 +1,4 @@
-/* Testing struct (TestStructPerson.cpp) */
+/* Тестування структури Person (TestStructPerson.cpp) */
 #include <iostream>
 #include <string>
 using namespace std;
@@ -11,6 +11,7 @@ struct Person {
 };
 
 int main() {
+  // Ініціалізація структури списком значень
   Person peter = {"Peter Jone", 18, 180.5, 70.5};
   cout << "Name: " << peter.name << endl;
   cout << "Age: " << peter.age << endl;

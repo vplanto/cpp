@@ -1,27 +1,31 @@
 /*
- *  Find the mean and standard deviation of numbers kept in an array
+ *  Обчислення середнього значення та стандартного відхилення чисел, збережених у масиві
  * (MeanStdArray.cpp).
  */
-#include <cmath>
-#include <iomanip>
-#include <iostream>
-#define SIZE 7
+#include <cmath>     // Бібліотека для математичних функцій (sqrt - квадратний корінь)
+#include <iomanip>   // Бібліотека для маніпуляторів форматування (setprecision)
+#include <iostream>  // Бібліотека для вводу/виводу
+#define SIZE 7        // Макрос: SIZE буде замінено на 7 перед компіляцією
 using namespace std;
 
 int main() {
+  // Оголошення масиву без явного вказання розміру - розмір визначається кількістю елементів у фігурних дужках
   int marks[] = {74, 43, 58, 60, 90, 64, 70};
-  int sum = 0;
-  int sumSq = 0;
-  double mean, stdDev;
+  int sum = 0;    // Змінна для накопичення суми елементів
+  int sumSq = 0;  // Змінна для накопичення суми квадратів елементів
+  double mean, stdDev;  // Змінні для середнього значення та стандартного відхилення
+  // Прохід по всіх елементах масиву
   for (int i = 0; i < SIZE; ++i) {
-    sum += marks[i];
-    sumSq += marks[i] * marks[i];
+    sum += marks[i];              // Додаємо елемент до суми
+    sumSq += marks[i] * marks[i]; // Додаємо квадрат елемента до суми квадратів
   }
-  mean = (double)sum / SIZE;
+  // Обчислення середнього значення: сума поділена на кількість елементів
+  mean = (double)sum / SIZE;  // (double) - приведення типу для дробового ділення
   cout << fixed << "Mean is " << setprecision(2) << mean << endl;
 
+  // Обчислення стандартного відхилення за формулою: sqrt(середнє квадратів - квадрат середнього)
   stdDev = sqrt((double)sumSq / SIZE - mean * mean);
   cout << fixed << "Std dev is " << setprecision(2) << stdDev << endl;
 
-  return 0;
+  return 0;  // Успішне завершення програми
 }

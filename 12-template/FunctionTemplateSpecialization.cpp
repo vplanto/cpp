@@ -1,17 +1,18 @@
 #include <iostream>
 
-// A generic function
+// Узагальнена функція (шаблон)
 template <typename T>
 void func(T arg) {
   std::cout << "In generic function with argument " << arg << '\n';
 }
 
-// A non-template function
+// Нешаблонна функція (має пріоритет над шаблоном для int)
 void func(int arg) {
   std::cout << "In non-template function with argument " << arg << '\n';
 }
 
-// An explicit specialization of the generic function for int
+// Явна спеціалізація узагальненої функції для типу int
+// template <> - синтаксис явної спеціалізації
 template <>
 void func<int>(int arg) {
   std::cout << "In explicit specialization function with argument " << arg
@@ -19,12 +20,11 @@ void func<int>(int arg) {
 }
 
 int main() {
-  func(10);    // This will call the non-template function
-  func<>(10);  // This will call the explicit specialization of the template
-  func('a');   // This will call the generic function
+  func(10);    // Викликається нешаблонна функція (найвищий пріоритет)
+  func<>(10);  // Викликається явна спеціалізація шаблону (<> - явне вказання шаблону)
+  func('a');   // Викликається узагальнена функція (char не має спеціалізації)
   return 0;
 }
 
-// Be aware that if a non-template function definition corresponds to a function
-// call, it will be prioritized over the explicit specialization and then the
-// template function.
+// УВАГА: Якщо нешаблонна функція відповідає виклику,
+// вона має пріоритет над явною спеціалізацією, а потім над шаблонною функцією.

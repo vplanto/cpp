@@ -1,10 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Stack Class that acts as a queue
+// Клас стеку, реалізований за допомогою однієї черги
+// Принцип: при push() переставляємо всі елементи, щоб новий був на початку
+// Складність push(): O(n), pop(): O(1)
 class Stack {
 
-  queue<int> q;
+  queue<int> q;  // Одна черга для реалізації стеку
 
 public:
   void push(int data);
@@ -14,38 +16,33 @@ public:
   bool empty();
 };
 
-// Push operation
+// Операція push (додавання елемента)
+// НЕЕФЕКТИВНО: O(n) через перестановку всіх елементів
 void Stack::push(int data) {
-  // Get previous size of queue
-  int s = q.size();
+  int s = q.size();  // Зберігаємо попередній розмір черги
 
-  // Push the current element
-  q.push(data);
+  q.push(data);  // Додаємо новий елемент в кінець черги
 
-  // Pop all the previous elements and put them after
-  // current element
-
+  // Переставляємо всі попередні елементи після нового
+  // Це забезпечує поведінку стеку (LIFO)
   for (int i = 0; i < s; i++) {
-    // Add the front element again
-    q.push(q.front());
-
-    // Delete front element
-    q.pop();
+    q.push(q.front());  // Додаємо front елемент знову в кінець
+    q.pop();            // Видаляємо front елемент
   }
 }
 
-// Removes the top element
+// Видалення верхнього елемента
 void Stack::pop() {
   if (q.empty())
     cout << "No elements\n";
   else
-    q.pop();
+    q.pop();  // Видалення з початку черги (який є верхом стеку)
 }
 
-// Returns top of stack
+// Повернення верхнього елемента стеку
 int Stack::top() { return (q.empty()) ? -1 : q.front(); }
 
-// Returns true if Stack is empty else false
+// Перевірка, чи стек порожній
 bool Stack::empty() { return (q.empty()); }
 
 int Stack::size() { return q.size(); }

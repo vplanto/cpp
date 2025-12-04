@@ -1,21 +1,24 @@
 #include <iostream>
 
+// Глобальна змінна (порушення принципів ООП - глобальний стан)
 int y = 25;
 
 std::string foo() {
+  // Локальна змінна x (не плутати з глобальною)
+  // to_string() - перетворення числа в рядок
   std::string x = "I`m " + std::to_string(y);
-  return x;
+  return x;  // Повертається копія рядка (можлива оптимізація RVO)
 }
 
 int bar() {
-  int x = 42;
-  y = x - y;
+  int x = 42;  // Локальна змінна x (інша область видимості)
+  y = x - y;   // Зміна глобальної змінної y (побічний ефект)
   return x + y;
 }
 
 int main() {
-  std::cout << foo() << std::endl;
-  std::cout << bar() << std::endl;
+  std::cout << foo() << std::endl;  // y = 25
+  std::cout << bar() << std::endl;  // y змінюється на 42 - 25 = 17, повертає 42 + 17 = 59
 
   return 0;
 }

@@ -1,29 +1,35 @@
-#include <iostream>
+#include <iostream>  // Бібліотека для вводу/виводу
 using namespace std;
 
-// Function prototype
+// Прототип функції (оголошення функції)
+// Прототип повідомляє компілятор про існування функції до її визначення
 int factorial(int n);
 
 int main() {
   int number;
 
-  // Ask user for a number
+  // Запитуємо у користувача число
   cout << "Enter a positive integer: ";
   cin >> number;
 
-  // Calculate and display the factorial using the recursive function
+  // Обчислення та виведення факторіалу за допомогою рекурсивної функції
+  // Виклик функції factorial() з аргументом number
   cout << "Factorial of " << number << " = " << factorial(number) << endl;
 
-  return 0;  // End of program
+  return 0;  // Успішне завершення програми
 }
 
-// Recursive function to calculate factorial
+// Рекурсивна функція для обчислення факторіалу
+// Рекурсія - це техніка, коли функція викликає сама себе
+// Факторіал n (n!) = n * (n-1) * (n-2) * ... * 2 * 1
 int factorial(int n) {
-  // Base case: factorial of 1 (or 0) is 1
+  // Базовий випадок: факторіал 1 (або 0) дорівнює 1
+  // Базовий випадок зупиняє рекурсію, запобігаючи нескінченному виклику функції
   if (n <= 1) {
-    return 1;
+    return 1;  // Повертаємо 1, якщо n <= 1
   } else {
-    // Recursive case: n * factorial of (n-1)
+    // Рекурсивний випадок: n * факторіал (n-1)
+    // Функція викликає сама себе з меншим значенням
     return n * factorial(n - 1);
   }
 }

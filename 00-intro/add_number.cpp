@@ -1,32 +1,32 @@
 /*
- * Prompt user for two integers and print their sum, difference, product and
- * quotient (IntegerArithmetic.cpp)
+ * Запитуємо у користувача два цілі числа та виводимо їх суму, різницю, добуток та частку
+ * (IntegerArithmetic.cpp)
  */
-#include <iostream>
-using namespace std;
+#include <iostream>  // Підключення бібліотеки для вводу/виводу
+using namespace std; // Використання стандартного простору імен
 
 int main() {
-  int firstInt;   // Declare a variable named firstInt of the type int (integer)
-  int secondInt;  // Declare a variable named secondInt of the type int
+  int firstInt;   // Оголошення змінної типу int (ціле число) з ім'ям firstInt
+  int secondInt;  // Оголошення змінної типу int з ім'ям secondInt
   int sum, difference, product, quotient;
-  // Declare 4 variables of the type int to keep the results
+  // Оголошення чотирьох змінних типу int для зберігання результатів обчислень
 
-  cout << "Enter first integer: ";  // Display a prompting message
-  cin >> firstInt;  // Read input from keyboard (cin) into firstInt
-  cout << "Enter second integer: ";  // Display a prompting message
-  cin >> secondInt;                  // Read input into secondInt
+  cout << "Enter first integer: ";  // Виведення запиту на введення першого числа
+  cin >> firstInt;  // Читання введеного значення з клавіатури (cin) та збереження в firstInt
+  cout << "Enter second integer: ";  // Виведення запиту на введення другого числа
+  cin >> secondInt;                  // Читання другого числа та збереження в secondInt
 
-  // Perform arithmetic operations
-  sum = firstInt + secondInt;
-  difference = firstInt - secondInt;
-  product = firstInt * secondInt;
-  quotient = firstInt / secondInt;
+  // Виконання арифметичних операцій
+  sum = firstInt + secondInt;        // Оператор + додає два числа
+  difference = firstInt - secondInt;  // Оператор - віднімає друге число від першого
+  product = firstInt * secondInt;     // Оператор * множить два числа
+  quotient = firstInt / secondInt;    // Оператор / ділить перше число на друге (цілочисельне ділення для int)
 
-  // Print the results
+  // Виведення результатів
   cout << "The sum is: " << sum << endl;
   cout << "The difference is: " << difference << endl;
   cout << "The product is: " << product << endl;
   cout << "The quotient is: " << quotient << endl;
 
-  return 0;
+  return 0;  // Успішне завершення програми
 }

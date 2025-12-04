@@ -1,35 +1,42 @@
-/* Test local array initialization (TestArrayInit.cpp) */
-#include <climits>
-#include <iostream>
-#include <istream>
+/* Тестування локальної ініціалізації масивів (TestArrayInit.cpp) */
+#include <climits>   // Бібліотека для обмежень цілих типів
+#include <iostream>  // Бібліотека для вводу/виводу
+#include <istream>   // Бібліотека для потоків вводу
 using namespace std;
 
 int main() {
-  int const SIZE = 5;
+  int const SIZE = 5;  // Константа для розміру масиву (const - значення не можна змінити)
 
-  int a1[SIZE];  // Uninitialized
+  // Масив без ініціалізації - елементи містять невизначені значення (сміття)
+  int a1[SIZE];  // Неініціалізований масив
   for (int i = 0; i < SIZE; ++i) cout << a1[i] << " ";
-  cout << endl;  // ? ? ? ? ?
+  cout << endl;  // Виведеться невизначені значення
 
-  int a2[SIZE] = {21, 22, 23, 24, 25};  // All elements initialized
+  // Масив з повною ініціалізацією всіх елементів
+  int a2[SIZE] = {21, 22, 23, 24, 25};  // Всі елементи ініціалізовані
   for (int i = 0; i < SIZE; ++i) cout << a2[i] << " ";
   cout << endl;  // 21 22 23 24 25
 
-  int a3[] = {31, 32, 33, 34, 35};  // Size deduced from init values
-  int a3Size = sizeof(a3) / sizeof(a3[0]);
+  // Масив з автоматичним визначенням розміру за кількістю ініціалізаторів
+  int a3[] = {31, 32, 33, 34, 35};  // Розмір визначається автоматично з кількості значень
+  // Обчислення розміру масиву: загальний розмір масиву поділити на розмір одного елемента
+  int a3Size = sizeof(a3) / sizeof(a3[0]);  // sizeof(a3) - розмір масиву в байтах
   cout << "Size is " << a3Size << endl;  // 5
   for (int i = 0; i < a3Size; ++i) cout << a3[i] << " ";
   cout << endl;  // 31 32 33 34 35
 
-  int a4[SIZE] = {41, 42};  // Leading elements initialized, the rests to 0
+  // Часткова ініціалізація: перші елементи ініціалізовані, решта заповнюються нулями
+  int a4[SIZE] = {41, 42};  // Перші елементи ініціалізовані, решта дорівнюють 0
   for (int i = 0; i < SIZE; ++i) cout << a4[i] << " ";
   cout << endl;  // 41 42 0 0 0
 
-  int a5[SIZE] = {0};  // First elements to 0, the rests to 0 too
+  // Ініціалізація одним нулем: всі елементи заповнюються нулями
+  int a5[SIZE] = {0};  // Перший елемент 0, решта теж 0
   for (int i = 0; i < SIZE; ++i) cout << a5[i] << " ";
   cout << endl;  // 0 0 0 0 0
 
-  int a6[SIZE] = {};  // All elements to 0 too
+  // Порожня ініціалізація: всі елементи заповнюються нулями
+  int a6[SIZE] = {};  // Всі елементи дорівнюють 0
   for (int i = 0; i < SIZE; ++i) cout << a6[i] << " ";
   cout << endl;  // 0 0 0 0 0
 }

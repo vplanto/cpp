@@ -1,60 +1,64 @@
-#include <bits/stdc++.h> // Include most standard library headers
-using namespace std; // Use names in the standard namespace without qualifying them with std::
+#include <bits/stdc++.h> // Включення більшості стандартних бібліотек
+using namespace std;
 
-// Define a constant d to be used in the hash function
+// Константа d для хеш-функції (кількість символів в алфавіті)
 #define d 11
 
-// Function to search for a pattern pat in a text txt using a prime number q
+// Функція пошуку патерну pat у тексті txt за допомогою алгоритму Rabin-Karp
+// Використовує хешування для швидкого порівняння підрядків
+// Складність: O(N + M) у середньому, O(N * M) у найгіршому випадку (багато колізій)
+// q - просте число для модульної арифметики (зменшує колізії)
 void search(char pat[], char txt[], int q) {
-  int M = strlen(pat); // Calculate the length of the pattern
-  int N = strlen(txt); // Calculate the length of the text
+  int M = strlen(pat); // Довжина патерну
+  int N = strlen(txt); // Довжина тексту
   int i, j;
-  int p = 0; // Initialize the hash value for the pattern
-  int t = 0; // Initialize the hash value for the text
-  int h = 1; // Initialize a variable h that will be used in the hash function
+  int p = 0; // Хеш-значення для патерну
+  int t = 0; // Хеш-значення для тексту
+  int h = 1; // Змінна для обчислення d^(M-1) mod q
 
-  // Calculate the hash value h
+  // Обчислення значення h = d^(M-1) mod q
+  // Використовується для оновлення хешу при зсуві вікна
   for (i = 0; i < M - 1; i++)
     h = (h * d) % q;
 
-  // Calculate the initial hash values for the pattern and the first substring of the text of length M
+  // Обчислення початкових хеш-значень для патерну та першого підрядка тексту довжини M
   for (i = 0; i < M; i++) {
-    p = (d * p + pat[i]) % q;
-    t = (d * t + txt[i]) % q;
+    p = (d * p + pat[i]) % q;  // Хеш патерну
+    t = (d * t + txt[i]) % q;  // Хеш першого підрядка тексту
   }
 
-  // Iterate over each substring of the text of length M
+  // Прохід по всіх підрядках тексту довжини M
   for (i = 0; i <= N - M; i++) {
-    // If the hash values of the pattern and the current substring match
+    // Якщо хеш-значення патерну та поточного підрядка співпадають
     if (p == t) {
-      // Check if the actual strings match
+      // Перевірка, чи справді рядки співпадають (захист від колізій хешу)
       for (j = 0; j < M; j++) {
         if (txt[i + j] != pat[j])
-          break;
+          break;  // Невідповідність - вихід з циклу
       }
 
-      // If the actual strings match, print the starting index of the match
+      // Якщо рядки справді співпадають, виводимо індекс
       if (j == M)
         cout << "Pattern found at index " << i << endl;
     }
 
-    // If there are still substrings to check
+    // Якщо є ще підрядки для перевірки
     if (i < N - M) {
-      // Update the hash value for the next substring of the text
+      // Оновлення хеш-значення для наступного підрядка тексту
+      // Видаляємо старий символ, додаємо новий (rolling hash)
       t = (d * (t - txt[i] * h) + txt[i + M]) % q;
 
-      // If the hash value is negative, make it positive
+      // Якщо хеш-значення від'ємне, робимо його додатним
       if (t < 0)
         t = (t + q);
     }
   }
 }
 
-// Main function
 int main() {
-  char txt[] = "GEEKS FOR GEEKS"; // Define the text
-  char pat[] = "GEEK"; // Define the pattern
-  int q = 101; // Define a prime number q
-  search(pat, txt, q); // Call the search function with the pattern, text, and q
-  return 0; // Return 0 to indicate successful execution
+  char txt[] = "GEEKS FOR GEEKS"; // Текст
+  char pat[] = "GEEK";            // Патерн
+  int q = 101;                     // Просте число для модульної арифметики
+  search(pat, txt, q);            // Виклик функції пошуку
+  return 0;
 }

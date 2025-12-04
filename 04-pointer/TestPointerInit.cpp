@@ -1,26 +1,30 @@
-/* Test pointer declaration and initialization (TestPointerInit.cpp) */
+/* Тестування оголошення та ініціалізації вказівників (TestPointerInit.cpp) */
 #include <iostream>
 using namespace std;
 
 int main() {
-  int number = 88;  // Declare an int variable and assign an initial value
-  int* pNumber;     // Declare a pointer variable pointing to an int (or int
-                    // pointer)
+  int number = 88;  // Оголошення змінної типу int з початковим значенням
+  int* pNumber;     // Оголошення вказівника на int (int* - тип "вказівник на int")
+                    // Вказівник зберігає адресу змінної в пам'яті
   pNumber =
-      &number;  // assign the address of the variable number to pointer pNumber
+      &number;  // Оператор & (адреса) повертає адресу змінної number
+                // Присвоюємо адресу number вказівнику pNumber
 
-  cout << pNumber << endl;   // Print content of pNumber (0x22ccf0)
-  cout << &number << endl;   // Print address of number (0x22ccf0)
-  cout << *pNumber << endl;  // Print value pointed to by pNumber (88)
-  cout << number << endl;    // Print value of number (88)
+  cout << pNumber << endl;   // Виведення вмісту pNumber (адреса, на яку він вказує)
+  cout << &number << endl;   // Виведення адреси змінної number (той самий адрес)
+  cout << *pNumber << endl;  // Оператор * (розіменування) - отримання значення за адресою
+                              // Виведення значення, на яке вказує pNumber
+  cout << number << endl;    // Виведення значення number (те саме значення)
 
-  *pNumber = 99;             // Re-assign value pointed to by pNumber
-  cout << pNumber << endl;   // Print content of pNumber (0x22ccf0)
-  cout << &number << endl;   // Print address of number (0x22ccf0)
-  cout << *pNumber << endl;  // Print value pointed to by pNumber (99)
-  cout << number << endl;    // Print value of number (99)
-                             // The value of number changes via pointer
+  *pNumber = 99;             // Зміна значення через вказівник
+                              // *pNumber - доступ до значення за адресою, яку зберігає pNumber
+  cout << pNumber << endl;   // Адреса pNumber не змінилася
+  cout << &number << endl;   // Адреса number не змінилася
+  cout << *pNumber << endl;  // Значення змінилося на 99
+  cout << number << endl;    // Значення number також змінилося на 99
+                             // Значення number змінилося через вказівник
 
   cout << &pNumber
-       << endl;  // Print the address of pointer variable pNumber (0x22ccec)
+       << endl;  // Виведення адреси самої змінної-вказівника pNumber
+                  // pNumber - це змінна, що має свою адресу в пам'яті
 }

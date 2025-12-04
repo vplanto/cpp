@@ -1,20 +1,21 @@
-/* A mystery series (Mystery.cpp) */
-#include <iostream>
-using namespace std;
+/* Загадкова послідовність (Mystery.cpp) */
+#include <iostream>  // Бібліотека для вводу/виводу
+using namespace std; // Використання стандартного простору імен
 
 int main() {
-  int number = 1;
-  while (true) {
-    ++number;
-    if ((number % 3) == 0) continue;
-    if (number == 133) break;
-    if ((number % 2) == 0) {
-      number += 3;
-    } else {
-      number -= 3;
+  int number = 1;  // Ініціалізація змінної number значенням 1
+  while (true) {   // Безкінечний цикл (true завжди істинне)
+    ++number;      // Збільшуємо number на 1 перед перевірками
+    if ((number % 3) == 0) continue;  // Оператор continue пропускає решту ітерації
+                                       // Якщо number ділиться на 3 без залишку, переходимо до наступної ітерації
+    if (number == 133) break;  // Оператор break виходить з циклу, коли number дорівнює 133
+    if ((number % 2) == 0) {   // Перевірка на парність: якщо number парне (ділиться на 2)
+      number += 3;              // Оператор += додає 3 до number (еквівалентно number = number + 3)
+    } else {                    // Блок else виконується, якщо number непарне
+      number -= 3;              // Оператор -= віднімає 3 від number (еквівалентно number = number - 3)
     }
-    cout << number << " ";
+    cout << number << " ";  // Виведення поточного значення number
   }
-  cout << endl;
-  return 0;
+  cout << endl;  // Перехід на новий рядок
+  return 0;      // Успішне завершення програми
 }

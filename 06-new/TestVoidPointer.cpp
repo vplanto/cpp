@@ -6,22 +6,22 @@ int main() {
   double doubleVar = 3.14;
   char charVar = 'A';
 
-  // Void pointer can hold address of any data type
+  // void* - універсальний вказівник, може зберігати адресу будь-якого типу даних
   void* voidPtr;
 
-  // Point to an integer
+  // Вказівник на int
   voidPtr = &intVar;
   cout << "Address of intVar: " << voidPtr << endl;
 
-  // Point to a double
+  // Вказівник на double
   voidPtr = &doubleVar;
   cout << "Address of doubleVar: " << voidPtr << endl;
 
-  // Point to a char
+  // Вказівник на char
   voidPtr = &charVar;
   cout << "Address of charVar: " << voidPtr << endl;
 
-  // We can use void pointer to compare addresses
+  // void* можна використовувати для порівняння адрес
   void* anotherPtr = &doubleVar;
   if (voidPtr == anotherPtr) {
     cout << "The void pointer and anotherPtr point to the same address."
@@ -31,9 +31,11 @@ int main() {
          << endl;
   }
 
-  // Note: We cannot dereference void pointer without casting
-  // cout << *voidPtr; // This will result in a compilation error
+  // УВАГА: void* не можна розіменувати без приведення типу
+  // cout << *voidPtr; // Це призведе до помилки компіляції
+  // Для доступу до значення потрібно явне приведення типу:
   // int* intPtr = static_cast<int*>(voidPtr);
+  // cout << *intPtr;
 
   return 0;
 }

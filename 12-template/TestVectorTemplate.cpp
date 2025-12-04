@@ -1,4 +1,4 @@
-/* Test vector template class (TestVectorTemplate.cpp) */
+/* Тестування шаблону класу vector (TestVectorTemplate.cpp) */
 #include <iostream>
 #include <string>
 #include <vector>
@@ -9,51 +9,52 @@ struct Animal {
 };
 
 int main() {
+  // vector<Animal> - шаблон класу vector інстанційований для типу Animal
   vector<Animal> v0;
-  v0.push_back({"red"});
+  v0.push_back({"red"});  // Додавання елемента через список ініціалізації
 
-  vector<int> v1(5);  // Create a vector with 5 elements;
+  vector<int> v1(5);  // Створення vector з 5 елементами (ініціалізовані значенням за замовчуванням)
 
-  // Assign values into v1, using array-like index []
-  // You can retrieve the size of vector via size()
+  // Присвоєння значень у v1, використовуючи індекс []
+  // size() - отримання розміру vector
   for (int i = 0; i < v1.size(); ++i) {
-    v1[i] = (i + 1) * 2;  // no index-bound check for []
+    v1[i] = (i + 1) * 2;  // [] - без перевірки меж індексу
   }
 
-  // Print vector content, using at()
+  // Виведення вмісту vector, використовуючи at()
   for (int i = 0; i < v1.size(); ++i) {
-    cout << v1.at(i) << " ";  // do index-bound check with at()
+    cout << v1.at(i) << " ";  // at() - з перевіркою меж індексу (викидає виняток)
   }
   cout << endl;
 
-  vector<int> v2;  // Create a vector with 0 elements
-  // Assign v1 to v2 memberwise
-  v2 = v1;
+  vector<int> v2;  // Створення vector з 0 елементами
+  // Присвоєння v1 до v2 (поелементне копіювання)
+  v2 = v1;  // Оператор присвоєння копіювання
   for (int i = 0; i < v2.size(); ++i) {
     cout << v2[i] << " ";
   }
   cout << endl;
 
-  // Compare 2 vectors memberwise
-  cout << boolalpha << (v1 == v2) << endl;
+  // Порівняння двох vector (поелементне)
+  cout << boolalpha << (v1 == v2) << endl;  // Оператор == для vector
 
-  // Append more elements - dynamically allocate memory
-  v1.push_back(80);
+  // Додавання елементів - динамічне виділення пам'яті
+  v1.push_back(80);  // push_back - додавання в кінець
   v1.push_back(81);
   for (int i = 0; i < v1.size(); ++i) {
     cout << v1[i] << " ";
   }
   cout << endl;
 
-  // Remove element from the end
-  v1.pop_back();
+  // Видалення елемента з кінця
+  v1.pop_back();  // pop_back - видалення останнього елемента
   for (int i = 0; i < v1.size(); ++i) {
     cout << v1[i] << " ";
   }
   cout << endl;
 
-  vector<string> v3;            // Create a vector of string with 0 element
-  v3.push_back("A for Apple");  // append new elements
+  vector<string> v3;            // Створення vector рядків з 0 елементами
+  v3.push_back("A for Apple");  // Додавання нових елементів
   v3.push_back("B for Boy");
   for (int i = 0; i < v3.size(); ++i) {
     cout << v3[i] << " ";

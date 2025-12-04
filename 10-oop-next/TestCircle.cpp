@@ -1,20 +1,21 @@
+// Демонстрація friend класу
 class ClassA {
-  friend class ClassB;  // ClassB is a friend class of ClassA
+  friend class ClassB;  // ClassB - friend клас ClassA (має доступ до private/protected членів)
  protected:
-  int protectedVar;
+  int protectedVar;  // protected член доступний friend класу
 };
 
 class ClassB {
  public:
   void modifyProtectedVar(ClassA &obj) {
-    obj.protectedVar = 5;  // This is fine, ClassB is a friend of ClassA
+    // ClassB має доступ до protected членів ClassA, бо є friend класом
+    obj.protectedVar = 5;
   }
 };
 
 int main() {
   ClassA objA;
   ClassB objB;
-  objB.modifyProtectedVar(
-      objA);  // This is fine, modifyProtectedVar is a member of ClassB
+  objB.modifyProtectedVar(objA);  // Виклик методу friend класу
   return 0;
 }

@@ -1,27 +1,30 @@
 #include <stdio.h>
 
-// Define the struct with two fields: num and denum
+// Визначення структури з двома полями: num та denum
 typedef struct {
-  int num;
-  int denum;
+  int num;    // Чисельник
+  int denum;  // Знаменник
 } fraction;
 
 int main() {
-  // Declare a variable of type fraction
+  // Оголошення змінної типу fraction
   fraction pi;
 
-  // Assign values to the fields
+  // Присвоєння значень полям
   pi.num = 7;
   pi.denum = 22;
 
-  // Print the initial values
+  // Виведення початкових значень
   printf("Initial values: num = %d, denum = %d\n", pi.num, pi.denum);
 
-  // Manipulate the pointer to change the num field via the denum field's
-  // address
+  // Маніпуляція вказівником для зміни поля num через адресу поля denum
+  // &(pi.denum) - адреса поля denum
+  // (fraction*) - приведення типу до вказівника на fraction
+  // ->num - доступ до поля num через вказівник
+  // Це небезпечна операція, що може призвести до невизначеної поведінки!
   ((fraction*)&(pi.denum))->num = 12;
 
-  // Print the modified values
+  // Виведення змінених значень
   printf("Modified values: num = %d, denum = %d\n", pi.num, pi.denum);
 
   return 0;

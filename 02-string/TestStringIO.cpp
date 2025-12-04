@@ -1,24 +1,29 @@
-/* Testing string class input and output (TestStringIO.cpp) */
-#include <iostream>
-#include <limits>
-#include <string>    // Need this header to use string class
-using namespace std; // Also needed for <string>
+/* Тестування вводу та виводу класу string (TestStringIO.cpp) */
+#include <iostream>  // Бібліотека для вводу/виводу
+#include <limits>    // Бібліотека для numeric_limits
+#include <string>    // Заголовочний файл для використання класу string
+using namespace std; // Також потрібен для <string>
 
 int main() {
+  // Конструктор string() створює об'єкт string з рядкового літералу
   string message("Hello");
   cout << message << endl;
 
-  // Input a word (delimited by space) into a string
+  // Введення слова (розділеного пробілом) у string
+  // Оператор >> читає тільки до першого пробілу або символу нового рядка
   cout << "Enter a message (no space): ";
-  cin >> message;
+  cin >> message;  // Читання одного слова
   cout << message << endl;
 
+  // Очищення буфера вводу до символу нового рядка
+  // numeric_limits<streamsize>::max() - максимальна кількість символів для ігнорування
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
-  // flush cin up to newline (need <limits> header)
+  // Очищення cin до нового рядка (потрібна бібліотека <limits>)
 
-  // Input a line into a string
+  // Введення цілого рядка (включно з пробілами) у string
   cout << "Enter a message (with spaces): ";
-  getline(cin, message); // Read input from cin into message
+  // getline() читає весь рядок включно з пробілами до символу нового рядка
+  getline(cin, message); // Читання вводу з cin у message
   cout << message << endl;
   return 0;
 }

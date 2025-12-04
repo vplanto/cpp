@@ -1,72 +1,76 @@
-#include <stdio.h>  // Include standard input-output library
-#include <stdlib.h> // Include standard library for memory allocation functions
+#include <stdio.h>  // Бібліотека для вводу/виводу
+#include <stdlib.h> // Бібліотека для функцій виділення пам'яті (malloc, free)
 
-// Node structure
+// Структура вузла зв'язаного списку
+// Рекурсивна структура: структура містить вказівник на саму себе
 typedef struct Node {
-    int data;           // Data part of the node
-    struct Node *next;  // Pointer to the next node
+    int data;           // Дані вузла
+    struct Node *next;  // Вказівник на наступний вузол (рекурсивна структура)
 } Node;
 
-// Function to create a new node with given data
+// Функція для створення нового вузла з заданими даними
 Node* createNode(int data) 
 {
-    Node *newNode = (Node *)malloc(sizeof(Node)); // Allocate memory for new node
-    if (!newNode) {                               // Check if memory allocation failed
-        perror("Failed to allocate memory");      // Print error message
-        exit(EXIT_FAILURE);                       // Exit program with failure status
+    // malloc(sizeof(Node)) - виділення пам'яті для структури Node
+    // (Node *) - приведення типу void* до Node*
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    if (!newNode) {                               // Перевірка на помилку виділення пам'яті
+        perror("Failed to allocate memory");      // Виведення повідомлення про помилку
+        exit(EXIT_FAILURE);                       // Завершення програми з кодом помилки
     }
-    newNode->data = data;     // Set the data of the new node
-    newNode->next = NULL;     // Initialize the next pointer to NULL
-    return newNode;           // Return the new node
+    newNode->data = data;     // Присвоєння даних новому вузлу
+    newNode->next = NULL;     // Ініціалізація вказівника на NULL (кінець списку)
+    return newNode;           // Повернення нового вузла
 }
 
-// Function to append a new node with given data to the end of the list
+// Функція для додавання нового вузла в кінець списку
+// Node **head - вказівник на вказівник (для зміни head у main)
 void append(Node **head, int data) 
 {
-    Node *newNode = createNode(data); // Create a new node
-    if (*head == NULL) {              // If the list is empty
-        *head = newNode;              // Set the new node as the head
-        return;                       // Return from the function
+    Node *newNode = createNode(data); // Створення нового вузла
+    if (*head == NULL) {              // Якщо список порожній
+        *head = newNode;              // Новий вузол стає головою списку
+        return;
     }
-    Node *temp = *head;               // Temporary pointer to traverse the list
-    while (temp->next != NULL)        // Traverse to the last node
-        temp = temp->next;            // Move to the next node
-    temp->next = newNode;             // Set the next of the last node to the new node
+    Node *temp = *head;               // Тимчасовий вказівник для проходження списку
+    while (temp->next != NULL)        // Прохід до останнього вузла
+        temp = temp->next;            // Перехід до наступного вузла
+    temp->next = newNode;             // Додавання нового вузла в кінець
 }
 
-// Function to print the linked list
+// Функція для виведення зв'язаного списку
 void printList(Node *head) 
 {
-    while (head != NULL) {            // Traverse the list
-        printf("%d -> ", head->data); // Print the data of the current node
-        head = head->next;            // Move to the next node
+    while (head != NULL) {            // Прохід по списку
+        printf("%d -> ", head->data); // Виведення даних поточного вузла
+        head = head->next;            // Перехід до наступного вузла
     }
-    printf("NULL\n");                 // Print NULL at the end of the list
+    printf("NULL\n");                 // Виведення NULL в кінці списку
 }
 
-// Function to free the memory allocated for the list
+// Функція для звільнення пам'яті, виділеної для списку
 void freeList(Node *head) 
 {
-    Node *temp;                       // Temporary pointer to hold the current node
-    while (head != NULL) {            // Traverse the list
-        temp = head;                  // Store the current node
-        head = head->next;            // Move to the next node
-        free(temp);                   // Free the memory of the current node
+    Node *temp;                       // Тимчасовий вказівник для зберігання поточного вузла
+    while (head != NULL) {            // Прохід по списку
+        temp = head;                  // Зберігання поточного вузла
+        head = head->next;            // Перехід до наступного вузла
+        free(temp);                   // Звільнення пам'яті поточного вузла
     }
 }
 
 int main(int argc, char *argv[]) 
 {
-    Node *head = NULL;                // Initialize the head of the list to NULL
+    Node *head = NULL;                // Ініціалізація голови списку як NULL
 
-    append(&head, 10);                // Append 10 to the list
-    append(&head, 20);                // Append 20 to the list
-    append(&head, 30);                // Append 30 to the list
+    append(&head, 10);                // Додавання 10 до списку
+    append(&head, 20);                // Додавання 20 до списку
+    append(&head, 30);                // Додавання 30 до списку
 
-    printList(head);                  // Print the list: Outputs: 10 -> 20 -> 30 -> NULL
+    printList(head);                  // Виведення списку: 10 -> 20 -> 30 -> NULL
 
-    freeList(head);                   // Free the memory allocated for the list
-    head = NULL;                      // Set head to NULL
+    freeList(head);                   // Звільнення пам'яті списку
+    head = NULL;                      // Встановлення head в NULL
 
-    return 0;                         // Return 0 to indicate successful execution
+    return 0;
 }

@@ -3,34 +3,37 @@
 
 using namespace std;
 
+// Задача Йосипа (Josephus Problem)
+// Знаходження останньої людини, що залишиться, коли кожна k-та людина видаляється
+// Складність: O(n * k), де n - кількість людей, k - крок видалення
 int josephus(int n, int k) {
     queue<int> q;
     
-    // Initialize the queue with positions 1 through n.
+    // Ініціалізація черги позиціями від 1 до n
     for (int i = 1; i <= n; i++) {
         q.push(i);
     }
     
-    // Elimination process.
+    // Процес видалення
     while (q.size() > 1) {
-        // Rotate k-1 members by moving them to the back.
+        // Обертання k-1 членів, переміщуючи їх в кінець
+        // Це "рахуємо" до k-ї людини
         for (int i = 1; i < k; i++) {
             int front = q.front();
             q.pop();
-            q.push(front);
+            q.push(front);  // Переміщення в кінець (обертання)
         }
-        // The kth person is eliminated.
+        // k-та людина видаляється
         q.pop();
     }
     
-    // The last remaining person is the survivor.
+    // Остання людина, що залишилася - виживша
     return q.front();
 }
 
 int main() {
     int n, k;
     
-    // Input the number of people and the elimination step.
     cout << "Enter the number of people (n): ";
     cin >> n;
     cout << "Enter the elimination step (k): ";

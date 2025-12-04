@@ -1,16 +1,16 @@
-/* Pointer and Array (TestPointerArray.cpp) */
+/* Вказівники та масиви (TestPointerArray.cpp) */
 #include <iostream>
 using namespace std;
 
 int main() {
   const int SIZE = 5;
-  int numbers[SIZE] = {11, 22, 44, 21, 41};  // An int array
+  int numbers[SIZE] = {11, 22, 44, 21, 41};  // Масив int
 
-  // The array name numbers is an int pointer, pointing at the
-  // first item of the array, i.e., numbers = &numbers[0]
-  cout << &numbers[0] << endl;     // Print address of first element (0x22fef8)
-  cout << numbers << endl;         // Same as above (0x22fef8)
-  cout << *numbers << endl;        // Same as numbers[0] (11)
-  cout << *(numbers + 1) << endl;  // Same as numbers[1] (22)
-  cout << *(numbers + 4) << endl;  // Same as numbers[4] (41)
+  // Ім'я масиву numbers є вказівником на int, що вказує на перший елемент
+  // numbers = &numbers[0] (неявне перетворення імені масиву на вказівник)
+  cout << &numbers[0] << endl;     // Адреса першого елемента
+  cout << numbers << endl;         // Те саме (ім'я масиву = адреса першого елемента)
+  cout << *numbers << endl;        // Еквівалентно numbers[0] (розіменування вказівника)
+  cout << *(numbers + 1) << endl;  // Еквівалентно numbers[1] (арифметика вказівників)
+  cout << *(numbers + 4) << endl;  // Еквівалентно numbers[4] (арифметика вказівників)
 }

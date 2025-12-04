@@ -1,27 +1,34 @@
-/* Testing C-string (TestCString.cpp) */
-#include <cstring>
-#include <iostream>
+/* Тестування C-рядків (TestCString.cpp) */
+#include <cstring>   // Бібліотека для функцій роботи з C-рядками (strlen тощо)
+#include <iostream>  // Бібліотека для вводу/виводу
 using namespace std;
 
 int main() {
-  char msg1[] = "Hello";
-  char *msg2 = "Hello";
-  // warning: deprecated conversion from string constant to 'char*'
+  char msg1[] = "Hello";  // Масив символів - можна змінювати
+  char *msg2 = "Hello";   // Вказівник на рядкову константу
+  // Попередження: застаріле перетворення рядкової константи на 'char*'
+  // Краще використовувати const char *msg2 = "Hello";
 
-  cout << strlen(msg1) << endl;  // 5
+  // strlen() - функція з <cstring>, повертає довжину C-рядка (без '\0')
+  cout << strlen(msg1) << endl;  // 5 - кількість символів без '\0'
   cout << strlen(msg2) << endl;
   cout << strlen("Hello") << endl;
 
-  int size = sizeof(msg1) / sizeof(char);
-  cout << size << endl;  // 6 - including the terminating '\0'
+  // sizeof() повертає розмір масиву в байтах (включаючи '\0')
+  int size = sizeof(msg1) / sizeof(char);  // Розмір масиву поділити на розмір одного char
+  cout << size << endl;  // 6 - включаючи завершальний '\0'
+  
+  // Доступ до C-рядка через індекси масиву
   for (int i = 0; msg1[i] != '\0'; ++i) {
-    cout << msg1[i];
+    cout << msg1[i];  // Виведення символу за індексом i
   }
   cout << endl;
 
+  // Доступ до C-рядка через вказівник
+  // p - вказівник, що проходить по символах рядка
   for (char *p = msg1; *p != '\0'; ++p) {
-    // *p != '\0' is the same as *p != 0, is the same as *p
-    cout << *p;
+    // *p != '\0' еквівалентно *p != 0, що еквівалентно просто *p (в умові циклу)
+    cout << *p;  // Виведення символу, на який вказує p
   }
   cout << endl;
 }

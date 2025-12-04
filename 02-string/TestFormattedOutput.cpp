@@ -1,24 +1,30 @@
-/* Test Formatting Output (TestFormattedOutput.cpp) */
-#include <iomanip>  // Needed to do formatted I/O
-#include <iostream>
+/* Тестування форматування виводу (TestFormattedOutput.cpp) */
+#include <iomanip>  // Бібліотека для маніпуляторів форматування вводу/виводу
+#include <iostream> // Бібліотека для вводу/виводу
 using namespace std;
 
 int main() {
-  // Floating point numbers
+  // Форматування дробових чисел
   double pi = 3.14159265;
-  cout << fixed << setprecision(4);  // fixed format with 4 decimal places
+  // fixed - фіксований формат (не наукова нотація)
+  // setprecision(4) - 4 знаки після коми (працює разом з fixed)
+  cout << fixed << setprecision(4);  // Фіксований формат з 4 знаками після коми
   cout << pi << endl;
+  // setw(8) - встановлює ширину поля виводу (8 символів)
+  // setw() не є "липким" - діє тільки на наступну операцію виводу
   cout << "|" << setw(8) << pi << "|" << setw(10) << pi << "|" << endl;
-  // setw() is not sticky, only apply to the next operation.
+  // setfill('-') - встановлює символ заповнення (за замовчуванням пробіл)
   cout << setfill('-');
   cout << "|" << setw(8) << pi << "|" << setw(10) << pi << "|" << endl;
-  cout << scientific;  // in scientific format with exponent
+  // scientific - науковий формат з експонентою
+  cout << scientific;  // Науковий формат з експонентою
   cout << pi << endl;
 
-  // booleans
+  // Форматування булевих значень
   bool done = false;
-  cout << done << endl;  // print 0 (for false) or 1 (for true)
-  cout << boolalpha;     // print true or false
+  cout << done << endl;  // Виведення 0 (для false) або 1 (для true)
+  // boolalpha - виведення true/false замість 1/0
+  cout << boolalpha;     // Виведення true або false як текст
   cout << done << endl;
   return 0;
 }

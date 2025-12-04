@@ -1,125 +1,125 @@
 /*
- * The MyComplex template class header (MyComplex.h)
- * All template codes are kept in the header, to be included in program
- * (Follow, modified and simplified from GNU GCC complex template class.)
+ * Заголовочний файл шаблону класу MyComplex (MyComplex.h)
+ * Весь код шаблону зберігається в заголовочному файлі для включення в програму
+ * (За основу взято та спрощено шаблон класу complex з GNU GCC.)
  */
 #ifndef MY_COMPLEX_H
 #define MY_COMPLEX_H
 
 #include <iostream>
 
-// Forward declaration
+// Попереднє оголошення
 template <typename T>
 class MyComplex;
 
+// Попереднє оголошення friend функцій
 template <typename T>
 std::ostream &operator<<(std::ostream &out, const MyComplex<T> &c);
 template <typename T>
 std::istream &operator>>(std::istream &in, MyComplex<T> &c);
 
-// MyComplex template class declaration
+// Оголошення шаблону класу MyComplex
 template <typename T>
 class MyComplex {
  private:
-  T real, imag;
+  T real, imag;  // Дійсна та уявна частини комплексного числа
 
  public:
-  // Constructor
-  // In C++, the explicit keyword is used to prevent constructors from
-  // implicitly converting types. It’s typically used with constructors that can
-  // be called with a single argument, as these are the only constructors that
-  // can be used in typecasting1.
+  // Конструктор
+  // explicit - забороняє неявне перетворення типів
+  // Використовується для конструкторів, що можуть бути викликані з одним аргументом
   explicit MyComplex<T>(T real = 0, T imag = 0) : real(real), imag(imag) {}
 
-  // Overload += operator for c1 += c2
+  // Перевантаження оператора += для c1 += c2
   MyComplex<T> &operator+=(const MyComplex<T> &rhs) {
     real += rhs.real;
     imag += rhs.imag;
-    return *this;
+    return *this;  // Повертаємо посилання на поточний об'єкт
   }
 
-  // Overload += operator for c1 += value
+  // Перевантаження оператора += для c1 += value
   MyComplex<T> &operator+=(T value) {
     real += value;
     return *this;
   }
 
-  // Overload comparison == operator for c1 == c2
+  // Перевантаження оператора порівняння == для c1 == c2
   bool operator==(const MyComplex<T> &rhs) const {
     return (real == rhs.real && imag == rhs.imag);
   }
 
-  // Overload comparison != operator for c1 != c2
+  // Перевантаження оператора порівняння != для c1 != c2
   bool operator!=(const MyComplex<T> &rhs) const { return !(*this == rhs); }
 
-  // Overload prefix increment operator ++c
-  // (Separate implementation for illustration)
+  // Перевантаження префіксного інкременту ++c
   MyComplex<T> &operator++();
 
-  // Overload postfix increment operator c++
+  // Перевантаження постфіксного інкременту c++
+  // int dummy - параметр для розрізнення префіксного та постфіксного інкременту
   const MyComplex<T> operator++(int dummy);
 
-  /* friends */
+  /* friend функції */
 
-  // (Separate implementation for illustration)
+  // friend функції мають доступ до private членів
+  // <> - вказівка, що це шаблон функції
   friend std::ostream &operator<< <>(std::ostream &out,
                                      const MyComplex<T> &c);  // out << c
   friend std::istream &operator>>
       <>(std::istream &in, MyComplex<T> &c);  // in >> c
 
-  // Overloading + operator for c1 + c2
-  // (inline implementation for illustration)
+  // Перевантаження оператора + для c1 + c2
+  // inline реалізація (в заголовочному файлі)
   friend const MyComplex<T> operator+(const MyComplex<T> &lhs,
                                       const MyComplex<T> &rhs) {
     MyComplex<T> result(lhs);
-    result += rhs;  // uses overload +=
+    result += rhs;  // Використовує перевантажений +=
     return result;
   }
 
-  // Overloading + operator for c + double
+  // Перевантаження оператора + для c + double
   friend const MyComplex<T> operator+(const MyComplex<T> &lhs, T value) {
     MyComplex<T> result(lhs);
-    result += value;  // uses overload +=
+    result += value;  // Використовує перевантажений +=
     return result;
   }
 
-  // Overloading + operator for double + c
+  // Перевантаження оператора + для double + c
   friend const MyComplex<T> operator+(T value, const MyComplex<T> &rhs) {
-    return rhs + value;  // swap and use above function
+    return rhs + value;  // Обмін місцями та використання вищевказаної функції
   }
 };
 
-// Overload prefix increment operator ++c
+// Визначення префіксного інкременту
 template <typename T>
 MyComplex<T> &MyComplex<T>::operator++() {
-  ++real;  // increment real part only
+  ++real;  // Інкремент тільки дійсної частини
   return *this;
 }
 
-// Overload postfix increment operator c++
+// Визначення постфіксного інкременту
 template <typename T>
 const MyComplex<T> MyComplex<T>::operator++(int dummy) {
-  MyComplex<T> saved(*this);
-  ++real;  // increment real part only
-  return saved;
+  MyComplex<T> saved(*this);  // Зберігаємо поточне значення
+  ++real;  // Інкрементуємо дійсну частину
+  return saved;  // Повертаємо старе значення
 }
 
-/* Definition of friend functions */
+/* Визначення friend функцій */
 
-// Overload stream insertion operator out << c (friend)
+// Перевантаження оператора виводу out << c (friend)
 template <typename T>
 std::ostream &operator<<(std::ostream &out, const MyComplex<T> &c) {
   out << '(' << c.real << ',' << c.imag << ')';
   return out;
 }
 
-// Overload stream extraction operator in >> c (friend)
+// Перевантаження оператора вводу in >> c (friend)
 template <typename T>
 std::istream &operator>>(std::istream &in, MyComplex<T> &c) {
   T inReal, inImag;
   char inChar;
   bool validInput = false;
-  // Input shall be in the format "(real,imag)"
+  // Ввід має бути у форматі "(real,imag)"
   in >> inChar;
   if (inChar == '(') {
     in >> inReal >> inChar;
@@ -131,7 +131,7 @@ std::istream &operator>>(std::istream &in, MyComplex<T> &c) {
       }
     }
   }
-  if (!validInput) in.setstate(std::ios_base::failbit);
+  if (!validInput) in.setstate(std::ios_base::failbit);  // Встановлення прапорця помилки
   return in;
 }
 

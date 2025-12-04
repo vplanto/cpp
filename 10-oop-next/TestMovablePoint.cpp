@@ -1,19 +1,19 @@
-/* Test Driver Program for MovablePoint (TestMovablePoint.cpp) */
+/* Тестова програма для MovablePoint (TestMovablePoint.cpp) */
 #include <iostream>
 
-#include "MovablePoint.h"  // included "Point.h"
+#include "MovablePoint.h"  // Включає "Point.h"
 using namespace std;
 
 int main() {
-  Point p1(4, 5);  // superclass
+  Point p1(4, 5);  // Базовий клас
   p1.print();      // Point @ (4,5)
   cout << endl;
 
-  MovablePoint mp1(11, 22);  // subclass, default speed
+  MovablePoint mp1(11, 22);  // Похідний клас, швидкості за замовчуванням
   mp1.print();               // MovablePoint @ (11,22) Speed=(0,0)
   cout << endl;
   mp1.setXSpeed(8);
-  mp1.move();
+  mp1.move();  // Зміна позиції відповідно до швидкостей
   mp1.print();  // MovablePoint @ (19,22) Speed=(8,0)
   cout << endl;
 

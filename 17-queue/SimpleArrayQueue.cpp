@@ -1,28 +1,29 @@
-// C++ program to implement a queue using an array
+// C++ програма для реалізації черги за допомогою масиву
 #include <bits/stdc++.h>
 using namespace std;
 
+// Проста реалізація черги на масиві (неефективна через зсув елементів)
 struct Queue {
   int front, rear, capacity;
   int *queue;
   Queue(int c) {
-    front = rear = 0;
+    front = rear = 0;  // front та rear починаються з 0
     capacity = c;
     queue = new int[c];
   }
 
   ~Queue() { delete[] queue; }
 
-  // function to insert an element
-  // at the rear of the queue
+  // Функція вставки елемента в кінець черги
+  // Складність: O(1)
   void queueEnqueue(int data) {
-    // check queue is full or not
+    // Перевірка, чи черга заповнена
     if (capacity == rear) {
       printf("\nQueue is full\n");
       return;
     }
 
-    // insert element at the rear
+    // Вставка елемента в кінець
     else {
       queue[rear] = data;
       rear++;
@@ -30,29 +31,29 @@ struct Queue {
     return;
   }
 
-  // function to delete an element
-  // from the front of the queue
+  // Функція видалення елемента з початку черги
+  // НЕЕФЕКТИВНО: O(n) через зсув всіх елементів
   void queueDequeue() {
-    // if queue is empty
+    // Якщо черга порожня
     if (front == rear) {
       printf("\nQueue is  empty\n");
       return;
     }
 
-    // shift all the elements from index 2 till rear
-    // to the left by one
+    // Зсув всіх елементів від індексу 2 до rear вліво на одну позицію
+    // Це неефективно - краще використовувати циркулярну чергу
     else {
       for (int i = 0; i < rear - 1; i++) {
         queue[i] = queue[i + 1];
       }
 
-      // decrement rear
+      // Зменшення rear
       rear--;
     }
     return;
   }
 
-  // print queue elements
+  // Виведення елементів черги
   void queueDisplay() {
     int i;
     if (front == rear) {
@@ -60,14 +61,14 @@ struct Queue {
       return;
     }
 
-    // traverse front to rear and print elements
+    // Прохід від front до rear та виведення елементів
     for (i = front; i < rear; i++) {
       printf(" %d <-- ", queue[i]);
     }
     return;
   }
 
-  // print front of queue
+  // Виведення першого елемента черги
   void queueFront() {
     if (front == rear) {
       printf("\nQueue is Empty\n");
@@ -78,27 +79,23 @@ struct Queue {
   }
 };
 
-// Driver code
 int main(void) {
-  // Create a queue of capacity 4
+  // Створення черги місткістю 4
   Queue q(4);
 
-  // print Queue elements
   q.queueDisplay();
 
-  // inserting elements in the queue
+  // Вставка елементів у чергу
   q.queueEnqueue(20);
   q.queueEnqueue(30);
   q.queueEnqueue(40);
   q.queueEnqueue(50);
 
-  // print Queue elements
   q.queueDisplay();
 
-  // insert element in the queue
+  // Спроба вставки елемента (черга заповнена)
   q.queueEnqueue(60);
 
-  // print Queue elements
   q.queueDisplay();
 
   q.queueDequeue();
@@ -106,10 +103,8 @@ int main(void) {
 
   printf("\n\nafter two node deletion\n\n");
 
-  // print Queue elements
   q.queueDisplay();
 
-  // print front of the queue
   q.queueFront();
 
   return 0;

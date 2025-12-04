@@ -1,30 +1,33 @@
 #include <iostream>
 
+// Демонстрація спеціальних функцій-членів класу
 class Example {
  public:
-  // Default constructor
+  // Конструктор за замовчуванням
   Example() { std::cout << "Default constructor called" << std::endl; }
 
-  // Default destructor
+  // Деструктор
   ~Example() { std::cout << "Destructor called" << std::endl; }
 
-  // Default copy constructor
+  // Конструктор копіювання (приймає const посилання на інший об'єкт)
   Example(const Example& other) {
     std::cout << "Copy constructor called" << std::endl;
   }
 
-  // Default copy assignment operator
+  // Оператор присвоєння копіювання
+  // Повертає посилання на поточний об'єкт (*this) для ланцюжкового присвоєння
   Example& operator=(const Example& other) {
     std::cout << "Copy assignment operator called" << std::endl;
-    return *this;
+    return *this;  // *this - розіменування вказівника на поточний об'єкт
   }
 };
 
 int main() {
-  Example obj1;
-  Example obj2 = obj1;
-  Example obj3;
-  obj3 = obj1;
-  Example obj4(obj1);
+  Example obj1;              // Викликається конструктор за замовчуванням
+  Example obj2 = obj1;       // Викликається конструктор копіювання (ініціалізація)
+  Example obj3;              // Викликається конструктор за замовчуванням
+  obj3 = obj1;                // Викликається оператор присвоєння копіювання
+  Example obj4(obj1);        // Викликається конструктор копіювання (явний виклик)
   return 0;
+  // Деструктори викликаються в зворотному порядку створення
 }

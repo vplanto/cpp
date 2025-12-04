@@ -1,26 +1,33 @@
-/* Function to count the occurrence of a char in a string (CountChar.cpp) */
-#include <cstring>
-#include <iostream>
+/* Функція для підрахунку входжень символу в рядок (CountChar.cpp) */
+#include <cstring>   // Бібліотека для роботи з C-рядками
+#include <iostream>  // Бібліотека для вводу/виводу
 using namespace std;
 
-int count(const char *str, const char c);  // No need to pass the array size
+// Прототип функції: const char * - вказівник на константний C-рядок
+// Не потрібно передавати розмір масиву, бо C-рядок завершується '\0'
+int count(const char *str, const char c);
 
 int main() {
-  char msg1[] = "Hello, world";
-  char *msg2 = "Hello, world";
+  // Два способи оголошення C-рядків:
+  char msg1[] = "Hello, world";  // Масив символів (можна змінювати)
+  char *msg2 = "Hello, world";   // Вказівник на рядкову константу (не можна змінювати)
 
-  cout << count(msg1, 'l') << endl;
-  cout << count(msg2, 'l') << endl;
-  cout << count("Hello, world", 'l') << endl;
+  // Виклик функції з різними типами аргументів
+  cout << count(msg1, 'l') << endl;              // Масив
+  cout << count(msg2, 'l') << endl;              // Вказівник
+  cout << count("Hello, world", 'l') << endl;    // Рядкова константа
 }
 
-// Count the occurrence of c in str
-// No need to pass the size of char[] as C-string is terminated with '\0'
+// Підрахунок входжень символу c у рядок str
+// Не потрібно передавати розмір char[], бо C-рядок завершується '\0'
+// const char * - вказівник на константний рядок (не можна змінювати через вказівник)
 int count(const char *str, const char c) {
-  int count = 0;
-  while (*str) {  // same as (*str != '\0')
-    if (*str == c) ++count;
-    ++str;
+  int count = 0;  // Лічильник входжень
+  // Цикл виконується, поки *str не дорівнює '\0' (нульовий символ)
+  // *str - розіменування вказівника (отримання значення, на яке він вказує)
+  while (*str) {  // Еквівалентно (*str != '\0') або (*str != 0)
+    if (*str == c) ++count;  // Якщо поточний символ дорівнює c, збільшуємо лічильник
+    ++str;  // Переміщення вказівника на наступний символ
   }
-  return count;
+  return count;  // Повертаємо кількість входжень
 }

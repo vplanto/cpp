@@ -1,3 +1,4 @@
+// Демонстрація friend функції
 class MyClass {
  private:
   int myPrivateVar;
@@ -5,19 +6,18 @@ class MyClass {
  public:
   MyClass() : myPrivateVar(0) {}
 
-  // Friend function declaration
+  // Оголошення friend функції (не є методом класу, але має доступ до private членів)
   friend void modifyPrivateVar(MyClass &);
 };
 
-// Friend function definition
+// Визначення friend функції
 void modifyPrivateVar(MyClass &obj) {
-  // Accessing private member from the friend function
+  // Доступ до приватного члена з friend функції
   obj.myPrivateVar = 5;
 }
 
 int main() {
   MyClass obj;
-  modifyPrivateVar(
-      obj);  // This is fine, modifyPrivateVar is a friend of MyClass
+  modifyPrivateVar(obj);  // Виклик friend функції
   return 0;
 }

@@ -1,30 +1,35 @@
-/* Test C-string (TestCString.cpp) */
-#include <iostream>
+/* Тестування C-рядків (TestCString.cpp) */
+#include <iostream>  // Бібліотека для вводу/виводу
 using namespace std;
 
 int main() {
-  char msg[256]; // Hold a string of up to 255 characters (terminated by '\0')
+  // C-рядок - це масив символів, що закінчується нульовим символом '\0'
+  // Розмір 256 дозволяє зберігати до 255 символів + 1 для '\0'
+  char msg[256]; // Масив для зберігання рядка до 255 символів (завершується '\0')
 
   cout << "Enter a message (with space)" << endl;
-  cin.getline(msg, 256); // Read up to 255 characters into msg
+  // cin.getline() читає рядок включно з пробілами до символу нового рядка або до вказаної кількості символів
+  cin.getline(msg, 256); // Читання до 255 символів у msg (256 включає місце для '\0')
   cout << msg << endl;
 
-  // Access via null-terminated character array
+  // Доступ до C-рядка як до масиву символів, що завершується нульовим символом
+  // Цикл виконується, поки не зустрінеться '\0' (нульовий символ - кінець рядка)
   for (int i = 0; msg[i] != '\0'; ++i) {
     cout << msg[i];
-    if (msg[i] == ' ')
-      cout << " <-> ";
+    if (msg[i] == ' ')  // Якщо поточний символ - пробіл
+      cout << " <-> ";  // Виводимо роздільник
   }
   cout << endl;
 
   cout << "Enter a word (without space)" << endl;
+  // Оператор >> читає тільки до першого пробілу або символу нового рядка
   cin >> msg;
   cout << msg << endl;
 
-  // Access via null-terminated character array
+  // Знову прохід по символах C-рядка до нульового символу
   for (int i = 0; msg[i] != '\0'; ++i) {
     cout << msg[i];
   }
   cout << endl;
-  return 0;
+  return 0;  // Успішне завершення програми
 }

@@ -1,60 +1,59 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Node class to define the structure of the node
+// Клас вузла для визначення структури вузла бінарного дерева
 class Node {
 public:
-  int data;
-  Node *left, *right;
-  // Parameterized Constructor
+  int data;        // Дані вузла
+  Node *left, *right;  // Вказівники на ліве та праве піддерева
+  // Параметризований конструктор
   Node(int val) {
     data = val;
     left = right = NULL;
   }
 };
 
-// Function to insert nodes
+// Функція вставки вузлів у бінарне дерево
+// Вставка відбувається на рівні порядку (level order) - заповнює дерево зліва направо
+// Складність: O(n) - прохід по дереву
 Node *insert(Node *root, int data) {
-  // If tree is empty, new node becomes the root
+  // Якщо дерево порожнє, новий вузол стає коренем
   if (root == NULL) {
     root = new Node(data);
     return root;
   }
-  // queue to traverse the tree and find the position to
-  // insert the node
+  // Черга для обходу дерева та знаходження позиції для вставки вузла
   queue<Node *> q;
   q.push(root);
   while (!q.empty()) {
     Node *temp = q.front();
     q.pop();
-    // Insert node as the left child of the parent node
+    // Вставка вузла як лівого дочірнього вузла батьківського вузла
     if (temp->left == NULL) {
       temp->left = new Node(data);
       break;
     }
-    // If the left child is not null push it to the
-    // queue
+    // Якщо лівий дочірній вузол не NULL, додаємо його в чергу
     else
       q.push(temp->left);
-    // Insert node as the right child of parent node
+    // Вставка вузла як правого дочірнього вузла батьківського вузла
     if (temp->right == NULL) {
       temp->right = new Node(data);
       break;
     }
-    // If the right child is not null push it to the
-    // queue
+    // Якщо правий дочірній вузол не NULL, додаємо його в чергу
     else
       q.push(temp->right);
   }
   return root;
 }
 
-/* function to delete the given deepest node
-(d_node) in binary tree */
+/* Функція видалення найглибшого вузла (d_node) у бінарному дереві */
+// Використовується для видалення вузла з дерева
 void deletDeepest(Node *root, Node *d_node) {
   queue<Node *> q;
   q.push(root);
-  // Do level order traversal until last node
+  // Обхід дерева в порядку рівнів до останнього вузла
   Node *temp;
   while (!q.empty()) {
     temp = q.front();
@@ -83,7 +82,9 @@ void deletDeepest(Node *root, Node *d_node) {
   }
 }
 
-/* function to delete element in binary tree */
+/* Функція видалення елемента з бінарного дерева */
+// Алгоритм: знаходимо вузол для видалення, замінюємо його найглибшим вузлом
+// Складність: O(n) - обхід дерева
 Node *deletion(Node *root, int key) {
   if (!root)
     return NULL;
@@ -97,8 +98,8 @@ Node *deletion(Node *root, int key) {
   q.push(root);
   Node *temp;
   Node *key_node = NULL;
-  // Do level order traversal to find deepest
-  // node(temp) and node to be deleted (key_node)
+  // Обхід дерева в порядку рівнів для знаходження найглибшого вузла (temp)
+  // та вузла для видалення (key_node)
   while (!q.empty()) {
     temp = q.front();
     q.pop();
@@ -110,14 +111,16 @@ Node *deletion(Node *root, int key) {
       q.push(temp->right);
   }
   if (key_node != NULL) {
-    int x = temp->data;
-    key_node->data = x;
-    deletDeepest(root, temp);
+    int x = temp->data;  // Дані найглибшого вузла
+    key_node->data = x;   // Заміна даних вузла для видалення
+    deletDeepest(root, temp);  // Видалення найглибшого вузла
   }
   return root;
 }
 
-// Inorder tree traversal (Left - Root - Right)
+// Обхід дерева в порядку "внутрішній" (Inorder: Left - Root - Right)
+// Для бінарного дерева пошуку дає відсортовану послідовність
+// Складність: O(n)
 void inorderTraversal(Node *root) {
   if (!root)
     return;
@@ -126,7 +129,9 @@ void inorderTraversal(Node *root) {
   inorderTraversal(root->right);
 }
 
-// Preorder tree traversal (Root - Left - Right)
+// Обхід дерева в порядку "перед" (Preorder: Root - Left - Right)
+// Використовується для копіювання дерева, серіалізації
+// Складність: O(n)
 void preorderTraversal(Node *root) {
   if (!root)
     return;
@@ -135,7 +140,9 @@ void preorderTraversal(Node *root) {
   preorderTraversal(root->right);
 }
 
-// Postorder tree traversal (Left - Right - Root)
+// Обхід дерева в порядку "після" (Postorder: Left - Right - Root)
+// Використовується для видалення дерева, обчислення виразів
+// Складність: O(n)
 void postorderTraversal(Node *root) {
   if (root == NULL)
     return;
@@ -144,22 +151,24 @@ void postorderTraversal(Node *root) {
   cout << root->data << " ";
 }
 
-// Function for Level order tree traversal
+// Функція обходу дерева в порядку рівнів (Level order / Breadth-First)
+// Використовує чергу для обходу рівень за рівнем
+// Складність: O(n)
 void levelorderTraversal(Node *root) {
   if (root == NULL)
     return;
 
-  // Queue for level order traversal
+  // Черга для обходу в порядку рівнів
   queue<Node *> q;
   q.push(root);
   while (!q.empty()) {
     Node *temp = q.front();
     q.pop();
     cout << temp->data << " ";
-    // Push left child in the queue
+    // Додавання лівого дочірнього вузла в чергу
     if (temp->left)
       q.push(temp->left);
-    // Push right child in the queue
+    // Додавання правого дочірнього вузла в чергу
     if (temp->right)
       q.push(temp->right);
   }
