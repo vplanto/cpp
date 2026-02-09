@@ -1,3 +1,7 @@
+---
+title: Лекція 14 — RAII, Анатомія методів, Структура проекту
+---
+
 # Лекція 14: Життєвий цикл (RAII), Анатомія методів та Структура проекту
 
 [← Лекція 13](13_oop_philosophy.md) | [Index](index.md) | [Далі: Лекція 15 →](15_rule_of_three.md)
@@ -319,13 +323,18 @@ public:
 
 **Порівняння:**
 
-| Характеристика | `#ifndef` Guards | `#pragma once` |
-|----------------|------------------|----------------|
-| **Стандарт C++** | Офіційна частина стандарту | Compiler extension (non-standard) |
-| **Підтримка** | 100% компіляторів | ~99.9% (GCC, Clang, MSVC, ICC) |
-| **Ризик конфліктів** | Можливий (якщо два файли мають однакові імена макросів) | Немає (based on file identity) |
-| **Читабельність** | Більше тексту (3 рядки) | Компактніше (1 рядок) |
-| **Performance** | Трохи повільніше (парсинг макросів) | Швидше (compiler може кешувати) |
+<table>
+<thead>
+<tr><th>Характеристика</th><th><code>#ifndef</code> Guards</th><th><code>#pragma once</code></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Стандарт C++</strong></td><td>Офіційна частина стандарту</td><td>Compiler extension (non-standard)</td></tr>
+<tr><td><strong>Підтримка</strong></td><td>100% компіляторів</td><td>~99.9% (GCC, Clang, MSVC, ICC)</td></tr>
+<tr><td><strong>Ризик конфліктів</strong></td><td>Можливий (якщо два файли мають однакові імена макросів)</td><td>Немає (based on file identity)</td></tr>
+<tr><td><strong>Читабельність</strong></td><td>Більше тексту (3 рядки)</td><td>Компактніше (1 рядок)</td></tr>
+<tr><td><strong>Performance</strong></td><td>Трохи повільніше (парсинг макросів)</td><td>Швидше (compiler може кешувати)</td></tr>
+</tbody>
+</table>
 
 **Коли використовувати кожен:**
 
