@@ -271,7 +271,17 @@ void printDate(const Date& d) {
 Схема файлів:
 
 **1. `BankAccount.h` (ЩО робить клас)**
-Містить: `class`, поля, пЗараз ми виносимо це у окремі файли для переваги.
+
+```cpp
+#pragma once
+
+class BankAccount {
+    double balance;
+public:
+    BankAccount(double start);
+    void deposit(double amount);
+};
+```
 
 ### Header Guards — Both Syntaxes
 
@@ -344,29 +354,6 @@ class Point { int x, y; };
 ```
 
 Тепер компілятор включить `point.h` тільки один раз, навіть якщо він `#include` його багато разів.
-
----
-
-## Частина 4: Структура проекту (.h vs .cpp)
-
-Досі ми писали все в одному файлі. У реальних проектах ми розділяємо **Інтерфейс** (Declaration) та **Реалізацію** (Definition).
-
-### Чому? (Separation of Concerns)
-1. **Швидкість збірки:** Якщо ви змінили логіку в `.cpp`, перекомпілюється лише один файл.
-2. **API Design:** Користувач вашого класу читає `.h` файл як документацію.
-
-**1. `BankAccount.h` (ЩО робить клас)**
-
-```cpp
-#pragma once
-
-class BankAccount {
-    double balance;
-public:
-    BankAccount(double start);
-    void deposit(double amount);
-};
-```
 
 ---
 
