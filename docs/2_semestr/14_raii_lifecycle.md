@@ -336,6 +336,7 @@ class Point { int x, y; };
 ```
 
 **З guards:**
+
 ```cpp
 #pragma once  // або #ifndef POINT_H
 
@@ -346,39 +347,25 @@ class Point { int x, y; };
 
 ---
 
-## Практичне застосуванняstart);
+## Частина 4: Структура проекту (.h vs .cpp)
+
+Досі ми писали все в одному файлі. У реальних проектах ми розділяємо **Інтерфейс** (Declaration) та **Реалізацію** (Definition).
+
+### Чому? (Separation of Concerns)
+1. **Швидкість збірки:** Якщо ви змінили логіку в `.cpp`, перекомпілюється лише один файл.
+2. **API Design:** Користувач вашого класу читає `.h` файл як документацію.
+
+**1. `BankAccount.h` (ЩО робить клас)**
+
+```cpp
+#pragma once
+
+class BankAccount {
+    double balance;
+public:
+    BankAccount(double start);
     void deposit(double amount);
 };
-
-```
-
-**2. `BankAccount.cpp` (ЯК він це робить)**
-Містить: код методів. Обов'язково підключаємо свій хедер.
-
-```cpp
-#include "BankAccount.h" // 
-
-// Використовуємо Scope Resolution Operator (::) 
-BankAccount::BankAccount(double start) {
-    balance = start;
-}
-
-void BankAccount::deposit(double amount) {
-    balance += amount;
-}
-
-```
-
-**3. `main.cpp` (Хто це використовує)**
-
-```cpp
-#include "BankAccount.h"
-
-int main() {
-    BankAccount b(100);
-    b.deposit(50);
-}
-
 ```
 
 ---
@@ -393,8 +380,6 @@ int main() {
 
 * **Coupling (Залежність між класами):** Наскільки сильно класи "знають" один про одного.
 * *Meta:* Ми прагнемо до **High Cohesion** та **Low Coupling**. Розділення на `.h` та `.cpp` допомагає зменшити Coupling.
-
----
 
 ---
 
