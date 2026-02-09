@@ -123,11 +123,11 @@ struct Node {
 
 ```cpp
 // Створюємо лінієвий ланцюжок (worst case)
-Node* root = new Node{1, nullptr, nullptr};
+Node* root = new Node{ 1, nullptr, nullptr };
 Node* current = root;
 
 for (int i = 2; i <= 100'000; i++) {
-    current->right = new Node{i, nullptr, nullptr};
+    current->right = new Node{ i, nullptr, nullptr };
     current = current->right;
 }
 
@@ -311,7 +311,7 @@ public:
 
 | Характеристика | #ifndef Guards | #pragma once |
 |----------------|----------------|--------------|
-| **Стандарт C++** | ✓ Офіційна частина стандарту | ❌ Compiler extension (non-standard) |
+| **Стандарт C++** | Офіційна частина стандарту | Compiler extension (non-standard) |
 | **Підтримка** | 100% компіляторів | ~99.9% (GCC, Clang, MSVC, ICC) |
 | **Ризик конфліктів** | Можливий (якщо два файли мають однакові імена макросів) | Немає (based on file identity) |
 | **Читабельність** | Більше тексту (3 рядки) | Компактніше (1 рядок) |
