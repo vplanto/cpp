@@ -104,7 +104,7 @@ std::vector<Position> BFS(const Maze& maze) {
     visited.insert(start);
     
     // Напрямки руху: вгору, вниз, ліворуч, праворуч
-    std::vector<Position> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    std::vector<Position> directions = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
     
     while (!q.empty()) {
         Position current = q.front();
@@ -173,7 +173,7 @@ bool DFSRecursive(const Maze& maze,
     visited.insert(current);
     path.push_back(current);
     
-    std::vector<Position> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    std::vector<Position> directions = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
     
     for (const auto& dir : directions) {
         Position neighbor = {current.row + dir.row, current.col + dir.col};
