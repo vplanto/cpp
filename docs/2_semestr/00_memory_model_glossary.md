@@ -1,323 +1,319 @@
-# Memory Model & Execution Environment Glossary
+# Глосарій: Модель пам'яті та середовище виконання C++
 
-> **Audience:** Applied Mathematics students  
-> **Purpose:** Formal definitions of C++ systems concepts without relying on engineering tribal knowledge
+> **Аудиторія:** Студенти прикладної математики
+> **Мета:** Формальні визначення системних концепцій C++ без покладання на інженерний жаргон
 
-This document defines the foundational execution model of C++ using mathematical notation familiar to students with formal training in discrete mathematics and algorithms.
+← [Індекс курсу](index.md) | [English version](en/00_memory_model_glossary.md)
+
+Цей документ визначає фундаментальну модель виконання C++ з використанням математичних позначень, знайомих студентам з формальним курсом дискретної математики та алгоритмів.
 
 ---
 
-## 1. Memory & Storage Duration
+## 1. Пам'ять та тривалість зберігання
 
-### Problem Context
+### Контекст проблеми
 
-C++ documentation uses colloquial terms like "stack" and "heap" which conflict with the **abstract data type** meanings (Stack = LIFO structure, Heap = priority queue). We need precise terminology.
+Документація C++ використовує розмовні терміни "стек" і "купа", які конфліктують із значеннями **абстрактних типів даних** (Stack = структура LIFO, Heap = черга з пріоритетами). Нам потрібна точна термінологія.
 
-### Formal Definitions
+### Формальні визначення
 
-Let $M$ denote the memory address space available to a program:
+Нехай $M$ позначає адресний простір пам'яті, доступний програмі:
 $$M = \{m_0, m_1, m_2, \dots, m_{2^{64}-1}\}$$
 
-Each $m_i$ represents one addressable byte.
+Кожне $m_i$ представляє один адресований байт.
 
-#### Storage Duration Classes
+#### Класи тривалості зберігання
 
-C++ defines **four storage duration classes** (lifetime rules):
+C++ визначає **чотири класи тривалості зберігання** (правила часу існування):
 
-**1. Automatic Storage Duration**
+**1. Автоматична тривалість зберігання**
 
-- **Colloquial Name:** "Stack" (misleading — refers to LIFO allocation order, not the data structure)
-- **Lifetime:** $[\text{scope entry}, \text{scope exit})$
-- **Allocation Order:** LIFO (Last In, First Out)
-- **Deallocation:** Deterministic, automatic at scope exit
+- **Розмовна назва:** "Стек" (оманлива — відносить до порядку виділення LIFO, а не до структури даних)
+- **Час існування:** $[\text{вхід у область}, \text{вихід з області})$
+- **Порядок виділення:** LIFO (Last In, First Out)
+- **Звільнення:** Детерміноване, автоматичне при виході з області
 
-**Formal Model:**
+**Формальна модель:**
 ```
-Let scope S have entry point t₁ and exit point t₂.
-Object x with automatic storage has lifetime:
+Нехай область S має точку входу t₁ та точку виходу t₂.
+Об'єкт x з автоматичним зберіганням має час існування:
   L(x) = [t₁, t₂)
 
-Allocation: push(stack_pointer, sizeof(x))
-Deallocation: pop(stack_pointer, sizeof(x))  // Automatic at t₂
+Виділення:  push(stack_pointer, sizeof(x))
+Звільнення: pop(stack_pointer, sizeof(x))  // Автоматично в t₂
 ```
 
-**Example:**
+**Приклад:**
 ```cpp
 void foo() {
-    int x = 42;  // Automatic storage
-                  // Created at scope entry
-}                // Destroyed at scope exit (deterministic)
+    int x = 42;  // Автоматичне зберігання
+                  // Створюється при вході в область
+}                // Знищується при виході (детерміновано)
 ```
 
 ---
 
-**2. Dynamic Storage Duration**
+**2. Динамічна тривалість зберігання**
 
-- **Colloquial Name:** "Heap" (misleading — NOT a heap data structure, just dynamic allocation pool)
-- **Lifetime:** $[\text{new expression}, \text{delete expression})$
-- **Allocation Order:** Non-deterministic, OS-managed
-- **Deallocation:** Manual (programmer responsibility)
+- **Розмовна назва:** "Купа" (оманлива — НЕ є структурою heap, просто пул динамічного виділення)
+- **Час існування:** $[\text{new-вираз}, \text{delete-вираз})$
+- **Порядок виділення:** Недетермінований, керується ОС
+- **Звільнення:** Ручне (відповідальність програміста)
 
-**Formal Model:**
+**Формальна модель:**
 ```
-Object x has dynamic storage duration if:
-  allocation_time(x) = time of 'new' expression
-  deallocation_time(x) = time of 'delete' expression (or ∞ if leaked)
+Об'єкт x має динамічну тривалість зберігання, якщо:
+  allocation_time(x)   = час виразу 'new'
+  deallocation_time(x) = час виразу 'delete' (або ∞ при витоку)
 
-Memory region: Managed by OS allocator (e.g., malloc/free in C)
+Регіон пам'яті: Керується алокатором ОС (наприклад, malloc/free у C)
 ```
 
-**Example:**
+**Приклад:**
 ```cpp
-int* p = new int(42);  // Dynamic storage allocated at runtime
-// ... arbitrary lifetime ...
-delete p;               // Manual deallocation required
+int* p = new int(42);  // Динамічне зберігання, виділяється під час виконання
+// ... довільний час існування ...
+delete p;               // Потрібне ручне звільнення
 ```
 
-**Memory Leak:**
-$$\text{Leak} = \{x \mid x \text{ allocated but } \nexists \text{ corresponding delete}\}$$
+**Витік пам'яті:**
+$$\text{Витік} = \{x \mid x \text{ виділено, але } \nexists \text{ відповідний delete}\}$$
 
 ---
 
-**3. Static Storage Duration**
+**3. Статична тривалість зберігання**
 
-- **Lifetime:** $[\text{program start}, \text{program exit})$
-- **Example:** Global variables, `static` local variables
-
----
-
-**4. Thread-Local Storage Duration**
-
-- **Lifetime:** $[\text{thread creation}, \text{thread destruction})$
-- **Example:** `thread_local` variables
+- **Час існування:** $[\text{запуск програми}, \text{завершення програми})$
+- **Приклад:** Глобальні змінні, `static` локальні змінні
 
 ---
 
-### Why "Stack" vs "Heap" Matters
+**4. Локальна для потоку тривалість зберігання**
 
-**Performance Characteristics:**
-
-| Property | Automatic (Stack) | Dynamic (Heap) |
-|----------|-------------------|----------------|
-| **Allocation Cost** | $O(1)$ — pointer increment | $O(\log n)$ to $O(n)$ — search free list |
-| **Deallocation Cost** | $O(1)$ — automatic | $O(\log n)$ — update free list |
-| **Fragmentation** | None (contiguous LIFO) | Possible (scattered allocations) |
-| **Lifetime Control** | Scope-bound (rigid) | Manual (flexible but error-prone) |
+- **Час існування:** $[\text{створення потоку}, \text{знищення потоку})$
+- **Приклад:** Змінні `thread_local`
 
 ---
 
-## 2. Compilation & Linking Model
+### Чому важлива різниця "Стек" vs "Купа"
 
-### Problem Context
+**Характеристики продуктивності:**
 
-Engineering documentation assumes knowledge of "object files" and "linker errors" without defining the translation phases. We formalize the compilation pipeline.
+| Властивість | Автоматичне (Стек) | Динамічне (Купа) |
+|-------------|-------------------|------------------|
+| **Вартість виділення** | $O(1)$ — інкремент вказівника | $O(\log n)$ до $O(n)$ — пошук вільного блоку |
+| **Вартість звільнення** | $O(1)$ — автоматично | $O(\log n)$ — оновлення вільного списку |
+| **Фрагментація** | Відсутня (суцільний LIFO) | Можлива (розкидані виділення) |
+| **Контроль часу існування** | Обмежений областю (жорсткий) | Ручний (гнучкий, але схильний до помилок) |
 
-### Translation Pipeline as Function Composition
+---
+
+## 2. Модель компіляції та компонування
+
+### Контекст проблеми
+
+Інженерна документація передбачає знання "об'єктних файлів" і "помилок компонувальника" без визначення фаз трансляції. Формалізуємо конвеєр компіляції.
+
+### Конвеєр трансляції як композиція функцій
 
 ```
-Source.cpp → [Preprocessor] → Translation_Unit.i → 
-[Compiler] → Object_File.o → [Linker] → Executable
+Source.cpp → [Препроцесор] → Translation_Unit.i →
+[Компілятор] → Object_File.o → [Компонувальник] → Executable
 ```
 
-**Formal Definitions:**
+**Формальні визначення:**
 
-#### Translation Unit
+#### Одиниця трансляції (Translation Unit)
 
-$$TU = \text{maximal set of declarations visible to a single compiler invocation}$$
+$$TU = \text{максимальна множина оголошень, видимих одному виклику компілятора}$$
 
-After preprocessing, one `.cpp` file becomes one translation unit.
+Після препроцесора один файл `.cpp` стає однією одиницею трансляції.
 
-**Example:**
+**Приклад:**
 ```cpp
 // foo.cpp
-#include "header.h"  // Preprocessor replaces with header contents
+#include "header.h"  // Препроцесор замінює вмістом заголовочного файлу
 int x = 42;
 
-// Translation Unit = {contents of header.h, int x = 42}
+// Одиниця трансляції = {вміст header.h, int x = 42}
 ```
 
 ---
 
-#### Symbol
+#### Символ (Symbol)
 
-$$\text{Symbol} = (\text{name}, \text{type\_signature})$$
+$$\text{Символ} = (\text{ім'я}, \text{сигнатура\_типу})$$
 
-A symbol is a unique identifier for a function or variable.
+Символ — унікальний ідентифікатор функції або змінної.
 
-**Example:**
+**Приклад:**
 ```cpp
-void foo(int x);        // Symbol: (foo, int→void)
-void foo(double x);     // Symbol: (foo, double→void)  [different signature!]
+void foo(int x);        // Символ: (foo, int→void)
+void foo(double x);     // Символ: (foo, double→void)  [інша сигнатура!]
 ```
 
 ---
 
-#### Linker Error
+#### Помилка компонувальника (Linker Error)
 
-**Definition:**  
-$$\text{Linker Error} \iff \exists s \in \text{Symbols}_{\text{referenced}} : s \notin \bigcup_{i} \text{Symbols}_{\text{defined}}(TU_i)$$
+**Визначення:**
+$$\text{Помилка компонувальника} \iff \exists s \in \text{Символи}_{\text{використані}} : s \notin \bigcup_{i} \text{Символи}_{\text{визначені}}(TU_i)$$
 
-Translation: A symbol is used but no translation unit provides its definition.
+Простіше: символ використовується, але жодна одиниця трансляції не надає його визначення.
 
-**Example:**
+**Приклад:**
 ```cpp
 // main.cpp
-void external_func();  // Declaration (symbol referenced)
+void external_func();  // Оголошення (символ використовується)
 int main() {
-    external_func();   // Use
+    external_func();   // Використання
 }
 
-// No other .cpp provides definition of external_func
-// → Linker error: undefined reference to external_func
+// Жоден інший .cpp не надає визначення external_func
+// → Помилка компонувальника: undefined reference to external_func
 ```
 
 ---
 
-### Why Templates Must Be in Headers
+### Чому шаблони мають бути у заголовках
 
-**Problem:**  
-Templates are **not instantiated** until they are used with a specific type.
+**Проблема:**
+Шаблони **не інстанціюються** до їх використання з конкретним типом.
 
-**Model:**
+**Модель:**
 ```
-Let F = template<typename T> class Vector
-Instantiation: F(int) generates actual code for Vector<int>
+Нехай F = template<typename T> class Vector
+Інстанціація: F(int) генерує реальний код для Vector<int>
 
-Compiler operates per translation unit:
-  TU₁ sees: F declaration only
-  TU₂ needs: F(int) — but can't generate code without F definition!
+Компілятор працює з кожною одиницею трансляції окремо:
+  TU₁ бачить:   лише оголошення F
+  TU₂ потребує: F(int) — але не може згенерувати код без визначення F!
 
-Solution: F definition must be in header (visible to all TUs)
-```
-
-**Error Without Header:**
-```
-TU_main.cpp: Needs F(int) → sees only declaration → can't instantiate
-Linker:      Searches all TU₁, TU₂, ... → finds no F(int) code → ERROR
+Рішення: Визначення F має бути у заголовку (видиме для всіх TU)
 ```
 
 ---
 
-## 3. Hardware Latency (Abstract Probabilistic Model)
+## 3. Затримки апаратного забезпечення (Абстрактна імовірнісна модель)
 
-### Problem Context
+### Контекст проблеми
 
-Terms like "cache miss" and "branch prediction" assume knowledge of CPU micro-architecture. We abstract this as latency functions.
+Терміни "cache miss" і "branch prediction" передбачають знання мікроархітектури процесора. Абстрагуємо це як функції затримки.
 
-### Access Latency Function
+### Функція затримки доступу
 
-Define $L: \text{MemoryLocation} \to \mathbb{R}^+$ as the **expected time** to retrieve data.
+Визначимо $L: \text{МісцеПам'яті} \to \mathbb{R}^+$ як **очікуваний час** отримання даних.
 
-**Hierarchy:**
+**Ієрархія:**
 
-| Location | Latency (cycles) | Human Scale Analogy |
-|----------|------------------|---------------------|
-| CPU Register | $L(r) = 0$ | Immediate (thought) |
-| L1 Cache | $L(\ell_1) \approx 4$ | 3 seconds |
-| L2 Cache | $L(\ell_2) \approx 12$ | 10 seconds |
-| RAM | $L(\text{ram}) \approx 100$ | 5 minutes |
-| SSD | $L(\text{ssd}) \approx 100{,}000$ | 3 days |
+| Місце | Затримка (цикли) | Аналогія в людському масштабі |
+|-------|------------------|-------------------------------|
+| Регістр CPU | $L(r) = 0$ | Миттєво (думка) |
+| Кеш L1 | $L(\ell_1) \approx 4$ | 3 секунди |
+| Кеш L2 | $L(\ell_2) \approx 12$ | 10 секунд |
+| RAM | $L(\text{ram}) \approx 100$ | 5 хвилин |
+| SSD | $L(\text{ssd}) \approx 100{,}000$ | 3 дні |
 
-**Practical Impact:**
+**Практичний вплив:**
 
-For a loop accessing array (contiguous memory):
+Для циклу з доступом до масиву (суцільна пам'ять):
 ```cpp
 for (int i = 0; i < N; i++) {
-    sum += arr[i];  // Likely in cache: L ≈ 4 cycles
+    sum += arr[i];  // Скоріше за все в кеші: L ≈ 4 цикли
 }
 ```
 
-For a linked list (scattered memory):
+Для зв'язного списку (розкидана пам'ять):
 ```cpp
 for (Node* p = head; p != nullptr; p = p->next) {
-    sum += p->data;  // Likely cache miss: L ≈ 100 cycles each!
+    sum += p->data;  // Скоріше за все cache miss: L ≈ 100 циклів!
 }
 ```
 
-**Expected time:**
-- Array: $4N$ cycles
-- Linked list: $100N$ cycles (25× slower despite same $O(n)$ complexity!)
+**Очікуваний час:**
+- Масив: $4N$ циклів
+- Зв'язний список: $100N$ циклів (у 25× повільніше при однаковій складності $O(n)$!)
 
 ---
 
-### Branch Prediction
+### Передбачення гілок (Branch Prediction)
 
-**Model as Probabilistic Classifier:**
+**Модель як імовірнісний класифікатор:**
 
-Let $P(\text{correct\_prediction})$ = probability CPU guesses next instruction correctly.
+Нехай $P(\text{правильне\_передбачення})$ = імовірність того, що CPU правильно вгадає наступну інструкцію.
 
-- **Deterministic code:** $P \approx 0.95$ (95% accuracy)
-- **Random branches:** $P \approx 0.5$ (coin flip)
+- **Детермінований код:** $P \approx 0.95$ (95% точність)
+- **Випадкові гілки:** $P \approx 0.5$ (підкидання монети)
 
-**Virtual Functions & Prediction Failure:**
+**Віртуальні функції та збій передбачення:**
 
 ```cpp
 for (Animal* a : animals) {
-    a->speak();  // Runtime type unknown → random branch
+    a->speak();  // Тип під час виконання невідомий → випадкова гілка
 }
 ```
 
-Expected penalty per call:
-$$\text{Cost} = P \cdot 0 + (1 - P) \cdot \text{misprediction\_penalty}$$
+Очікуваний штраф за виклик:
+$$\text{Вартість} = P \cdot 0 + (1 - P) \cdot \text{штраф\_за\_хибне\_передбачення}$$
 
-For $P = 0.5$, penalty $\approx$ 15 cycles:
-$$\text{Cost} = 0.5 \cdot 0 + 0.5 \cdot 15 = 7.5 \text{ cycles overhead}$$
+При $P = 0.5$, штраф $\approx$ 15 циклів:
+$$\text{Вартість} = 0.5 \cdot 0 + 0.5 \cdot 15 = 7.5 \text{ циклів накладних витрат}$$
 
 ---
 
-## 4. Concurrency Primitives
+## 4. Примітиви паралелізму
 
-### Mutex (Binary Semaphore)
+### М'ютекс (Бінарний семафор)
 
-**State Space:**
-$$S = \{\text{unlocked}, \text{locked}\}$$
+**Простір станів:**
+$$S = \{\text{розблокований}, \text{заблокований}\}$$
 
-**Operations:**
+**Операції:**
 
 $$\text{lock}: S \to S$$
 $$\text{lock}(s) = \begin{cases}
-\text{locked} & \text{if } s = \text{unlocked} \\
-\text{BLOCK} & \text{if } s = \text{locked} \, (\text{wait until unlocked})
+\text{заблокований} & \text{якщо } s = \text{розблокований} \\
+\text{ОЧІКУВАННЯ} & \text{якщо } s = \text{заблокований} \, (\text{чекати до розблокування})
 \end{cases}$$
 
 $$\text{unlock}: S \to S$$
 $$\text{unlock}(s) = \begin{cases}
-\text{unlocked} & \text{if } s = \text{locked} \\
-\text{ERROR} & \text{if } s = \text{unlocked}
+\text{розблокований} & \text{якщо } s = \text{заблокований} \\
+\text{ПОМИЛКА} & \text{якщо } s = \text{розблокований}
 \end{cases}$$
 
 ---
 
-### Deadlock
+### Взаємоблокування (Deadlock)
 
-**Formal Definition:**
+**Формальне визначення:**
 
-Let $T = \{T_1, T_2, \dots, T_n\}$ be threads and $M = \{M_1, M_2, \dots, M_m\}$ be mutexes.
+Нехай $T = \{T_1, T_2, \dots, T_n\}$ — потоки, а $M = \{M_1, M_2, \dots, M_m\}$ — м'ютекси.
 
-**Deadlock occurs** if there exists a circular wait:
-$$T_1 \xrightarrow{\text{waits for}} M_1 \xrightarrow{\text{held by}} T_2 \xrightarrow{\text{waits for}} M_2 \xrightarrow{\text{held by}} T_1$$
+**Взаємоблокування виникає**, якщо існує циклічне очікування:
+$$T_1 \xrightarrow{\text{чекає}} M_1 \xrightarrow{\text{утримується}} T_2 \xrightarrow{\text{чекає}} M_2 \xrightarrow{\text{утримується}} T_1$$
 
-**Example:**
+**Приклад:**
 ```cpp
-Thread 1:               Thread 2:
+Потік 1:               Потік 2:
 lock(M1);               lock(M2);
-lock(M2);  ← BLOCKS     lock(M1);  ← BLOCKS
+lock(M2);  ← БЛОК       lock(M1);  ← БЛОК
 ```
 
-Both threads wait forever: $\lim_{t \to \infty} \text{progress}(T_1) = \lim_{t \to \infty} \text{progress}(T_2) = 0$
+Обидва потоки чекають вічно: $\lim_{t \to \infty} \text{progress}(T_1) = \lim_{t \to \infty} \text{progress}(T_2) = 0$
 
 ---
 
-## Reference Guide
+## Довідкова таблиця
 
-**When confused by jargon, map to formal definitions:**
+**При плутанині з жаргоном — зіставляйте з формальними визначеннями:**
 
-| Engineering Term | Formal Equivalent |
-|------------------|-------------------|
-| "Stack" | Automatic storage duration |
-| "Heap" | Dynamic storage duration |
-| "Linker error" | Symbol $s$ referenced but $s \notin$ defined symbols |
-| "Cache miss" | $L(\text{access}) = L(\text{ram}) \gg L(\ell_1)$ |
-| "Deadlock" | Circular wait condition |
+| Інженерний термін | Формальний еквівалент |
+|-------------------|-----------------------|
+| "Стек" | Автоматична тривалість зберігання |
+| "Купа" | Динамічна тривалість зберігання |
+| "Помилка компонувальника" | Символ $s$ використовується, але $s \notin$ визначених символів |
+| "Cache miss" | $L(\text{доступ}) = L(\text{ram}) \gg L(\ell_1)$ |
+| "Deadlock" | Умова циклічного очікування |
 
-All C++ "magic" is reducible to these mathematical models.
+Вся "магія" C++ зводиться до цих математичних моделей.
