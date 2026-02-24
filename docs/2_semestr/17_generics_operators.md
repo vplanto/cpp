@@ -61,7 +61,11 @@ public:
 ### Const Correctness in Operator Overloading
 
 > **💡 Code Detail from Source Material**  
-> [PDF_REF: s02e04. Operator overloading.pdf]
+> Джерело: s02e04. Operator overloading.pdf
+
+![Operator Overloading — const correctness](attachments/oop3-011.jpg)
+
+*Рис. 1: Operator Overloading — три форми const та їх значення*
 
 Повний підпис `operator+` має **три** використання `const`, кожне з яких важливе:
 

@@ -81,7 +81,15 @@ void selectionSort(std::vector<int>& arr) {
 **Step-by-Step Visualization:**
 
 > **💡 Visual Schema from Source Material**  
-> [PDF: Sorting using Lists.pdf, Pages 172-176]
+> Джерело: Sorting using Lists.pdf, стор. 172-176
+
+![Sorting Algorithm — базова класифікація алгоритмів](attachments/sorting-000.jpg)
+
+*Рис. 1: Insertion Sort — покрокова візуалізація*
+
+![Sorting Step-by-Step — порівняння Bubble vs Merge](attachments/sorting-002.jpg)
+
+*Рис. 2: Порівняння Bubble Sort та Merge Sort під час виконання*
 
 **Insertion Sort Frame-By-Frame:**
 ```

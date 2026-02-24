@@ -96,7 +96,11 @@ public:
 ### Memory Layout: "3-Compartment Box" Model
 
 > **💡 Visual Model from Source Material**  
-> [PDF_REF: s02e01. OOP by examples.pdf]
+> Джерело: s02e01. OOP by examples.pdf
+
+![OOP — класи та об'єкти на практиці](attachments/oop1-000.jpg)
+
+*Рис. 1: Приклади OOP класу — зв'Dзок даних та методів, інкапсуляція*
 
 Щоб зрозуміти, як клас насправді влаштований у пам'яті, уявіть його як **коробку з трьома відділеннями**:
 
@@ -377,7 +381,11 @@ public:
 **Constructor Syntax: Assignment vs Initializer List**
 
 > **💡 Code Detail from Source Material**  
-> [PDF: s02e01. OOP by examples.pdf, Page 370]
+> Джерело: s02e01. OOP by examples.pdf, стор. 370
+
+![OOP — синтаксис initializer list вс assignment](attachments/oop1-005.jpg)
+
+*Рис. 2: Порівняння initializer list та assignment: візуалізація різниць*
 
 Існує **дві синтаксичні форми** ініціалізації членів класу в конструкторі. Вони **не еквівалентні**:
 
@@ -453,7 +461,7 @@ public:
 #### Explicit Keyword — Preventing Implicit Conversions
 
 > **💡 Code Detail from Source Material**  
-> [PDF_REF: s02e05. Template and Generic Programming.pdf]
+> Джерело: s02e05. Template and Generic Programming.pdf
 
 Конструктори з одним параметром дозволяють **неявні перетворення** (implicit conversions), що може призвести до помилок:
 
@@ -502,7 +510,11 @@ int main() {
 **Advanced Puzzle: Chained Implicit Conversions**
 
 > **💡 Code Detail from Source Material**  
-> [PDF: s02e05. Template and Generic Programming.pdf, Page 444]
+> Джерело: s02e05. Template and Generic Programming.pdf, стор. 444
+
+![Templates and implicit conversions — приклади](attachments/oop1-006.jpg)
+
+*Рис. 3: Неявні перетворення в C++ та єдине правило кроку*
 
 C++ дозволяє **тільки одне** неявне перетворення у ланцюжку. Це важливо розуміти:
 
@@ -540,7 +552,7 @@ MyClass obj = 42;  // Що тут відбувається? 1 крок? 5 кро
 #### Static Cast — Modern C++ Type Conversion
 
 > **💡 Code Detail from Source Material**  
-> [PDF_REF: s02e01. OOP by examples.pdf]
+> Джерело: s02e01. OOP by examples.pdf
 
 До C++, type casting виглядав як C-style: `(int)value`. У Modern C++ це замінено на **type-safe casts**:
 

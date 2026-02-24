@@ -38,9 +38,11 @@
 ### UML Class Diagrams — Visual Notation
 
 > **💡 Visual Schema from Source Material**  
-> [PDF_REF: s02e02. OOP its getting darker.pdf]
+> Джерело: s02e02. OOP its getting darker.pdf
 
-UML (Unified Modeling Language) — стандартний спосіб візуалізації класів та їх відносин:
+![UML діаграма — класи та спадкування](attachments/oop3-003.jpg)
+
+*Рис. 1: UML Diagram — візуалізація спадкування класів* — стандартний спосіб візуалізації класів та їх відносин:
 
 ```
 ┌──────────────────────────┐
@@ -86,7 +88,11 @@ MovablePoint object in memory:
 ### Types of Coupling — Detailed Classification
 
 > **💡 Visual Schema from Source Material**  
-> [PDF_REF: s02e02. OOP its getting darker.pdf]
+> Джерело: s02e02. OOP its getting darker.pdf
+
+![Coupling типи — від Data до Content Coupling](attachments/oop3-007.jpg)
+
+*Рис. 2: Типи Coupling — від найкращого (Data) до найгіршого (Content)*
 
 Coupling (зв'язність) вимірює ступінь залежності між модулями. Існує **6 рівнів** від найкращого до найгіршого:
 
@@ -164,7 +170,11 @@ public:
 **Spaghetti Code vs Modular Code Visualization**
 
 > **💡 Visual Diagram from Source Material**  
-> [PDF: s02e02. OOP its getting darker.pdf, Page 393]
+> Джерело: s02e02. OOP its getting darker.pdf, стор. 393
+
+![Spaghetti vs Modular Code — порівняння](attachments/oop3-008.jpg)
+
+*Рис. 3: Spaghetti Code vs Modular Code — візуальне порівняння*
 
 ```
 ❌ SPAGHETTI CODE (High Coupling):

@@ -83,7 +83,11 @@ void goodCode() {
 ### Recursive Destructors — Stack Overflow Risk
 
 > **💡 Code Detail from Source Material**  
-> [PDF_REF: Using the trees.pdf]
+> Джерело: Using the trees.pdf
+
+![Tree structures — структура вузлів дерева](attachments/using_trees-000.jpg)
+
+*Рис. 1: Бінарне дерево — структура вузла в пам'яті, рекурсивне знищення*
 
 Деструктори можуть викликати інші деструктори. Це зручно для ієрархічних структур (як дерева), але має **небезпеку stack overflow**.
 
@@ -251,7 +255,7 @@ void printDate(const Date& d) {
 ```
 
 > **💡 Code Detail from Source Material**  
-> [PDF: s02e01. OOP by examples.pdf, Page 369]
+> Джерело: s02e01. OOP by examples.pdf, стор. 369
 >
 > **Exact Compiler Error Messages:**
 > - Спроба змінити член в const методі: `error: assignment of member 'ClassName::memberName' in read-only object`
@@ -290,7 +294,7 @@ public:
 ### Header Guards — Both Syntaxes
 
 > **💡 Code Detail from Source Material**  
-> [PDF: s02e02. OOP its getting darker.pdf, Page 391]
+> Джерело: s02e02. OOP its getting darker.pdf, стор. 391
 
 Обов'язково використовуємо **Include Guards**, щоб уникнути дублювання коду при повторному `#include`. Існує **два способи**:
 

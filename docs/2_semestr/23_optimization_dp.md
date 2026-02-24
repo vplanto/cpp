@@ -227,6 +227,127 @@ int main() {
 
 ---
 
+## Частина 6: Union-Find — Система неперетинних множин
+
+**Union-Find (Disjoint Set Union, DSU)** — структура даних для відстеження розбиття множини на **непересічні підмножини**. Підтримує дві ефективні операції:
+
+- **`find(x)`** — знайти представника (корінь) множини, до якої належить `x`
+- **`union(x, y)`** — об'єднати множини `x` та `y` в одну
+
+### Задача, яку вирішує Union-Find
+
+```
+Є 6 міст. З'єднуємо їх поступово дорогами:
+  union(0,1)  → {0,1} {2} {3} {4} {5}
+  union(2,3)  → {0,1} {2,3} {4} {5}
+  union(1,3)  → {0,1,2,3} {4} {5}
+
+Питання: "Чи з'єднані місто 0 і місто 2?" → find(0) == find(2) ? → ТАК
+Питання: "Чи з'єднані місто 0 і місто 4?" → find(0) == find(4) ? → НІ
+```
+
+### Наївна реалізація
+
+```cpp
+struct UnionFind {
+    std::vector<int> parent;
+
+    UnionFind(int n) : parent(n) {
+        // Спочатку кожен елемент — сам собі корінь
+        std::iota(parent.begin(), parent.end(), 0); // {0,1,2,3,...}
+    }
+
+    int find(int x) {
+        if (parent[x] == x) return x;
+        return find(parent[x]); // Рекурсивно піднімаємось до кореня
+    }
+
+    void unite(int x, int y) {
+        parent[find(x)] = find(y); // Корінь x стає дитиною кореня y
+    }
+
+    bool connected(int x, int y) {
+        return find(x) == find(y);
+    }
+};
+```
+
+### Оптимізована реалізація (Path Compression + Union by Rank)
+
+Без оптимізацій `find()` може деградувати до O(n). З двома трюками — амортизовано O(α(n)) ≈ O(1):
+
+```cpp
+struct UnionFind {
+    std::vector<int> parent, rank;
+
+    UnionFind(int n) : parent(n), rank(n, 0) {
+        std::iota(parent.begin(), parent.end(), 0);
+    }
+
+    // Path Compression: на шляху від x до кореня всі вузли
+    // підключаємо безпосередньо до кореня → дерево стає плоским
+    int find(int x) {
+        if (parent[x] != x)
+            parent[x] = find(parent[x]); // Стискаємо шлях
+        return parent[x];
+    }
+
+    // Union by Rank: менше дерево приєднуємо під більше
+    void unite(int x, int y) {
+        int rx = find(x), ry = find(y);
+        if (rx == ry) return; // Вже в одній множині
+
+        if (rank[rx] < rank[ry]) std::swap(rx, ry);
+        parent[ry] = rx;                     // ry стає дитиною rx
+        if (rank[rx] == rank[ry]) rank[rx]++; // Рівні ранги → збільшуємо
+    }
+
+    bool connected(int x, int y) { return find(x) == find(y); }
+};
+
+// Використання:
+UnionFind uf(6);
+uf.unite(0, 1);
+uf.unite(2, 3);
+uf.unite(1, 3);
+
+std::cout << uf.connected(0, 2); // 1 (true) — в одній компоненті
+std::cout << uf.connected(0, 4); // 0 (false) — різні компоненти
+```
+
+**Складність з оптимізаціями:** O(α(n)) на операцію, де α — **обернена функція Аккермана** (практично константа, ≤ 4 для будь-яких реальних n).
+
+### Класичне застосування: Алгоритм Крускала (MST)
+
+```cpp
+// Мінімальне остове дерево (Minimum Spanning Tree)
+struct Edge { int u, v, w; };
+
+int kruskal(int n, std::vector<Edge>& edges) {
+    std::sort(edges.begin(), edges.end(),
+              [](const Edge& a, const Edge& b) { return a.w < b.w; });
+
+    UnionFind uf(n);
+    int totalWeight = 0;
+
+    for (auto& [u, v, w] : edges) {
+        if (!uf.connected(u, v)) { // Не утворюємо цикл
+            uf.unite(u, v);
+            totalWeight += w;
+        }
+    }
+    return totalWeight;
+}
+```
+
+**Типові задачі для Union-Find:**
+- Кількість компонент зв'язності у динамічному графі
+- Визначення, чи утворює додавання ребра цикл
+- Мінімальне остове дерево (Kruskal)
+- Задачі "острови" на сітці
+
+---
+
 ## Практичне застосування
 
 **Див.:** [Практикум 16: Knapsack Problem](p16_knapsack.md) — реалізація динамічного програмування на задачі про рюкзак.

@@ -112,7 +112,15 @@ struct Node {
 ## Додаток: Circular Queue (Ring Buffer)
 
 > **💡 Visual Schema from Source Material**  
-> [PDF_REF: Stacks&Queues.pdf]
+> Джерело: Stacks&Queues.pdf
+
+![Queue — принцип FIFO та базові операції](attachments/stacks-001.jpg)
+
+*Рис. 1: Черга (Queue) — наочне зображення FIFO принципу*
+
+![Circular Queue — Ring Buffer](attachments/stacks-002.jpg)
+
+*Рис. 2: Circular Queue (Ring Buffer) — оптимальне використання пам'яті через зациклений індекс*
 
 **Проблема:** Наївна реалізація черги на масиві марнує простір.
 
