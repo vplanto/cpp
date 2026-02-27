@@ -150,6 +150,7 @@ public:
 2. **Data (Стан)**: 
    - **Static members**: Один екземпляр на весь клас (спільний для всіх об'єктів)
    - **Instance members**: Кожен об'єкт має свою копію
+
    ```cpp
    class BankAccount {
        static int nextAccountId;  // Спільна змінна для всіх BankAccount
@@ -163,6 +164,7 @@ public:
 3. **Functions (Поведінка)**: Методи зберігаються **один раз** у пам'яті (Code Section), а не копіюються для кожного об'єкту
 
 **sizeof() Demonstration:**
+
 ```cpp
 class Empty {};          // sizeof(Empty) = 1 byte (C++ rule: no zero-size objects)
 class JustInt {
@@ -397,13 +399,6 @@ public:
 
 **Constructor Syntax: Assignment vs Initializer List**
 
-> **💡 Code Detail from Source Material**  
-> Джерело: s02e01. OOP by examples.pdf, стор. 370
-
-![OOP — синтаксис initializer list вс assignment](attachments/oop1-005.jpg)
-
-*Рис. 2: Порівняння initializer list та assignment: візуалізація різниць*
-
 Існує **дві синтаксичні форми** ініціалізації членів класу в конструкторі. Вони **не еквівалентні**:
 
 ```cpp
@@ -428,12 +423,12 @@ public:
 
 **Чому initializer list краще:**
 
-| Aspect | Assignment in Body | Initializer List |
+| Аспект	| Присвоєння у тілі (Body) | Список ініціалізації (Initializer List) |
 |--------|-------------------|------------------|
-| **Const members** | ❌ Cannot assign to const | ✓ Can initialize const |
-| **Reference members** | ❌ Cannot rebind reference | ✓ Can initialize reference |
-| **Efficiency** | Default init + assignment (2 operations) | Direct initialization (1 operation) |
-| **Order** | Body order | **Declaration order** (важливо!) |
+| Const члени |	❌ Помилка: const не можна змінити після створення |	✅ Дозволено: ініціалізація до створення об'єкта|
+| Reference члени |	❌ Помилка: посилання мають бути ініціалізовані одразу |	✅ Дозволено: зв'язування посилання при створенні|
+| Ефективність |	📉 Дефолтна ініціалізація + присвоєння (2 кроки) |	🚀 Пряма ініціалізація (1 крок)|
+| Порядок |	Визначається послідовністю в тілі конструктора |	Порядок оголошення у класі (незалежно від списку)|
 
 **Компілятор ERROR (exact text from PDF):**
 
@@ -477,8 +472,6 @@ public:
 
 #### Explicit Keyword — Preventing Implicit Conversions
 
-> **💡 Code Detail from Source Material**  
-> Джерело: s02e05. Template and Generic Programming.pdf
 
 Конструктори з одним параметром дозволяють **неявні перетворення** (implicit conversions), що може призвести до помилок:
 
@@ -526,13 +519,6 @@ int main() {
 
 **Advanced Puzzle: Chained Implicit Conversions**
 
-> **💡 Code Detail from Source Material**  
-> Джерело: s02e05. Template and Generic Programming.pdf, стор. 444
-
-![Templates and implicit conversions — приклади](attachments/oop1-006.jpg)
-
-*Рис. 3: Неявні перетворення в C++ та єдине правило кроку*
-
 C++ дозволяє **тільки одне** неявне перетворення у ланцюжку. Це важливо розуміти:
 
 ```cpp
@@ -568,9 +554,6 @@ MyClass obj = 42;  // Що тут відбувається? 1 крок? 5 кро
 
 #### Static Cast — Modern C++ Type Conversion
 
-> **💡 Code Detail from Source Material**  
-> Джерело: s02e01. OOP by examples.pdf
-
 До C++, type casting виглядав як C-style: `(int)value`. У Modern C++ це замінено на **type-safe casts**:
 
 ```cpp
@@ -594,22 +577,27 @@ int a = static_cast<int>(f);  // ✓ Compile-time check
 **Чому static_cast краще за C-style cast:**
 
 ```cpp
-class Base {};
-class Derived : public Base {};
+int raw_data = 42;
 
-// C-style: Компілятор дозволить будь-яке перетворення
-Base* b = new Derived();
-int* dangerous = (int*)b;  // ❌ Компілюється, але це UB (Undefined Behavior)
+// C-style: Компілятор мовчки ігнорує несумісність типів.
+// Відбувається прихована деградація до reinterpret_cast.
+float* dangerous = (float*)&raw_data;  // ❌ Компілюється. Dereferencing = UB (Strict Aliasing violation)
 
-// static_cast: Відхилить неприпустиме перетворення
-int* safe = static_cast<int*>(b);  // ✓ Compilation error!
+// static_cast: Строга перевірка семантичної сумісності на етапі компіляції.
+// float* safe_ptr = static_cast<float*>(&raw_data); // ✓ Compilation error!
+
+// Правильне використання для конверсії значень:
+float float_val = static_cast<float>(raw_data); // ✓ Безпечна конверсія (int -> float)
+
 ```
 
 **Коли використовувати кожен:**
-- **static_cast**: 95% випадків (int→float, upcast, void*→T*)
-- **const_cast**: Коли треба працювати з legacy C API
-- **dynamic_cast**: Downcast у polymorphic hierarchy з runtime check
-- **reinterpret_cast**: Low-level programming (memory-mapped I/O, serialization)
+
+* **static_cast**: 95% випадків. Детерміновані конверсії (numeric types, `void*` → `T*`).
+* **const_cast**: Маніпуляції з cv-qualifiers (зняття `const`/`volatile`, переважно для legacy C API).
+* **dynamic_cast**: RTTI downcast у поліморфних ієрархіях (має runtime overhead).
+* **reinterpret_cast**: Низькорівневий реінтерпретатор бітового представлення (memory-mapped I/O, serialization).
+
 
 ### 2. Смерть (Destructor / dtor)
 
@@ -631,6 +619,24 @@ int* safe = static_cast<int*>(b);  // ✓ Compilation error!
 Подивіться на цей код і скажіть, що буде виведено в консоль?
 
 ```cpp
+#include <iostream>
+#include <string>
+
+class Player {
+private:
+    std::string name;
+    int health;
+
+public:
+    Player(std::string n, int h) : name(std::move(n)), health(h) {
+        std::cout << "[Spawn] Player " << name << " created." << std::endl;
+    }
+
+    ~Player() {
+        std::cout << "[Despawn] Player " << name << " left the game." << std::endl;
+    }
+};
+
 void gameSession() {
     std::cout << "Game Start" << std::endl;
     Player p("Ghost", 100);
@@ -641,6 +647,11 @@ void gameSession() {
 
     std::cout << "Game End" << std::endl;
 } // <--- А тут?
+
+int main() {
+    gameSession();
+    return 0;
+}
 
 ```
 
