@@ -15,16 +15,14 @@ title: Лекція 14 — RAII, Анатомія методів, Структу
 
 ## Експрес-опитування
 
-1.  Якщо всередині функції стається `throw` (виключення), чи виконається код, написаний *після* нього?
-2.  А чи видалиться локальна змінна (об'єкт на стеку), яка була створена *до* `throw`?
-3.  Що насправді означає `const` після назви методу: `void get() const`?
+1.  Якщо ми робимо `return` посеред функції (наприклад, через помилку), чи видалиться локальна змінна (об'єкт на стеку), яка була створена *до* `return`?
+2.  Що насправді означає `const` після назви методу: `void get() const`?
 
 <details markdown="1">
 <summary>Інженерна відповідь</summary>
 
-1.  **Ні.** Потік виконання стрибає одразу до блоку `catch`. Все, що нижче `throw` — мертвий код.
-2.  **Так!** Це називається **Stack Unwinding**. C++ гарантує виклик деструкторів для всіх стекових об'єктів. Це база RAII.
-3.  Це обіцянка компілятору (і користувачу): "Цей метод **не змінює** інваріант об'єкта" (read-only доступ).
+1.  **Так!** C++ гарантує виклик деструкторів для всіх стекових об'єктів при виході з їхньої області видимості. Це база RAII.
+2.  Це обіцянка компілятору (і користувачу): "Цей метод **не змінює** інваріант об'єкта" (read-only доступ).
 
 </details>
 
@@ -59,7 +57,11 @@ class FileHandler {
 public:
     FileHandler(const char* name) { 
         f = fopen(name, "r"); 
-        if (!f) throw std::runtime_error("File not found");
+        // Якщо файл не знайдено, варто опрацювати помилку
+        if (!f) {
+            std::cerr << "File not found\n";
+            // exit(1) або інша обробка помилок
+        }
     }
     
     // Деструктор завжди викликається при виході з scope
@@ -79,108 +81,6 @@ void goodCode() {
 ```
 
 > **Правило:** Ніколи не пишіть `delete` або `close()` вручну в бізнес-логіці. Загорніть це в клас.
-
-### Recursive Destructors — Stack Overflow Risk
-
-> **💡 Code Detail from Source Material**  
-> Джерело: Using the trees.pdf
-
-![Tree structures — структура вузлів дерева](attachments/using_trees-000.jpg)
-
-*Рис. 1: Бінарне дерево — структура вузла в пам'яті, рекурсивне знищення*
-
-Деструктори можуть викликати інші деструктори. Це зручно для ієрархічних структур (як дерева), але має **небезпеку stack overflow**.
-
-**Приклад: Binary Tree Node**
-
-```cpp
-struct Node {
-    int data;
-    Node* left;
-    Node* right;
-    
-    // Рекурсивний деструктор
-    ~Node() {
-        delete left;   // Викликає ~Node() для лівого піддерева
-        delete right;  // Викликає ~Node() для правого піддерева
-    }
-};
-```
-
-**Як це працює:**
-
-```
-Дерево:
-        10
-       /  \
-      5   15
-     / \
-    3   7
-
-Порядок знищення (post-order):
-1. ~Node(3)
-2. ~Node(7)
-3. ~Node(5)   ← викликає delete left; delete right;
-4. ~Node(15)
-5. ~Node(10)
-```
-
-**⚠️ ПРОБЛЕМА: Stack Overflow для глибоких дерев**
-
-Кожен виклик деструктора займає місце на стеку (stack frame). Для збалансованого дерева з 1,000,000 вузлів глибина ~20 — це ОК. Але для **незбалансованого** дерева (лінційний ланцюжок) глибина = 1,000,000 → **stack overflow!**
-
-```cpp
-// Створюємо лінієвий ланцюжок (worst case)
-Node* root = new Node{ 1, nullptr, nullptr };
-Node* current = root;
-
-for (int i = 2; i <= 100'000; i++) {
-    current->right = new Node{ i, nullptr, nullptr };
-    current = current->right;
-}
-
-delete root;  // ❌ Stack overflow! Глибина рекурсії = 100,000
-```
-
-**Рішення 1: Iterative Destruction (ручний стек)**
-
-```cpp
-~Node() {
-    std::stack<Node*> toDelete;
-    toDelete.push(this->left);
-    toDelete.push(this->right);
-    
-    this->left = this->right = nullptr;  // Запобігти подвійному видаленню
-    
-    while (!toDelete.empty()) {
-        Node* node = toDelete.top();
-        toDelete.pop();
-        
-        if (node) {
-            toDelete.push(node->left);
-            toDelete.push(node->right);
-            node->left = node->right = nullptr;
-            delete node;
-        }
-    }
-}
-```
-
-**Рішення 2: Балансування дерева (AVL, Red-Black)**
-
-Гарантує, що глибина завжди O(log N), тому рекурсивний деструктор безпечний.
-
-**Коли рекурсивний деструктор безпечний:**
-- Збалансовані дерева (глибина ≤ 20-30)
-- Невеликі структури (< 1000 елементів)
-- Гарантована обмежена глибина
-
-**Коли небезпечний:**
-- Незбалансовані дерева (linked list disguised as tree)
-- User-generated data (ви не контролюєте глибину)
-- Великі графи (cycles потребують окремої логіки)
-
----
 
 ## Частина 2: Анатомія методу (`this`)
 
@@ -254,10 +154,8 @@ void printDate(const Date& d) {
 
 ```
 
-> **💡 Code Detail from Source Material**  
-> Джерело: s02e01. OOP by examples.pdf, стор. 369
+> **💡 Exact Compiler Error Messages:**
 >
-> **Exact Compiler Error Messages:**
 > - Спроба змінити член в const методі: `error: assignment of member 'ClassName::memberName' in read-only object`
 > - Спроба викликати non-const метод на const об'єкті: `error: passing 'const ClassName' as 'this' argument discards qualifiers`
 >
@@ -292,9 +190,6 @@ public:
 ```
 
 ### Header Guards — Both Syntaxes
-
-> **💡 Code Detail from Source Material**  
-> Джерело: s02e02. OOP its getting darker.pdf, стор. 391
 
 Обов'язково використовуємо **Include Guards**, щоб уникнути дублювання коду при повторному `#include`. Існує **два способи**:
 

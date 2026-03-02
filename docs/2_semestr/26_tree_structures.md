@@ -160,6 +160,99 @@ Node* delete_node(Node* root, int key) {
 }
 ```
 
+### Знищення всього дерева (Recursive Destructors & Stack Overflow)
+
+Деструктори можуть викликати інші деструктори. Це зручно для ієрархічних структур (як дерева), але має **небезпеку stack overflow**.
+
+**Приклад: Знищення вузла**
+
+```cpp
+struct Node {
+    int key;
+    Node* left;
+    Node* right;
+    
+    // Рекурсивний деструктор
+    ~Node() {
+        delete left;   // Викликає ~Node() для лівого піддерева
+        delete right;  // Викликає ~Node() для правого піддерева
+    }
+};
+```
+
+**Як це працює:**
+
+```
+Дерево:
+        10
+       /  \
+      5   15
+     / \
+    3   7
+
+Порядок знищення (post-order):
+1. ~Node(3)
+2. ~Node(7)
+3. ~Node(5)   ← викликає delete left; delete right;
+4. ~Node(15)
+5. ~Node(10)
+```
+
+**⚠️ ПРОБЛЕМА: Stack Overflow для глибоких дерев**
+
+Кожен виклик деструктора займає місце на стеку (stack frame). Для збалансованого дерева з 1,000,000 вузлів глибина ~20 — це ОК. Але для **незбалансованого** дерева (лінійний ланцюжок) глибина = 1,000,000 → **stack overflow!**
+
+```cpp
+// Створюємо лінійний ланцюжок (worst case)
+Node* root = new Node(1);
+Node* current = root;
+
+for (int i = 2; i <= 100'000; i++) {
+    current->right = new Node(i);
+    current = current->right;
+}
+
+delete root;  // ❌ Stack overflow! Глибина рекурсії = 100,000
+```
+
+**Рішення 1: Iterative Destruction (ручний стек)**
+
+```cpp
+~Node() {
+    std::stack<Node*> toDelete;
+    toDelete.push(this->left);
+    toDelete.push(this->right);
+    
+    this->left = this->right = nullptr;  // Запобігти подвійному видаленню
+    
+    while (!toDelete.empty()) {
+        Node* node = toDelete.top();
+        toDelete.pop();
+        
+        if (node) {
+            toDelete.push(node->left);
+            toDelete.push(node->right);
+            node->left = node->right = nullptr;
+            delete node;
+        }
+    }
+}
+```
+
+**Рішення 2: Балансування дерева (AVL, Red-Black)**
+
+Гарантує, що глибина завжди O(log N), тому рекурсивний деструктор безпечний.
+
+**Коли рекурсивний деструктор безпечний:**
+- Збалансовані дерева (глибина ≤ 20-30)
+- Невеликі структури (< 1000 елементів)
+- Гарантована обмежена глибина
+
+**Коли небезпечний:**
+- Незбалансовані дерева (linked list disguised as tree)
+- User-generated data (ви не контролюєте глибину)
+- Великі графи (cycles потребують окремої логіки)
+
 ### Binary Tree to Array Mapping
 
 > **💡 Visual Schema from Source Material**  
