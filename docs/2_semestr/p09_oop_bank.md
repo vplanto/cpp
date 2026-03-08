@@ -17,7 +17,7 @@
 З цього моменту ми вводимо суворі правила іменування. Код, що порушує ці правила, не приймається.
 
 1.  **Classes (Типи даних) — це Іменники (Nouns).**
-    * Використовуємо **PascalCase** (Велика літера на початку кожного слова).
+    * Використовуємо **CamelCase** (велика літера на початку кожного слова, див. [C++ Naming Conventions](https://google.github.io/styleguide/cppguide.html#Type_Names)).
     * *Good:* `BankAccount`, `User`, `TransactionManager`.
     * *Bad:* `bank_account` (Python style), `ManageMoney` (це дієслово), `bankaccount` (нечитабельно).
 
