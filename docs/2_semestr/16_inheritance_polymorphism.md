@@ -467,9 +467,9 @@ void memoryLeak() {
 
 ## Приклади коду для аналізу
 
-* 👨‍💻 **[10-oop-next/inheritance_modifiers.cpp](../../10-oop-next/inheritance_modifiers.cpp)** — Практична перевірка того, що стає доступним (а що приховується) при `public`, `protected` та `private` спадкуванні.
-* 👨‍💻 **[10-oop-next/TestMovablePoint.cpp](../../10-oop-next/TestMovablePoint.cpp)** — Класичний приклад базового `Point` та похідного `MovablePoint`, що демонструє розширення класу і перевизначення поведінки.
-* 👨‍💻 **[09-oop-intro/oop.cpp](../../09-oop-intro/oop.cpp)** — Демонстрація поліморфізму на практиці: як працюють `virtual` функції, ключове слово `override` та цікавий кейс із викликом віртуальних функцій одна з одної у ієрархії.
+* 👨‍💻 **[10-oop-next/inheritance_modifiers.cpp](https://github.com/vplanto/cpp/blob/main/10-oop-next/inheritance_modifiers.cpp)** — Практична перевірка того, що стає доступним (а що приховується) при `public`, `protected` та `private` спадкуванні.
+* 👨‍💻 **[10-oop-next/TestMovablePoint.cpp](https://github.com/vplanto/cpp/blob/main/10-oop-next/TestMovablePoint.cpp)** — Класичний приклад базового `Point` та похідного `MovablePoint`, що демонструє розширення класу і перевизначення поведінки.
+* 👨‍💻 **[09-oop-intro/oop.cpp](https://github.com/vplanto/cpp/blob/main/09-oop-intro/oop.cpp)** — Демонстрація поліморфізму на практиці: як працюють `virtual` функції, ключове слово `override` та цікавий кейс із викликом віртуальних функцій одна з одної у ієрархії.
 
 ---
 

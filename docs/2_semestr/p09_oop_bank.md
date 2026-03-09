@@ -16,6 +16,20 @@
 
 З цього моменту ми вводимо суворі правила іменування. Код, що порушує ці правила, не приймається.
 
+> **🏦 Реальна історія: $440M баг через назву функції — Knight Capital Group, 2012**
+>
+> **Контекст.** 1 серпня 2012 року компанія Knight Capital Group (один з найбільших маркет-мейкерів США) розгортала нову High-Frequency Trading систему — SMARS. Дедлайн тиснув, і в поспіху розробники зробили критичну помилку.
+>
+> **Що трапилось технічно.** У новому коді вони **перевикористали старий конфігураційний прапорець** з промовистою назвою `Power` (старий алгоритм «Power Peg», який давно не використовувався, але не був видалений). Під час деплою оновили 7 з 8 серверів — один залишився зі старим кодом. Коли система запустилась, цей один сервер побачив знайомий прапорець `Power` і активував старий алгоритм накопичення позицій.
+>
+> **45 хвилин хаосу.** Система автоматично купувала і продавала акції з такою швидкістю, що за 45 хвилин виконала **4 мільйони угод** на суму ~$7 мільярдів. Трейдери бачили проблему на екранах, але не могли зупинити систему — ніхто не знав, яку саме кнопку натиснути. Збиток — **$440 мільйонів** (весь капітал компанії за одне ранкове торгове засідання).
+>
+> **Наслідки.** Knight Capital збанкрутувала і була поглинута конкурентом. Пізніший аудит SEC виявив першопричину: **розробники не могли по назві `Power` відрізнити живий код від мертвого**. Якби функція називалась `powerPegLegacy_DEPRECATED` — хтось би точно помітив.
+>
+> Правильні назви — це не естетика. Це **безпека системи**.
+
+
+
 1.  **Classes (Типи даних) — це Іменники (Nouns).**
     * Використовуємо **CamelCase** (велика літера на початку кожного слова, див. [C++ Naming Conventions](https://google.github.io/styleguide/cppguide.html#Type_Names)).
     * *Good:* `BankAccount`, `User`, `TransactionManager`.
@@ -86,10 +100,8 @@ private:
 
 public:
     // Constructor (Nouns setup Nouns)
-    BankAccount(std::string accNum, std::string name, double initialBalance) {
-        accountNumber = accNum;
-        ownerName = name;
-        
+    BankAccount(std::string accNum, std::string name, double initialBalance)
+        : accountNumber(accNum), ownerName(name) {  // initializer list для string
         if (initialBalance < 0) {
             std::cerr << "Warning: Initial balance cannot be negative. Setting to 0.\n";
             balance = 0;
@@ -152,16 +164,119 @@ int main() {
 
 ```
 
+<details markdown="1">
+<summary>💡 Референсне рішення (Завдання 3)</summary>
+
+```cpp
+    void deposit(double amount) {
+        if (amount <= 0) {
+            std::cerr << "Error: Deposit amount must be positive.\n";
+            return;
+        }
+        balance += amount;
+    }
+
+    bool withdraw(double amount) {
+        if (amount <= 0) {
+            std::cerr << "Error: Withdrawal amount must be positive.\n";
+            return false;
+        }
+        if (amount > balance) {
+            std::cerr << "Error: Insufficient funds.\n";
+            return false;
+        }
+        balance -= amount;
+        return true;
+    }
+
+    void printInfo() const {
+        std::cout << "Account: " << accountNumber
+                  << " | Owner: " << ownerName
+                  << " | Balance: " << balance << "$\n";
+    }
+```
+
+</details>
+
 ---
 
 ## Завдання із зірочкою: PIN Code Security
 
 Додайте ще один рівень захисту.
 
-1. Додайте приватне поле `int pinCode`.
+1. Додайте приватне поле `std::string pinCode`.
 2. Додайте `pinCode` у конструктор.
-3. Змініть метод `withdraw`: `bool withdraw(double amount, int enteredPin)`.
+3. Змініть метод `withdraw`: `bool withdraw(double amount, std::string enteredPin)`.
 * Якщо PIN неправильний — відхилити транзакцію і вивести "Security Alert".
+
+<details markdown="1">
+<summary>💡 Референсне рішення (Завдання із зірочкою)</summary>
+
+```cpp
+class BankAccount {
+private:
+    std::string accountNumber;
+    std::string ownerName;
+    double balance;
+    std::string pinCode;  // NEW: рядок, бо PIN може починатись з 0
+
+public:
+    BankAccount(std::string accNum, std::string name, double initialBalance, std::string pin)
+        : accountNumber(accNum), ownerName(name), pinCode(pin) {
+        if (initialBalance < 0) {
+            std::cerr << "Warning: Initial balance cannot be negative. Setting to 0.\n";
+            balance = 0;
+        } else {
+            balance = initialBalance;
+        }
+    }
+
+    double getBalance() const { return balance; }
+    std::string getOwner() const { return ownerName; }
+
+    void deposit(double amount) {
+        if (amount <= 0) {
+            std::cerr << "Error: Deposit amount must be positive.\n";
+            return;
+        }
+        balance += amount;
+    }
+
+    // CHANGED: тепер потрібен PIN
+    bool withdraw(double amount, std::string enteredPin) {
+        if (enteredPin != pinCode) {
+            std::cerr << "Security Alert: Incorrect PIN.\n";
+            return false;
+        }
+        if (amount <= 0) {
+            std::cerr << "Error: Withdrawal amount must be positive.\n";
+            return false;
+        }
+        if (amount > balance) {
+            std::cerr << "Error: Insufficient funds.\n";
+            return false;
+        }
+        balance -= amount;
+        return true;
+    }
+
+    void printInfo() const {
+        std::cout << "Account: " << accountNumber
+                  << " | Owner: " << ownerName
+                  << " | Balance: " << balance << "$\n";
+    }
+};
+
+int main() {
+    BankAccount myAcc("UA555", "Vitaliy", 1000, "4242");
+
+    myAcc.withdraw(100, "0000");  // Security Alert!
+    myAcc.withdraw(100, "4242");  // OK
+    myAcc.printInfo();          // Balance: 900$
+}
+```
+
+</details>
 
 ---
 
@@ -190,3 +305,21 @@ int main() {
 4. Це принцип **єдиної відповідальності**: клас сам захищає свої інваріанти. Якщо перевірку покласти на клієнта, будь-який новий клієнт може забути її зробити — і інваріант буде зламано.
 
 </details>
+
+---
+
+## 🔑 Інженерний інсайт: Клас — це контракт, а не структура
+
+Після сьогоднішнього практикуму ви написали свій перший справжній **контракт між кодом і програмістом**.
+
+Подумайте: коли ви передаєте `BankAccount` колезі, ви **гарантуєте** йому:
+1. `balance` ніколи не буде від'ємним (інваріант).
+2. Отримати баланс можна тільки через `getBalance()` (інкапсуляція).
+3. Зняти гроші без PIN неможливо (безпека).
+
+Це і є **API-контракт**. У великих системах (банки, авіація, медицина) порушення контракту — це не баг, це **аварія**.
+
+> Хороший клас — це клас, який **важко використати помилково**.  
+> — Scott Meyers, «Effective C++»
+
+Ваш `BankAccount` вже відповідає цьому принципу.

@@ -217,7 +217,7 @@ void testNode() {
 
 ## Приклади коду для аналізу
 
-* 👨‍💻 **[11-oop-advanced/locator_values.cpp](../../11-oop-advanced/locator_values.cpp)** — Демонстрація `lvalue` (змінні, що мають адресу) та `rvalue` (тимчасові значення). Дуже корисний приклад для глибшого розуміння роботи LHS та RHS.
+* 👨‍💻 **[11-oop-advanced/locator_values.cpp](https://github.com/vplanto/cpp/blob/main/11-oop-advanced/locator_values.cpp)** — Демонстрація `lvalue` (змінні, що мають адресу) та `rvalue` (тимчасові значення). Дуже корисний приклад для глибшого розуміння роботи LHS та RHS.
 
 ---
 
