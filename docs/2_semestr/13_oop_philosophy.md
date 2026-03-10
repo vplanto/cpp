@@ -709,7 +709,6 @@ int main() {
 
 Після теоретичного ознайомлення рекомендуємо розібрати наступні робочі приклади:
 * 👨‍💻 **[09-oop-intro/pop.cpp](https://github.com/vplanto/cpp/blob/main/09-oop-intro/pop.cpp)** — Демонстрація процедурного підходу (POP) з глобальним станом і побічними ефектами. Порівняйте це з ООП підходом.
-* 👨‍💻 **[09-oop-intro/encapsulation.cpp](https://github.com/vplanto/cpp/blob/main/09-oop-intro/encapsulation.cpp)** — Демонстрація того, як повернення посилання на приватний член може порушувати інкапсуляцію, і як `const_cast` може обійти захист.
 * 👨‍💻 **[09-oop-intro/context.cpp](https://github.com/vplanto/cpp/blob/main/09-oop-intro/context.cpp)** — Життєвий цикл об'єкта: блокові області видимості та автоматичний виклик деструкторів під час виходу з блоку.
 
 ---
