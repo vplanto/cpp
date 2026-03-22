@@ -41,50 +41,63 @@
 Створіть клас, який бере на себе всю брудну роботу з файлами.
 
 **Вимоги:**
-1.  **Поле:** `std::ofstream file;` (приватне).
-2.  **Конструктор:** Приймає ім'я файлу. Відкриває його в режимі додавання (`std::ios::app`), щоб не стирати стару історію.
+1.  **Розділення коду:** Проєкт має бути розділений на заголовочний файл (`TransactionLogger.h`) та файл реалізації (`TransactionLogger.cpp`).
+2.  **Поле:** `std::ofstream file;` (приватне).
+3.  **Конструктор:** Приймає ім'я файлу. Відкриває його в режимі додавання (`std::ios::app`), щоб не стирати стару історію.
     * *Перевірка:* Якщо файл не відкрився — вивести помилку в `cerr`.
-3.  **Деструктор:** Якщо файл відкритий — закрити його і вивести в консоль повідомлення `[Logger] File closed cleanly.`.
-4.  **Метод `log(string message)`:** Дописує повідомлення у файл + додає перехід на новий рядок.
+4.  **Деструктор:** Якщо файл відкритий — закрити його і вивести в консоль повідомлення `[Logger] File closed cleanly.`.
+5.  **Метод `log(string level, string message)`:** Приймає статус логу (наприклад, "INFO", "DEBUG", "ERROR") та саме повідомлення. Записує у файл у форматі `[LEVEL] Message`.
 
+### Референсне рішення
+
+**TransactionLogger.h**
 ```cpp
-#include <iostream>
+#ifndef TRANSACTION_LOGGER_H
+#define TRANSACTION_LOGGER_H
+
 #include <fstream>
 #include <string>
 
 class TransactionLogger {
 private:
-    std::ofstream file; // Ресурс
+    std::ofstream file;
 
 public:
-    // Ctor: Resource Acquisition
-    TransactionLogger(std::string filename) {
-        // ios::app - append mode (дописувати в кінець)
-        file.open(filename, std::ios::app);
-        
-        if (!file.is_open()) {
-            std::cerr << "[Error] Critical: Cannot open log file!\n";
-        } else {
-            std::cout << "[Logger] System started. Writing to " << filename << "\n";
-        }
-    }
-
-    // Dtor: Resource Release
-    ~TransactionLogger() {
-        if (file.is_open()) {
-            file.close();
-            // Цей вивід потрібен тільки для навчання, щоб ви бачили момент смерті
-            std::cout << "[Logger] Buffer flushed. File closed cleanly.\n";
-        }
-    }
-
-    void log(std::string message) {
-        if (file.is_open()) {
-            file << message << "\n";
-        }
-    }
+    TransactionLogger(std::string filename);
+    ~TransactionLogger();
+    void log(std::string level, std::string message);
 };
 
+#endif
+```
+
+**TransactionLogger.cpp**
+```cpp
+#include "TransactionLogger.h"
+#include <iostream>
+
+TransactionLogger::TransactionLogger(std::string filename) {
+    file.open(filename, std::ios::app);
+    
+    if (!file.is_open()) {
+        std::cerr << "[Error] Critical: Cannot open log file!\n";
+    } else {
+        std::cout << "[Logger] System started. Writing to " << filename << "\n";
+    }
+}
+
+TransactionLogger::~TransactionLogger() {
+    if (file.is_open()) {
+        file.close();
+        std::cout << "[Logger] Buffer flushed. File closed cleanly.\n";
+    }
+}
+
+void TransactionLogger::log(std::string level, std::string message) {
+    if (file.is_open()) {
+        file << "[" << level << "] " << message << "\n";
+    }
+}
 ```
 
 ---
@@ -92,43 +105,54 @@ public:
 ## Завдання 2: Інтеграція з `BankAccount`
 
 Поверніться до вашого класу `BankAccount` з минулого практикуму.
-Ми не будемо пхати логер всередину банку (поки що), ми використаємо його ззовні.
+Ми не будемо додавати логер всередину банку як поле (це вимагало б додаткових знань), ми передамо його в методи як інструмент.
 
 **Сценарій:**
 
-1. Створіть `TransactionLogger` у `main`.
-2. Виконайте операції з банком.
-3. Запишіть результат у лог.
+1. Оновіть методи `deposit` та `withdraw`, щоб вони приймали посилання на логер: `void deposit(double amount, TransactionLogger& logger)`.
+2. У `main` створіть логер один раз і передавайте його в методи банку.
 
 ```cpp
-// Приклад оновленого BankAccount (фрагмент)
+#include "TransactionLogger.h"
+
 class BankAccount {
-    // ... (код з p09) ...
-    std::string getAccountNumber() const { return accountNumber; }
+private:
+    std::string accountNumber;
+    double balance;
+
+public:
+    BankAccount(std::string acc, std::string owner, double initial) 
+        : accountNumber(acc), balance(initial) {}
+
+    void deposit(double amount, TransactionLogger& logger) {
+        balance += amount;
+        logger.log("INFO", "[Deposit] " + accountNumber + ": +" + std::to_string(amount));
+    }
+
+    bool withdraw(double amount, TransactionLogger& logger) {
+        if (balance >= amount) {
+            balance -= amount;
+            logger.log("INFO", "[Withdraw] " + accountNumber + ": -" + std::to_string(amount));
+            return true;
+        }
+        logger.log("DEBUG", "[Withdraw Fail] " + accountNumber + ": Insufficient funds for -" + std::to_string(amount));
+        return false;
+    }
 };
 
 int main() {
-    // 1. Створюємо логер. Файл відкривається ТУТ.
+    // 1. Створюємо логер.
     TransactionLogger logger("bank_history.txt");
 
     BankAccount acc("UA007", "James Bond", 1000);
 
-    // 2. Симуляція роботи
-    acc.deposit(500);
-    logger.log("[Transaction] UA007: Deposit +500. Result: Success.");
+    // 2. Викликаємо методи, передаючи логер
+    acc.deposit(500, logger);
+    acc.withdraw(2000, logger);
 
-    if (acc.withdraw(2000)) {
-        logger.log("[Transaction] UA007: Withdraw -2000. Result: Success.");
-    } else {
-        logger.log("[Transaction] UA007: Withdraw -2000. Result: Fail (Insufficient Funds).");
-    }
-
-    // 3. Кінець функції main.
-    // ТУТ автоматично викличеться ~TransactionLogger().
-    // Файл закриється сам.
+    // 3. Кінець main — файл закриється деструктором logger.
     return 0;
 }
-
 ```
 
 ---
@@ -144,7 +168,7 @@ void testScope() {
     std::cout << "--- Start Scope ---\n";
     {
         TransactionLogger tempLog("temp.txt");
-        tempLog.log("I am alive!");
+        tempLog.log("DEBUG", "I am alive!");
     } // <--- Тут tempLog помирає. Має спрацювати деструктор.
     std::cout << "--- End Scope ---\n";
 }
@@ -188,6 +212,7 @@ char* dt = ctime(&now); // Конвертує час у рядок типу "Tue
 2. Якщо запустити програму 3 рази, нові логи додаються в кінець, а не перетирають старі.
 3. Ви бачите повідомлення деструктора в консолі.
 4. Код відповідає конвенції (PascalCase для класів, camelCase для методів).
+5. Використано розділення на заголовочний файл (`.h`) та файл реалізації (`.cpp`).
 
 ---
 
