@@ -65,6 +65,10 @@ private:
 public:
     TransactionLogger(std::string filename);
     ~TransactionLogger();
+
+    TransactionLogger(const TransactionLogger&) = delete;
+    TransactionLogger& operator=(const TransactionLogger&) = delete;
+
     void log(std::string level, std::string message);
 };
 
