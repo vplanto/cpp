@@ -45,43 +45,33 @@ int parseData(const std::string& data, Config& cfg) {
 int main() {
     std::string content;
     if (readFile("config.txt", content) != 0) {
-        // handle error
-        return 1;
+        return 1; // помилка відкриття
     }
     Config cfg;
     if (parseData(content, cfg) != 0) {
-        // handle error
-        return 1;
+        return 1; // помилка формату
     }
-    // ...
 }
 ```
 
-**Проблеми:**
-- Легко **забути** перевірити код помилки
-- Неможливо повернути і значення, і код помилки одночасно
-- Логіка програми _перемішана_ з обробкою помилок
-- Конструктори не мають значення повернення — не можуть сигналізувати про помилку
+### Новий підхід: виключення (Помилка = Подія)
 
-### Новий підхід: виключення
+Виключення дозволяють відокремити "нормальний шлях" виконання від "катастрофічного".
+
+*   **Гарантія:** Виключення неможливо ігнорувати — якщо його не перехопити, програма завершиться.
+*   **Чистота:** `try-catch` блоки дозволяють написати основну логіку одним чистим блоком.
+*   **Гнучкість:** Обробка помилки може відбуватися далеко від місця, де вона виникла.
 
 ```cpp
-std::string readFile(const std::string& path) {
-    // Просто кидаємо — виклик зупиняється негайно
-    if (!fileExists(path))
-        throw std::runtime_error("File not found: " + path);
-    // ...
-    return content;
-}
-
 int main() {
     try {
-        // Чистий код без нескінченних if-ів
+        // Чистий код: читаємо, парсимо, запускаємо
         auto content = readFile("config.txt");
         auto cfg = parseData(content);
         run(cfg);
-    } catch (const std::runtime_error& e) {
-        std::cerr << "Error: " << e.what() << "\n";
+    } catch (const std::exception& e) {
+        // Єдина точка обробки ВСІХ проблем вище
+        std::cerr << "Помилка: " << e.what() << "\n";
         return 1;
     }
 }
@@ -89,72 +79,64 @@ int main() {
 
 ---
 
-## Частина 2: Синтаксис — try, catch, throw
-
 ### Базова конструкція
 
-```
+```cpp
 try {
-    // Код, який може "впасти"
+    // Код, який може "впасти" (викинути throw)
 } catch (Тип виключення) {
-    // Обробник — виконується якщо wpalo виключення цього типу
+    // Обробник — виконується лише якщо виникла помилка цього типу
 }
 ```
 
-### Приклад: валідація вхідних даних
+### 1. throw — "кидання" помилки
+Зупиняє виконання поточної функції та шукає найближчий `catch`. Ви можете кинути об'єкт будь-якого типу (але краще стандартний).
 
 ```cpp
-#include <stdexcept>
-#include <string>
-
-double divide(double a, double b) {
-    if (b == 0.0)
-        throw std::invalid_argument("Division by zero");
-    return a / b;
-}
-
-int main() {
-    try {
-        double result = divide(10.0, 0.0);  // кидає!
-        std::cout << result;                 // не виконується
-    } catch (const std::invalid_argument& e) {
-        std::cout << "Caught: " << e.what(); // "Caught: Division by zero"
-    }
-    std::cout << "Program continues\n"; // виконується після catch
+void validate(int age) {
+    if (age < 0) throw std::invalid_argument("Вік не може бути від'ємним");
 }
 ```
 
-### Кілька catch-блоків
+### 2. try — "зона спостереження"
+Блок коду, за яким ми стежимо. Якщо всередині (або в глибині викликів) виникне `throw`, виконання перейде до `catch`.
+
+### 3. catch — "сітка" для перехоплення
+Обробник, який ловить помилку певного типу.
 
 ```cpp
-void process(int value) {
-    if (value < 0)
-        throw std::underflow_error("Value is negative");
-    if (value > 1000)
-        throw std::overflow_error("Value too large");
-    if (value == 42)
-        throw std::string("The answer!"); // будь-який тип!
-}
-
 try {
-    process(someValue);
-} catch (const std::underflow_error& e) {
-    std::cerr << "Underflow: " << e.what();
-} catch (const std::overflow_error& e) {
-    std::cerr << "Overflow: " << e.what();
-} catch (const std::string& msg) {
-    std::cerr << "String exception: " << msg;
-} catch (...) {
-    // Перехоплює БУДЬ-ЯКЕ виключення
-    std::cerr << "Unknown exception!";
+    double result = divide(10.0, 0.0);  // кидає std::invalid_argument!
+    std::cout << result;                 // цей рядок буде пропущено
+} catch (const std::invalid_argument& e) {
+    std::cout << "Сталася помилка: " << e.what();
 }
 ```
 
-> **`catch (...)`** — "catch-all" блок, завжди ставиться останнім.
+### Мульти-перехоплення (Multiple Catch)
+Ви можете мати кілька обробників для різних типів проблем в одному блоці `try`. Обробники перевіряються зверху вниз.
+
+```cpp
+try {
+    doWork();
+} catch (const std::overflow_error& e) {
+    // Специфічна помилка переповнення
+} catch (const std::exception& e) {
+    // Всі інші стандартні помилки
+} catch (...) {
+    // "Сміттєзбірник" для будь-яких типів (напр. throw "error")
+    std::cerr << "Невідома катастрофа";
+}
+```
+
+> [!IMPORTANT]
+> **Якість `catch (...)`:** Це "catch-all" блок. Він завжди має бути останнім. Використовуйте його з обережністю, оскільки ви не знаєте, *що саме* сталося.
 
 ---
 
 ## Частина 3: Ієрархія стандартних виключень
+
+У C++ виключення — це класи. Вони утворюють дерево, де в корені стоїть `std::exception`.
 
 ```
 std::exception
@@ -171,21 +153,18 @@ std::exception
     └── std::system_error      — помилки ОС (файли, мережа)
 ```
 
-Перехоплення базового класу — ловить всі нащадки:
+### std::exception та нащадки
+
+*   **std::logic_error** — "ти сам винен". Помилки у вашій логіці (неправильний індекс, пустий вказівник). Їх можна було б уникнути, написавши код краще.
+*   **std::runtime_error** — "життя несправедливе". Зовнішні помилки, які неможливо передбачити (немає інтернету, диск переповнений).
 
 ```cpp
 try {
-    vec.at(100); // кидає std::out_of_range
-} catch (const std::logic_error& e) {
-    // Перехопить out_of_range, invalid_argument, тощо
-    std::cerr << e.what();
-}
-
-try {
-    // ...
+    std::vector<int> v;
+    v.at(100); // кидає std::out_of_range
 } catch (const std::exception& e) {
-    // Перехопить БУДЬ-ЯКЕ стандартне виключення
-    std::cerr << "std exception: " << e.what();
+    // ЛОВИМО ВСЕ: std::exception перехоплює будь-якого нащадка
+    std::cerr << "Стандартна помилка: " << e.what();
 }
 ```
 
@@ -193,117 +172,94 @@ try {
 
 ## Частина 4: Власні класи виключень
 
-```cpp
-#include <stdexcept>
+### Коли і навіщо створювати власні виключення?
 
-// Власне виключення — наслідуємо від std::exception або нащадків
+Стандартних класів вистачає для 90% випадків. Власні потрібні, коли ви хочете:
+1. **Зробити код "балакучим":** `InsufficientFundsException` звучить краще ніж просто `runtime_error`.
+2. **Додати дані:** Наприклад, зберегти ID транзакції, яка не пройшла, щоб у `catch` вирішити, що робити далі.
+
+```cpp
 class DatabaseError : public std::runtime_error {
 public:
     int errorCode;
-
-    DatabaseError(const std::string& msg, int code)
+    DatabaseError(const std::string& msg, int code) 
         : std::runtime_error(msg), errorCode(code) {}
 };
 
-class ConnectionError : public DatabaseError {
-public:
-    std::string host;
-
-    ConnectionError(const std::string& host, int code)
-        : DatabaseError("Cannot connect to " + host, code), host(host) {}
-};
-
-// Використання:
+// Використання
 try {
-    throw ConnectionError("db.example.com", 503);
-} catch (const ConnectionError& e) {
-    std::cerr << e.what() << " (host: " << e.host << ")\n";
+    throw DatabaseError("Втрачено зв'язок", 503);
 } catch (const DatabaseError& e) {
-    std::cerr << "DB error " << e.errorCode << ": " << e.what() << "\n";
-} catch (const std::exception& e) {
-    std::cerr << e.what() << "\n";
+    std::cerr << "Помилка БД №" << e.errorCode;
 }
 ```
 
+> [!TIP]
+> **Правило для себе:** "Чи буду я обробляти цю помилку **інакше**, ніж інші?".
+> - Якщо ви просто пишете `e.what()` у лог — стандартних виключень достатньо.
+> - Якщо ви хочете зловити *саме цю* помилку окремо і зробити щось специфічне (наприклад, показати інше вікно юзеру) — створюйте свій клас.
+
+> [!TIP]
+> **Принцип семантики:** Завжди наслідуйте свої класи від `std::exception` (або `std::runtime_error`). Це дозволить іншим програмістам ловити ваші помилки через стандартний `catch (const std::exception& e)`.
+
 ---
 
-## Частина 5: Stack Unwinding та RAII
+## Частина 5: Stack Unwinding та RAII (Безпечне прибирання)
 
-**Stack unwinding** — автоматичний виклик деструкторів всіх локальних об'єктів при розкрутці стека через виключення.
+### Що таке Stack Unwinding (Розкрутка стека)?
+
+Це автоматичний процес "стрибка" через функції. Коли стається `throw`, C++ негайно покидає поточну функцію, завершує її роботу і переходить на рівень вище, поки не знайде відповідний `catch`.
+
+**Ключова магія:** Під час цього "втікання" C++ **гарантовано викликає деструктори** всіх локальних об'єктів.
+
+### Зв'язок з RAII: Чому немає "finally"?
+
+У багатьох мовах (Java, Python) є блок `finally` для очищення ресурсів. У C++ він не потрібен завдяки **RAII (Resource Acquisition Is Initialization)**.
+
+> [!TIP]
+> **Inline Context (RAII):** Об'єкт автоматично звільняє свій ресурс (пам'ять, файл) у деструкторі. Оскільки деструктор викликається автоматично при виході з області видимості (навіть при помилці), ресурси не "течуть".
+
+**Порівняння безпеки:**
+
+| ❌ Небезпечно (ручне керування) | ✅ Безпечно (RAII / Smart Pointers) |
+| :--- | :--- |
+| `int* p = new int[100];` | `auto p = make_unique<int[]>(100);` |
+| `doSomething(); // Якщо кине — p зависне!` | `doSomething(); // Якщо кине — деструктор звільнить p` |
+| `delete[] p;` | `// Звільниться саме` |
 
 ```cpp
-#include <fstream>
-#include <memory>
-
 void riskyOperation() {
-    // RAII — деструктор закриє файл автоматично, навіть якщо кинуто виключення
-    std::fstream file("data.txt", std::ios::in);
-
-    // RAII — unique_ptr звільнить пам'ять
-    auto buffer = std::make_unique<int[]>(1024);
-
-    if (someCondition())
-        throw std::runtime_error("operation failed");
-
-    // Деструктори file і buffer викликаються АВТОМАТИЧНО
-    // незалежно від того, чи кинуто виключення
-}
-
-int main() {
-    try {
-        riskyOperation();
-    } catch (const std::exception& e) {
-        // file вже закрито, memory вже звільнено -- БЕЗ ВИТОКІВ
-        std::cerr << e.what();
+    std::fstream file("data.txt"); // RAII: файл закриється деструктором
+    
+    if (failed) {
+        // Починається розкрутка стека:
+        // 1. Викликається деструктор 'file' (файл ЗАКРИТО)
+        // 2. Управління передається в catch
+        throw std::runtime_error("Boom!");
     }
 }
 ```
 
-> [!IMPORTANT]
-> RAII + виключення = надійне керування ресурсами. Ніколи не використовуйте голі `new`/`delete` у коді з виключеннями — гарантований витік пам'яті або подвійне звільнення.
-
-**Небезпечний код (без RAII):**
-
-```cpp
-void dangerous() {
-    int* p = new int[100]; // виділили пам'ять
-    doSomething();         // якщо кине — p НЕ БУДЕ ЗВІЛЬНЕНО!
-    delete[] p;            // може не виконатись!
-}
-```
-
-**Безпечний код (RAII):**
-
-```cpp
-void safe() {
-    auto p = std::make_unique<int[]>(100); // RAII
-    doSomething(); // якщо кине — деструктор unique_ptr звільнить пам'ять
-}
-```
-
 ---
 
-## Частина 6: noexcept та специфікатори виключень
+## Частина 6: noexcept (Гарантія швидкості)
 
-`noexcept` — гарантія компілятору, що функція **не кидає виключень**:
+`noexcept` — це обіцянка компілятору: "Ця функція ніколи не кине виключення".
+
+**Чому це важливо?**
+1. **Оптимізація:** Компілятору не потрібно генерувати складний код для розкрутки стека (**Stack Unwinding**), що робить виклик функції трохи швидшим.
+2. **Безпека контейнерів:** `std::vector` використовує ефективне переміщення об'єктів (move) лише якщо конструктор переміщення позначений як `noexcept`.
 
 ```cpp
-// Гарантуємо: ця функція ніколи не кидає
-int add(int a, int b) noexcept {
+// Гарантуємо відсутність помилок
+int fastAdd(int a, int b) noexcept {
     return a + b;
 }
 
-// Компілятор може оптимізувати виклик noexcept функцій
-// (не генерує код для stack unwinding)
-```
-
-> Переміщуючі конструктори (`move constructor`) і `swap` майже завжди позначають `noexcept` — це дозволяє `std::vector` безпечно переалокувати пам'ять.
-
-```cpp
-class MyClass {
+class SafeClass {
 public:
-    MyClass(MyClass&& other) noexcept; // vector може використати move, не copy
-    void swap(MyClass& other) noexcept;
+    // Критично важливо для швидкодії вектора!
+    SafeClass(SafeClass&& other) noexcept; 
 };
 ```
 
@@ -320,6 +276,92 @@ public:
 | **Коли використовувати** | Hot path, передбачені стани | Виняткові, непередбачені ситуації |
 
 > **Правило:** Виключення — для **виняткових** ситуацій. Якщо подія очікувана і часта (наприклад, "файл не знайдено" в звичайному пошуку) — краще повертати `std::optional` або `bool`.
+
+---
+
+## Чому виключення такі дорогі?
+
+Виключення в C++ побудовані за принципом **"ти платиш лише коли падаєш"**. Якщо `throw` не відбувся — накладних витрат майже нема. Але коли виключення кидається, процесор робить дуже багато роботи:
+
+**Що відбувається при `throw`:**
+1. **RTTI (Run-Time Type Information)** — процесор з'ясовує тип викинутого об'єкта, щоб знайти правильний `catch`. Це пошук по таблицях типів.
+2. **Stack Unwinding** — обхід усіх фреймів стека від `throw` до `catch`. На кожному рівні викликаються деструктори локальних об'єктів.
+3. **Cache miss** — таблиці для розкрутки стека рідко використовуються, тому вони не лежать у кеші процесора. Завантаження з оперативної пам'яті — це сотні тактів.
+
+**Порівняння за швидкістю:**
+
+```text
+if (error) return -1;     →  ~1 наносекунда  (один стрибок)
+throw std::runtime_error() →  ~1-10 мікросекунд (у 1000-10000 разів повільніше)
+```
+
+Саме тому виключення не підходять для **очікуваних** ситуацій. Якщо ваш парсер повертає помилку на 30% вхідних даних — використання `throw` уповільнить програму в рази. Але для справжніх аварій (файл зник, мережа впала) це ідеальний механізм — бо аварії рідкісні, а код залишається чистим.
+
+---
+
+### Вправа: Що обрати — свій клас, exception чи return?
+
+Для кожного сценарію вирішіть: **(А)** створити власний клас виключення, **(Б)** кинути стандартний `std::exception`, чи **(В)** просто повернути значення/код з функції?
+
+**Сценарій 1.** Ви пишете банківську систему. Клієнт намагається зняти 5000 грн, але на рахунку лише 2000. Ваш метод `withdraw()` повинен якось повідомити про це.
+
+**Сценарій 2.** Функція `findUser(int id)` шукає користувача в базі даних. Користувача з таким ID просто не існує. Це трапляється часто — приблизно в 30% запитів.
+
+**Сценарій 3.** Ваш сервер намагається відкрити файл конфігурації при старті. Файлу нема на диску. Без конфігурації сервер працювати не може.
+
+<details markdown="1">
+<summary>Розбір сценаріїв</summary>
+
+**Сценарій 1 → (А) Власний клас виключення.**
+Недостатньо коштів — це виняткова ситуація, і вам потрібно передати додаткові дані (скільки було, скільки просили). Стандартний `runtime_error` не несе цієї інформації.
+
+```cpp
+class InsufficientFundsError : public std::runtime_error {
+public:
+    double balance, requested;
+    InsufficientFundsError(double bal, double req)
+        : std::runtime_error("Недостатньо коштів"), 
+          balance(bal), requested(req) {}
+};
+
+void withdraw(double amount) {
+    if (amount > balance)
+        throw InsufficientFundsError(balance, amount);
+    balance -= amount;
+}
+```
+
+**Сценарій 2 → (В) Повернути значення (`std::optional`).**
+"Користувача не знайдено" — це **очікувана** ситуація, яка трапляється часто. Виключення тут зайві — вони дорогі за продуктивністю і за семантикою. Це не "катастрофа", а нормальний варіант.
+
+```cpp
+std::optional<User> findUser(int id) {
+    auto it = db.find(id);
+    if (it == db.end()) return std::nullopt; // просто "не знайдено"
+    return it->second;
+}
+
+// Використання — чисто і без try/catch
+if (auto user = findUser(42)) {
+    cout << user->name;
+} else {
+    cout << "Користувача не знайдено";
+}
+```
+
+**Сценарій 3 → (Б) Стандартний `std::runtime_error`.**
+Відсутність конфігураційного файлу — виняткова ситуація (сервер не може працювати), але додаткові дані не потрібні — достатньо повідомлення. Створювати окремий клас — надлишково.
+
+```cpp
+void loadConfig(const std::string& path) {
+    std::ifstream file(path);
+    if (!file.is_open())
+        throw std::runtime_error("Конфігурацію не знайдено: " + path);
+    // ...
+}
+```
+
+</details>
 
 ---
 

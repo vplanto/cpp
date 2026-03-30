@@ -26,7 +26,8 @@
 | Лекція 15 | [Правило Трьох, Deep Copy та Перевантаження Операторів](15_rule_of_three.md) | Чому `a = b` може вбити вашу програму? Shallow Copy vs Deep Copy. |
 | Практикум 10 | [RAII та Logger — "Чорний ящик" для банку](p10_raii_logger.md) | Автоматичне закриття файлів та логування. |
 | Лекція 15b | [Обробка виключень — try, catch, throw](15b_exceptions.md) | Як відокремити логіку від помилок. Stack unwinding, ієрархія `std::exception`, `noexcept`. |
-| Лекція 16 | [Спадкування, Поліморфізм та V-Table](16_inheritance_polymorphism.md) | Ціна віртуальних функцій. Як працює динамічна диспетчеризація "під капотом". |
+| Лекція 16 | [Спадкування та Архітектура класів](16_inheritance_polymorphism.md) | Is-A vs Has-A, Fragile Base Class, Coupling/Cohesion, UML-діаграми. |
+| Лекція 16а | [Поліморфізм, V-Table та Абстрактні класи](16a_polymorphism_vtable.md) | Ціна віртуальних функцій. Як працює динамічна диспетчеризація "під капотом". |
 
 ---
 
