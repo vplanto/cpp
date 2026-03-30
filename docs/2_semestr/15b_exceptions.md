@@ -240,6 +240,8 @@ void riskyOperation() {
 }
 ```
 
+> **Приклад в коді:** [BankAccount.cpp](https://github.com/vplanto/cpp/blob/main/10-oop-next/BankAccount.cpp) та [TransactionLogger.cpp](https://github.com/vplanto/cpp/blob/main/10-oop-next/TransactionLogger.cpp) (демонструють роботу RAII з файлами та блоками видимості). Цей приклад є частиною завдання з [Практикуму 10 (RAII та Logger)](p10_raii_logger.md).
+
 ---
 
 ## Частина 6: noexcept (Гарантія швидкості)
