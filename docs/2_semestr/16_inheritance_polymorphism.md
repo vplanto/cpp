@@ -575,34 +575,34 @@ public:
 
 1. **Data Coupling** (зазвичай найкращий з перелічених) — модуль А викликає модуль Б, передаючи **просте значення**; Б не твердить про внутрішній устрій А.
 
-```cpp
-void drawSprite(int x, int y, TextureId tex);
-drawSprite(player.x, player.y, player.sprite);
-```
+    ```cpp
+    void drawSprite(int x, int y, TextureId tex);
+    drawSprite(player.x, player.y, player.sprite);
+    ```
 
 2. **Stamp Coupling** — у функцію передають **весь об'єкт**, хоча потрібне лише одне поле; зміна типу `UserAccount` торкається сигнатури навіть «вузьких» клієнтів.
 
-```cpp
-void sendReminder(const UserAccount& u) {
-    emailService.send(u.email);
-}
-```
+    ```cpp
+    void sendReminder(const UserAccount& u) {
+        emailService.send(u.email);
+    }
+    ```
 
-*Альтернатива ближче до data coupling:* `sendReminder(std::string_view email)`.
+    *Альтернатива ближче до data coupling:* `sendReminder(std::string_view email)`.
 
 3. **Control Coupling** — один модуль **керує гілками** іншого через код режиму чи «магічні числа»; клієнт мусить знати таблицю режимів.
 
-```cpp
-void onButtonPressed(int mode);  // 1 — зберегти, 2 — експорт, …
-```
+    ```cpp
+    void onButtonPressed(int mode);  // 1 — зберегти, 2 — експорт, …
+    ```
 
-*М’якше:* окремі функції `save()`, `exportToPdf()` тощо.
+    *М’якше:* окремі функції `save()`, `exportToPdf()` тощо.
 
 4. **Common / Content Coupling** (найгірший у цьому списку) — спільні **глобальні** змінні або обхід контракту (на кшталт прямого лізання в чужі приватні дані).
 
-```cpp
-int g_debugLevel;  // багато модулів читають і пишуть — хто гарантує інваріант?
-```
+    ```cpp
+    int g_debugLevel;  // багато модулів читають і пишуть — хто гарантує інваріант?
+    ```
 
 **Композиція (Has-A)** не є «п’ятим пунктом» цієї класифікації — це **архітектурний прийом** з основної лекції: володіти `Engine` усередині `Car` і говорити через публічний API часто дає **слабший** зв'язок, ніж `class Car : public Engine`, бо не розкриває всю батьківську поверхню нащадку та клієнтам.
 
