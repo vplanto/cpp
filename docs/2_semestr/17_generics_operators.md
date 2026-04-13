@@ -26,14 +26,14 @@
 
 ```mermaid
 graph TD
-    S1[<b>Зупинка 1:</b><br/>Синтаксичний цукор<br/><i>(Operator Overloading)</i>] --> S2
-    S2[<b>Зупинка 2:</b><br/>Криза типів<br/><i>(Problem DRY)</i>] --> S3
-    S3[<b>Зупинка 3:</b><br/>Шаблонні функції<br/><i>(Type Deduction)</i>] --> S4
-    S4[<b>Зупинка 4:</b><br/>Магія компілятора<br/><i>(Monomorphization)</i>] --> S5
-    S5[<b>Зупинка 5:</b><br/>Шаблони класів<br/><i>(Header-Only Rule)</i>] --> S6
-    S6[<b>Зупинка 6:</b><br/>Синтез<br/><i>(Hidden Friend)</i>] --> S7
-    S7[<b>Зупинка 7:</b><br/>STL<br/><i>(Standard Library)</i>] --> S8
-    S8[<b>Зупинка 8:</b><br/>Concepts<br/><i>(Safe Contracts)</i>]
+    S1["<b>Зупинка 1:</b><br/>Синтаксичний цукор<br/><i>(Operator Overloading)</i>"] --> S2
+    S2["<b>Зупинка 2:</b><br/>Криза типів<br/><i>(Problem DRY)</i>"] --> S3
+    S3["<b>Зупинка 3:</b><br/>Шаблонні функції<br/><i>(Type Deduction)</i>"] --> S4
+    S4["<b>Зупинка 4:</b><br/>Магія компілятора<br/><i>(Monomorphization)</i>"] --> S5
+    S5["<b>Зупинка 5:</b><br/>Шаблони класів<br/><i>(Header-Only Rule)</i>"] --> S6
+    S6["<b>Зупинка 6:</b><br/>Синтез<br/><i>(Hidden Friend)</i>"] --> S7
+    S7["<b>Зупинка 7:</b><br/>STL<br/><i>(Standard Library)</i>"] --> S8
+    S8["<b>Зупинка 8:</b><br/>Concepts<br/><i>(Safe Contracts)</i>"]
 
     style S1 fill:#f9f,stroke:#333,stroke-width:2px
     style S3 fill:#bbf,stroke:#333,stroke-width:2px
