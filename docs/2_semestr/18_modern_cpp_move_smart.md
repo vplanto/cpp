@@ -63,7 +63,7 @@ class Buffer {
 public:
     // 1. Dtor, 2. Copy Ctor, 3. Copy Assign... (старі)
 
-    // 4. Move Constructor (Кравчук)
+    // 4. Move Constructor
     // Приймає тимчасовий об'єкт (other)
     Buffer(Buffer&& other) noexcept {
         data = other.data; // 1. Крадемо ресурс
@@ -96,7 +96,7 @@ public:
 
 ## Частина 2: Smart Pointers (RAII на стероїдах)
 
-<details>
+<details markdown="1">
 <summary>🔬 <b>Mathematical View:</b> Pointers as Index Functions</summary>
 
 **Memory as Sequence:**

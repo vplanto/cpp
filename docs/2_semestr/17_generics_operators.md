@@ -288,7 +288,7 @@ auto m2 = myMax<int>(5, 7.2);    // ✅ Працює. T = int, 7.2 обріза�
 
 ---
 
-<details>
+<details markdown="1">
 <summary><b>🔬 Глибоке занурення: Duck Typing vs. SOLID LSP</b></summary>
 
 ### Що таке Compile-time Duck Typing?

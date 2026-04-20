@@ -43,7 +43,7 @@ Time alarm = {-5, 30};     // ❌ Negative hours!
 4. Add setter `setHours(int h)` that maintains invariant
 5. Throw `std::invalid_argument` for invalid values
 
-<details>
+<details markdown="1">
 <summary>💡 Hint 1: Class Structure</summary>
 
 Start with the basic structure:
@@ -64,7 +64,7 @@ public:
 ```
 </details>
 
-<details>
+<details markdown="1">
 <summary>💡 Hint 2: Validation Logic</summary>
 
 Use `if` statements to check ranges:
@@ -75,13 +75,13 @@ if (h < 0 || h > 23) {
 ```
 </details>
 
-<details>
+<details markdown="1">
 <summary>💡 Hint 3: What About setMinutes?</summary>
 
 You also need `setMinutes(int m)` with the same validation pattern!
 </details>
 
-<details>
+<details markdown="1">
 <summary>✅ Complete Solution</summary>
 
 ```cpp
@@ -197,7 +197,7 @@ BankAccount acc("Alice", -1000.0);  // Should this be allowed?
 2. Add validation to prevent invalid state
 3. Decide: throw exception or use default value?
 
-<details>
+<details markdown="1">
 <summary>💡 Hint: What's the invariant?</summary>
 
 **Invariant:** Bank balance should never be negative (unless you support overdrafts).
@@ -205,7 +205,7 @@ BankAccount acc("Alice", -1000.0);  // Should this be allowed?
 Think: Should `BankAccount("Alice", -1000)` be allowed?
 </details>
 
-<details>
+<details markdown="1">
 <summary>✅ Solution A: Throw Exception</summary>
 
 ```cpp
@@ -235,7 +235,7 @@ try {
 **When to use:** Strict validation (bank software, safety-critical systems)
 </details>
 
-<details>
+<details markdown="1">
 <summary>✅ Solution B: Default to Safe Value</summary>
 
 ```cpp
@@ -303,25 +303,25 @@ int mysteryC(int n) {
 }
 ```
 
-<details>
+<details markdown="1">
 <summary>💡 Hint for A</summary>
 
 Inner loop runs a **constant** 10 times. Does that depend on `n`?
 </details>
 
-<details>
+<details markdown="1">
 <summary>💡 Hint for B</summary>
 
 Every iteration adds an element. What happens to `vec.size()`?
 </details>
 
-<details>
+<details markdown="1">
 <summary>💡 Hint for C</summary>
 
 Draw the recursion tree for `n=5`. How many times is each level called?
 </details>
 
-<details>
+<details markdown="1">
 <summary>✅ Solutions</summary>
 
 ### Snippet A: $O(n)$ ← Trick Question!
@@ -437,7 +437,7 @@ for (int val : lst) {
 }
 ```
 
-<details>
+<details markdown="1">
 <summary>💡 Hint: Memory Layout</summary>
 
 - **Vector:** Elements stored contiguously in memory  
@@ -449,7 +449,7 @@ for (int val : lst) {
 Which one benefits from CPU cache?
 </details>
 
-<details>
+<details markdown="1">
 <summary">✅ Solution + Benchmark Code</summary>
 
 ```cpp
@@ -534,7 +534,7 @@ int main() {
 
 **Hint:** Look carefully at the type of `name` in the loop.
 
-<details>
+<details markdown="1">
 <summary>💡 Hint: Copy vs Reference</summary>
 
 What does `auto name` deduce to? `std::string` or `std::string&`?
@@ -542,7 +542,7 @@ What does `auto name` deduce to? `std::string` or `std::string&`?
 Remember: `auto` deduces **by value** unless you explicitly use `&`!
 </details>
 
-<details>
+<details markdown="1">
 <summary>✅ Solution</summary>
 
 **Bug:** `auto name` creates a **copy** of each string!
@@ -592,7 +592,7 @@ Write 1 million lines to a file using:
 
 Measure the time difference.
 
-<details>
+<details markdown="1">
 <summary>💡 Hint: What does std::endl do?</summary>
 
 `std::endl` = `'\n'` + `flush()`
@@ -600,7 +600,7 @@ Measure the time difference.
 Flushing forces immediate write to disk (bypasses buffer).
 </details>
 
-<details>
+<details markdown="1">
 <summary>✅ Benchmark Code</summary>
 
 ```cpp
