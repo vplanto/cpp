@@ -97,66 +97,51 @@ public:
 ## Частина 2: Smart Pointers (RAII на стероїдах)
 
 <details markdown="1">
-<summary>🔬 <b>Mathematical View:</b> Pointers as Index Functions</summary>
+<summary>🔬 <b>Математичний погляд:</b> Еволюція концепції вказівника</summary>
 
-**Memory as Sequence:**
+Навіщо тут математика? Щоб зрозуміти **Smart Pointers**, треба розібрати саму сутність вказівника. Це допоможе вам бачити не просто синтаксис, а архітектуру ресурсів.
 
-Model memory as a sequence:
+### 1. Фундамент: Вказівник як індекс
+Уявіть пам’ять як послідовність байтів:
 $$M = (m_0, m_1, m_2, \dots, m_n)$$
 
-where each $m_i$ is a byte.
-
-**Pointer Definition:**
-
-A pointer $p$ is simply an **index** $i \in \mathbb{N}$:
+Тоді **вказівник** ($p$) — це просто функція, що повертає координату (індекс) у цій послідовності:
 $$p: () \to \mathbb{N}, \quad p() = i$$
 
-**Dereferencing:**
-$$*p = m_{p()}$$
+**Арифметика:** Коли ми пишемо `p + 1`, ми робимо припущення, що наступний об'єкт лежить рівно за наступним індексом. Це ідеально працює для **масивів**, де дані лежать "стик у стик".
 
-Accessing the value stored at index $p()$.
+---
 
-**Pointer Arithmetic:**
-```cpp
-int* p = &arr[0];  // p() = i
-p + 1;              // p() = i + sizeof(int)
-```
+### 2. Проблема: Дані не завжди лежать поруч
+Уявіть зв’язний список або дерево[^1]. Елементи розкидані по пам’яті. Вираз `p + 1` тут безглуздий — він вкаже на "сміття" між вузлами.
 
-This is index arithmetic: $p_{new}() = p() + \text{sizeof}(T)$.
-
-**Example:**
-```cpp
-int arr[5] = {10, 20, 30, 40, 50};
-int* p = arr;  // p() = address of arr[0]
-
-*p      → m_{p()} = 10
-*(p+1)  → m_{p() + 4} = 20  // sizeof(int) = 4 bytes
-*(p+2)  → m_{p() + 8} = 30
-```
-
-**Iterators (Generalized Indices):**
-
-For non-contiguous structures (linked list, tree), we need a **traversal function**:
+**Рішення: Ітератори (Узагальнені індекси)**
+Ітератор вирішує проблему **універсального доступу**. Це вказівник, який "розумніший" за звичайний індекс, бо він несе в собі **функцію переходу**:
 $$\text{next}: \text{Node} \to \text{Node}$$
 
-An iterator is a pair:
-$$\text{Iterator} = (\text{current\_node}, \text{next\_function})$$
+Тепер "наступний елемент" — це не просто сусідня адреса, а результат обчислення функції `next(p)`. Це дозволяє нам перебирати список так само просто, як і масив.
 
-Examples:
-- Array iterator: $\text{next}(i) = i + 1$ (trivial index increment)
-- List iterator: $\text{next}(node) = node \to next$ (follow pointer)
-- Tree iterator: $\text{next}(n) = \text{in\_order\_successor}(n)$ (complex tree traversal)
+---
 
-**Why Smart Pointers:**
+### 3. Проблема: Хто володіє ресурсом?
+Вказівники та ітератори чудово відповідають на питання **"Де?"** та **"Як іти далі?"**. Але вони нічого не знають про те, **"Скільки дані мають жити?"**.
 
-Raw pointer: Index $p$ with manual lifecycle management  
-Smart pointer: $(p, \text{deleter})$ — index + automatic cleanup function
+**Рішення: Smart Pointers (Вказівники-менеджери)**
+Розумний вказівник — це не просто адреса. Це математична пара:
+$$\text{SmartPointer} = (p, \text{Deleter})$$
 
-When smart pointer goes out of scope:
-1. Call $\text{deleter}(p)$ (free memory at index $p$)
-2. Set $p = \text{null}$ (invalid index)
+Де:
+1.  **$p$** — вказівник або ітератор (знає, де дані).
+2.  **$\text{Deleter}$** — алгоритм, який знає, **коли і як** ці дані знищити.
 
-**See also:** [Memory Model Glossary](00_memory_model_glossary.md#1-memory--storage-duration) for storage duration.
+**Логічний зв'язок:**
+- **Raw Pointer:** Знає тільки адресу.
+- **Iterator:** Знає адресу + як знайти наступну.
+- **Smart Pointer:** Знає адресу + відповідає за те, щоб вона була вчасно звільнена.
+
+[^1]: **Зв'язні структури (списки та дерева)** — це способи організації даних, де елементи не лежать поруч, а посилаються один на одного. Ми детально вивчимо їх у [Лекції 20](20_lists_vector.md) та [Лекції 26](26_tree_structures.md).
+
+**Див. також:** [Глосарій моделі пам'яті](00_memory_model_glossary.md#1-memory--storage-duration) щодо тривалості зберігання (storage duration).
 
 </details>
 
