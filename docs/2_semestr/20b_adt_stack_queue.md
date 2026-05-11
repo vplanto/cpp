@@ -539,7 +539,6 @@ std::vector<int> kLargest(const std::vector<int>& arr, int k) {
 
 **Практикуми:**
 - [Практикум 13: Алгоритми та "Good Taste"](p13_algorithms_and_taste.md) — Задача про потяг (Логіка) та витончене видалення зі списку (Linus Style)
-- [Практикум 14: Пошукова система](p14_search_engine.md) — черга задач для пошукового робота
 
 ---
 

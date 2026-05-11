@@ -313,7 +313,8 @@ for (auto& [name, phone] : phoneBook) {
 
 ## Практичне застосування
 
-**Практикум 14:** [Search Engine — Індексація файлів (Hash Maps)](p14_search_engine.md) — побудова пошукового індексу `word → {files}` за допомогою `std::unordered_map`.
+- [Практикум 14: Search Engine](p14_search_engine.md) — побудова пошукового індексу `word → {files}` за допомогою `std::unordered_map`.
+- [Практикум 15: Pathfinder](p15_pathfinder.md) — пошук шляху в лабіринті (використання `unordered_map` та `unordered_set` для відстеження стану клітинок).
 
 ---
 
