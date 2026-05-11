@@ -508,7 +508,7 @@ std::vector<int> kLargest(const std::vector<int>& arr, int k) {
     }
     return result;
 }
-// kLargest({3,1,4,1,5,9,2,6}, 3) → [4, 5, 6, 9]
+// kLargest({3,1,4,1,5,9,2,6}, 4) → [4, 5, 6, 9]
 ```
 
 **Аналіз складності:**
