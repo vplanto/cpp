@@ -53,7 +53,7 @@
 | Лекція 19 | [Performance Engineering — Big O та Брехня CPU](19_complexity_profiling.md) | Чому доступ до RAM — це "5 хвилин перерви" для процесора. Вчимося бачити $O(N^2)$. |
 | Лекція 20 | [Лінійні структури — Битва Vector vs List](20_lists_vector.md) | Анатомія `std::vector` та `std::list`. Чому Linked List — це "вбивця кешу". |
 | Практикум 12 | [Performance Lab — Оптимізація коду (x10 Speedup)](p12_performance_lab.md) | Профілювання, `reserve()`, прапорці компілятора. |
-| Лекція 20b | [АТД — Stack, Queue, Deque та Priority Queue](20b_adt_stack_queue.md) | LIFO, FIFO, дек з двох кінців, черга з пріоритетами. Питання іспиту — тут. |
+| Лекція 20b | [АТД — Stack, Queue, Deque та Priority Queue](20b_adt_stack_queue.md) | АТД як контракт; LIFO / FIFO; `std::stack`, `std::queue`, `std::deque`, `std::priority_queue`. |
 | Практикум 13 | [Algorithms & Good Taste (Torvalds Edition)](p13_algorithms_and_taste.md) | Алгоритмічна задача про потяг та робота з подвійними вказівниками. |
 
 ---
