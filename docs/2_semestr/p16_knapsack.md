@@ -1,8 +1,8 @@
-# Практикум 16: Knapsack Problem — Оптимі��ація вантажу за допомогою DP
+# Практикум 16: Knapsack Problem — Оптимізація вантажу за допомогою DP
 
 ← [Index](index.md)
 
-**Теорія:** [Лекція 23: Greedy \u0026 Dynamic Programming](23_optimization_dp.md)
+**Теорія:** [Лекція 23: Greedy & Dynamic Programming](23_optimization_dp.md)
 
 ---
 
