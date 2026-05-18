@@ -51,14 +51,21 @@ void bubbleSort(std::vector<int>& arr) {
     }
 }
 // Складність: O(N^2)
-// Стабільність: Так (не міняємо рівні елементи)
+// Стабільність: Так
 ```
+
+**Стабільність (stability):** алгоритм **стабільний**, якщо елементи з **однаковим ключем** після сортування лишаються у **тому самому відносному порядку**, що й у вхідному масиві. У Bubble Sort умова `arr[j] > arr[j + 1]` — **строга** нерівність: сусіди з однаковим значенням **не** міняються місцями, тому «раніший» елемент залишається лівіше «пізнішого». Це має значення, коли ключ — лише частина даних: наприклад, сортуєте транзакції за сумою, а при однаковій сумі потрібно зберегти хронологію внесення в базу.
 
 **Чому повільно?** Навіть якщо масив майже відсортований, алгоритм все одно робить N^2 порівнянь.
 
 ### Selection Sort (Сортування вибором)
 
 Ідея: Шукаємо мінімальний елемент і ставимо його на початок. Повторюємо для хвоста масиву.
+
+<div markdown="0" style="margin:1rem 0;">
+<iframe src="assets/selection_sort.html" title="Selection Sort — покрокова візуалізація" width="100%" height="680" style="display:block;width:100%;min-height:560px;height:68vh;max-height:820px;border:1px solid #d0d7de;border-radius:8px;background:#0f1419;" loading="lazy"></iframe>
+<p style="margin-top:0.5rem;font-size:0.9rem;color:#57606a;"><em>Покрокова візуалізація:</em> пошук <code>minIdx</code> у хвості, порівняння та обмін на позицію <code>i</code> — «Далі» / «Назад» або <kbd>←</kbd> <kbd>→</kbd>. <a href="assets/selection_sort.html" target="_blank" rel="noopener">Відкрити в окремій вкладці</a> · <a href="https://github.com/vplanto/cpp/tree/main/docs/2_semestr/assets">вихідні файли</a></p>
+</div>
 
 ```cpp
 void selectionSort(std::vector<int>& arr) {
@@ -81,90 +88,16 @@ void selectionSort(std::vector<int>& arr) {
 // Стабільність: Ні (swap може порушити порядок)
 ```
 
-**Step-by-Step Visualization:**
-
-> **💡 Visual Schema from Source Material**  
-> Джерело: Sorting using Lists.pdf, стор. 172-176
-
-![Sorting Algorithm — базова класифікація алгоритмів](attachments/sorting-000.jpg)
-
-*Рис. 1: Insertion Sort — покрокова візуалізація*
-
-![Sorting Step-by-Step — порівняння Bubble vs Merge](attachments/sorting-002.jpg)
-
-*Рис. 2: Порівняння Bubble Sort та Merge Sort під час виконання*
-
-**Insertion Sort Frame-By-Frame:**
-```
-Initial:  [5][2][4][6][1][3]
-          ↑ sorted region ends here
-
-Pass 1:   [2][5][4][6][1][3]  ← Insert 2 into sorted [5]
-          ↑↑
-
-Pass 2:   [2][4][5][6][1][3]  ← Insert 4 into sorted [2,5]
-          ↑↑↑
-
-Pass 3:   [2][4][5][6][1][3]  ← 6 already in correct position
-          ↑↑↑↑
-
-Pass 4:   [1][2][4][5][6][3]  ← Insert 1 at beginning
-          ↑↑↑↑↑
-
-Pass 5:   [1][2][3][4][5][6]  ← Insert 3 into sorted region
-          ↑↑↑↑↑↑ SORTED!
-```
-
-**Bubble Sort Frame-By-Frame:**
-```
-Initial:  [5][2][4][6][1][3]
-
-Pass 1:   [2][4][5][1][3][6]  ← Largest (6) bubbles to end
-                          ↑ fixed
-
-Pass 2:   [2][4][1][3][5][6]  ← Second largest (5) fixed
-                       ↑↑ fixed
-
-Pass 3:   [2][1][3][4][5][6]  ← Third largest (4) fixed
-                    ↑↑↑ fixed
-
-Pass 4:   [1][2][3][4][5][6]  ← Final swaps
-              ↑↑↑↑ fixed
-```
-
-**Merge Sort Divide-and-Conquer:**
-```
-DIVIDE Phase:
-[5][2][4][6][1][3]
-     ↓ split
-[5][2][4]   [6][1][3]
-     ↓           ↓
-[5]  [2][4]   [6]  [1][3]
-       ↓            ↓
-     [2] [4]      [1] [3]
-
-CONQUER Phase (Merge):
-     [2] [4]      [1] [3]
-       ↓            ↓
-    [2][4]        [1][3]
-       ↓            ↓
-     [2][4][5]   [1][3][6]
-         ↓
-    [1][2][3][4][5][6]  ← Final merge
-```
-
-**Key Visual Insights:**
-- **Insertion**: Grows sorted region from left
-- **Bubble**: Fixes largest elements from right
-- **Merge**: Divide fully, then merge up
-
-**Висновок:** O(N^2) алгоритми придатні лише для навчання або дуже малих масивів (N < 50).
-
 ---
 
 ## Частина 2: QuickSort — Divide and Conquer
 
 Алгоритм, вигаданий Tony Hoare у 1959 році. Досі один з найшвидших на практиці.
+
+<div markdown="0" style="margin:1rem 0;">
+<iframe src="assets/quick_sort.html" title="Quick Sort — покрокова візуалізація" width="100%" height="680" style="display:block;width:100%;min-height:560px;height:68vh;max-height:820px;border:1px solid #d0d7de;border-radius:8px;background:#0f1419;" loading="lazy"></iframe>
+<p style="margin-top:0.5rem;font-size:0.9rem;color:#57606a;"><em>Покрокова візуалізація:</em> <code>partition</code>, pivot, <code>pi</code> та рекурсія по підмасивах — зафіксовані позиції зелені — «Далі» / «Назад» або <kbd>←</kbd> <kbd>→</kbd>. <a href="assets/quick_sort.html" target="_blank" rel="noopener">Відкрити в окремій вкладці</a> · <a href="https://github.com/vplanto/cpp/tree/main/docs/2_semestr/assets">вихідні файли</a></p>
+</div>
 
 ### Ідея
 
@@ -215,9 +148,29 @@ void quickSort(std::vector<int>& arr, int low, int high) {
 
 ## Частина 3: MergeSort — Гарантований O(N log N)
 
-Алгоритм від John von Neumann (1945). Ідеальний, коли потрібна передбачуваність.
+Алгоритм від **John von Neumann** (1945). Ідеальний, коли потрібна передбачуваність.
+
+**Хто такий von Neumann?** **John von Neumann** (1903–1957) — угоро-американський математик і фізик, один із архітекторів сучасної обчислювальної техніки. Окрім Merge Sort (1945), відомий внеском у **теорію ігор**, квантову механіку та проєкт **Manhattan**; працював над комп’ютером **EDVAC**.
+
+**Архітектура фон Неймана** — модель майже кожного сучасного CPU (x86, ARM, RISC-V). До неї програми на ранніх машинах (наприклад, **ENIAC**) часто задавали **перемиканням дротів** або жорстко «прошивали» логіку: змінити алгоритм означало фізично перебудувати машину. Von Neumann запропонував **збережену програму**: і **інструкції**, і **дані** лежать в **одній адресованій пам’яті**; процесор лише **читає** їх послідовно.
+
+Класична схема (спрощено):
+
+1. **Пам’ять (RAM)** — єдине сховище для коду `mergeSort(...)` і масиву `arr`.
+2. **Процесор (CPU)** — **блок керування** (звідки брати наступну інструкцію) + **АЛП** (арифметика, порівняння).
+3. **Шина** — канал «пам’ять ↔ процесор» (адреса + дані).
+4. **Пристрої вводу/виводу** — клавіатура, диск, мережа (дані теж потрапляють у пам’ять).
+
+Цикл роботи: **fetch** (зчитати інструкцію з пам’яті за лічильником PC) → **decode** (зрозуміти, що робити) → **execute** (наприклад, `arr[j] <= pivot`) → збільшити PC і повторити. Тому ваш C++-код — це не «магія компілятора», а **послідовність машинних команд**, що переміщують байти в RAM; Merge Sort на такій машині зручно аналізувати як **стабільні** $O(N \log N)$ на кожному рівні рекурсії, без сюрпризів на кшталт «відсортований масив = найгірший випадок», як у наївного QuickSort.
+
+> Сьогодні є винятки (GPU, **Harvard**-подібні кеші інструкцій/даних, паралелізм), але **логічна** картина для програміста на ноутбуці лишається фон-нейманівською: одна пам’ять, один потік інструкцій, дані поруч із кодом.
 
 ### Ідея
+
+<div markdown="0" style="margin:1rem 0;">
+<iframe src="assets/merge_sort.html" title="Merge Sort — покрокова візуалізація" width="100%" height="680" style="display:block;width:100%;min-height:560px;height:68vh;max-height:820px;border:1px solid #d0d7de;border-radius:8px;background:#0f1419;" loading="lazy"></iframe>
+<p style="margin-top:0.5rem;font-size:0.9rem;color:#57606a;"><em>Покрокова візуалізація:</em> divide → conquer → <code>merge</code>, активний підмасив і локально відсортовані сегменти (пунктир) — «Далі» / «Назад» або <kbd>←</kbd> <kbd>→</kbd>. <a href="assets/merge_sort.html" target="_blank" rel="noopener">Відкрити в окремій вкладці</a> · <a href="https://github.com/vplanto/cpp/tree/main/docs/2_semestr/assets">вихідні файли</a></p>
+</div>
 
 1. **Divide:** Розділити масив навпіл.
 2. **Conquer:** Рекурсивно відсортувати кожну половину.
@@ -279,8 +232,13 @@ void mergeSort(std::vector<int>& arr, int left, int right) {
 ### Алгоритм IntroSort (Introspective Sort)
 
 1. Починаємо з **QuickSort**.
-2. Якщо глибина рекурсії перевищує `2 * log(N)` (ознака деградації), переключаємося на **HeapSort**.
-3. Для малих підмасивів (N < 16) використовуємо **Insertion Sort** (він швидший за QuickSort на мікроданих).
+
+**HeapSort (купа):** будує **бінарну купу** (max-heap) у масиві — найбільший елемент завжди у «корені» дерева. Потім $N$ разів **знімає максимум**: бере цей корінь, **ставить його в кінець** уже відсортованої правої частини масиву, скорочує купу на один елемент і **відновлює** властивість купи (heapify). Тобто «зняти» = *витягнути поточний максимум із купи й зафіксувати на місці*, а не просто видалити з пам’яті. Складність **завжди** $O(N \log N)$, сортує **на місці** ($O(1)$ додаткової пам’яті, окрім рекурсії/ітерацій), але зазвичай **нестабільний** і повільніший за QuickSort на «звичайних» даних через гіршу локальність доступу.
+
+**Insertion Sort (вставками):** тримає **відсортований префікс** зліва й вставляє наступний елемент на правильне місце (як розкладка карт у руці). На великих $N$ — $O(N^2)$, але на **малих** підмасивах ($N < 16$) дуже ефективний: мало накладних витрат, відмінна кеш-локальність, швидко завершується на майже відсортованих хвостах.
+
+2. Якщо глибина рекурсії перевищує `2 * log(N)` (ознака деградації QuickSort), переключаємося на **HeapSort** — гарантований захист від $O(N^2)$.
+3. Для малих підмасивів ($N < 16$) використовуємо **Insertion Sort** замість partition/recursion — менше викликів і порівнянь на «мікроданих».
 
 ```cpp
 // Псевдокод std::sort (спрощено)
@@ -313,10 +271,16 @@ void introsort(std::vector<T>& arr, int maxDepth) {
 |----------|--------------|----------------|---------|-------------|----------------------|
 | **Bubble Sort** | O(N^2) | O(N^2) | O(1) | Так | Ніколи (тільки навчання) |
 | **Selection Sort** | O(N^2) | O(N^2) | O(1) | Ні | Ніколи |
+| **Insertion Sort** | O(N^2)* | O(N^2) | O(1) | Так | Малі $N$ ($<16$), майже відсортовані дані; хвіст IntroSort |
 | **QuickSort** | O(N log N) | O(N^2) | O(log N) | Ні | Загальне призначення, великі дані |
+| **HeapSort** | O(N log N) | O(N log N) | O(1)** | Ні | Гарантія $O(N \log N)$ in-place; запасний варіант IntroSort |
 | **MergeSort** | O(N log N) | O(N log N) | O(N) | Так | Коли потрібна стабільність або гарантований час |
 | **IntroSort** | O(N log N) | O(N log N) | O(log N) | Ні | **std::sort** — дефолт для C++ |
 | **std::stable_sort** | O(N log N) | O(N log N) | O(N) | Так | Коли важливий порядок рівних елементів |
+
+\* Insertion Sort: **O(N)** на майже відсортованому масиві, але в таблиці зазвичай вказують гірший аналітичний випадок $O(N^2)$.
+
+\** HeapSort: сортує in-place у масиві; стек рекурсії heapify — $O(\log N)$, додатковий буфер не потрібен.
 
 ---
 

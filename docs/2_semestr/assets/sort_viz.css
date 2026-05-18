@@ -45,7 +45,7 @@ header strong { color: var(--text); }
 
 .main {
   display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 3fr); /* 70% / 30% */
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); /* 60% code / 40% array */
   grid-template-rows: minmax(0, 1fr);
   min-height: 0;
   overflow: hidden;
@@ -127,10 +127,12 @@ header strong { color: var(--text); }
 .array-viz-slot {
   flex: 1;
   min-height: 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 pre {
@@ -179,16 +181,23 @@ pre {
 .op { color: #ffa657; }
 
 .array-viz {
-  flex: 1;
+  flex: 1 0 auto;
   min-height: 0;
+  min-width: max-content;
   display: flex;
   align-items: stretch;
-  justify-content: center;
-  flex-wrap: wrap;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
   align-content: flex-end;
   gap: clamp(0.25rem, 1vw, 0.5rem);
-  width: 100%;
   padding: 0;
+  overflow: hidden;
+}
+
+@supports (justify-content: safe center) {
+  .array-viz {
+    justify-content: safe center;
+  }
 }
 
 .cell {
@@ -196,9 +205,11 @@ pre {
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  flex-shrink: 0;
   gap: 0.25rem;
   height: 100%;
   min-height: 0;
+  transition: opacity 0.3s ease;
 }
 
 .cell .idx {
@@ -209,8 +220,8 @@ pre {
 
 .cell .bar-wrap {
   position: relative;
-  width: clamp(2rem, 4vw, 2.75rem);
-  min-width: 2rem;
+  width: clamp(1.5rem, 3vw, 2.5rem);
+  min-width: 1.2rem;
   flex: 1 1 auto;
   height: 100%;
   min-height: 200px;
@@ -262,6 +273,17 @@ pre {
 }
 
 .cell.sorted .bar { background: var(--bar-sorted); }
+
+/* Merge Sort: фокус на поточному підмасиві */
+.cell.not-in-range {
+  opacity: 0.3;
+  filter: grayscale(0.8);
+}
+
+.cell.locally-sorted .bar-wrap {
+  border-style: dashed;
+  border-color: var(--bar-sorted);
+}
 
 .cell.compare .bar-wrap {
   border-color: var(--accent);
