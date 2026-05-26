@@ -1,0 +1,247 @@
+/* Стилі для візуалізації графів, що розширюють sort_viz.css */
+
+.graph-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.graph-viz-container {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 20, 25, 0.4);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  padding: 0.5rem;
+}
+
+#graph-svg {
+  width: 100%;
+  height: 100%;
+  max-height: 320px;
+  user-select: none;
+}
+
+/* Граф: Ребра */
+.graph-edge {
+  stroke: var(--border);
+  stroke-width: 3;
+  transition: stroke 0.3s, stroke-width 0.3s, stroke-dasharray 0.3s;
+}
+
+.graph-edge.active {
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-dasharray: 6 3;
+  animation: edgeFlow 1s linear infinite;
+}
+
+.graph-edge.visited {
+  stroke: var(--bar-sorted);
+  stroke-width: 3.5;
+}
+
+@keyframes edgeFlow {
+  to {
+    stroke-dashoffset: -9;
+  }
+}
+
+/* Граф: Вузли */
+.graph-node {
+  cursor: pointer;
+}
+
+.graph-node circle {
+  fill: #161b22;
+  stroke: var(--border);
+  stroke-width: 3;
+  transition: fill 0.3s, stroke 0.3s, stroke-width 0.3s, transform 0.2s;
+  transform-origin: center;
+}
+
+.graph-node:hover circle {
+  transform: scale(1.08);
+}
+
+.graph-node text {
+  fill: var(--text);
+  font-family: monospace;
+  font-size: 14px;
+  font-weight: bold;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+/* Вузол у черзі */
+.graph-node.queued circle {
+  stroke: var(--accent);
+  fill: rgba(88, 166, 255, 0.15);
+}
+
+/* Вузол, який зараз обробляється (current) */
+.graph-node.current circle {
+  stroke: #ffa657;
+  fill: rgba(255, 166, 87, 0.25);
+  stroke-width: 5;
+  animation: pulseNode 1.5s infinite alternate;
+}
+
+/* Відвіданий вузол */
+.graph-node.visited circle {
+  stroke: var(--bar-sorted);
+  fill: rgba(63, 185, 80, 0.15);
+}
+
+@keyframes pulseNode {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 2px rgba(255, 166, 87, 0.4));
+  }
+  100% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 8px rgba(255, 166, 87, 0.8));
+  }
+}
+
+/* Додаткові структури даних */
+.data-structures {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: #161b22;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+  flex-shrink: 0;
+}
+
+.ds-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ds-label {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: var(--muted);
+  width: 90px;
+  flex-shrink: 0;
+}
+
+/* Візуалізація visited[] */
+.visited-array {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.visited-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #21262d;
+  min-width: 42px;
+  overflow: hidden;
+  font-family: monospace;
+  font-size: 0.75rem;
+}
+
+.visited-cell .v-idx {
+  background: rgba(0, 0, 0, 0.25);
+  width: 100%;
+  text-align: center;
+  padding: 0.1rem 0;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.visited-cell .v-val {
+  padding: 0.2rem 0;
+  font-weight: bold;
+  color: #f85149;
+}
+
+.visited-cell.is-true .v-val {
+  color: #3fb950;
+}
+
+.visited-cell.is-true {
+  border-color: var(--bar-sorted);
+  background: rgba(63, 185, 80, 0.05);
+}
+
+/* Візуалізація черги */
+.queue-viz {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  background: #0f1419;
+  min-height: 38px;
+  flex: 1;
+  font-family: monospace;
+  overflow-x: auto;
+}
+
+.queue-empty {
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+.queue-item {
+  background: rgba(88, 166, 255, 0.15);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 3px;
+  padding: 0.1rem 0.4rem;
+  font-weight: bold;
+  font-size: 0.85rem;
+  animation: popIn 0.2s ease-out;
+}
+
+.queue-arrow {
+  color: var(--muted);
+  font-weight: bold;
+  font-size: 0.8rem;
+  user-select: none;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Написи ваги ребер */
+.edge-weight {
+  fill: var(--muted);
+  font-family: monospace;
+  font-size: 11px;
+  font-weight: bold;
+  text-anchor: middle;
+  dominant-baseline: central;
+  paint-order: stroke fill;
+  stroke: var(--bg);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+

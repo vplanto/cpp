@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пошук компонент зв'язності (Незв'язаний граф)</title>
+  <link rel="stylesheet" href="sort_viz.css">
+  <link rel="stylesheet" href="graph_viz.css">
+</head>
+<body>
+  <header><strong id="viz-title">Пошук компонент</strong> — незв'язаний граф (лекція 22)</header>
+
+  <div class="main">
+    <section class="panel panel-code" aria-label="Код">
+      <h2>Код (C++)</h2>
+      <div class="code-wrap">
+        <pre id="code"></pre>
+      </div>
+    </section>
+
+    <section class="panel panel-array" aria-label="Граф">
+      <div class="panel-array-head">
+        <h2>Візуалізація Графа</h2>
+        <span class="step-info" id="stepInfo" aria-live="polite">0 / 0</span>
+      </div>
+      <div class="array-viz-slot graph-slot">
+        <div class="graph-viz-container">
+          <svg id="graph-svg" viewBox="0 0 520 280"></svg>
+        </div>
+        
+        <div class="data-structures">
+          <div class="ds-row">
+            <span class="ds-label">visited[]:</span>
+            <div class="visited-array" id="visited-array"></div>
+          </div>
+          <div class="ds-row">
+            <span class="ds-label">Черга q:</span>
+            <div class="queue-viz" id="queue-viz"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="footer-body">
+      <div class="footer-text-grid">
+        <p class="step-caption" id="caption" aria-live="polite"></p>
+        <p class="code-comment" id="codeComment" aria-live="polite"></p>
+      </div>
+      <div class="vars" id="vars"></div>
+    </div>
+    <div class="controls">
+      <button type="button" id="btnReset" title="Скинути до початкового стану">Скинути</button>
+      <button type="button" id="btnPrev">← Назад</button>
+      <button type="button" id="btnNext" class="primary">Далі →</button>
+    </div>
+  </footer>
+
+  <script src="graph_viz.js"></script>
+  <script src="graph_disconnected.js"></script>
+</body>
+</html>

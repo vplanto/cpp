@@ -406,6 +406,16 @@ int countComponents(int n, const std::vector<std::vector<int>>& graph) {
 
 **Застосування:** Визначення острівців у карті, перевірка зв'язності мережі, кластеризація.
 
+<iframe src="assets/graph_connected.html" title="Пошук компонент зв'язності (Зв'язаний граф) — покрокова візуалізація" width="100%" height="680" style="display:block;width:100%;min-height:560px;height:68vh;max-height:820px;border:1px solid #d0d7de;border-radius:8px;background:#0f1419;" loading="lazy"></iframe>
+<p style="margin-top:0.5rem;margin-bottom:1.5rem;font-size:0.9rem;color:#57606a;">
+<em>Покрокова візуалізація:</em> обхід зв'язаного графа (1 компонента зв'язності) за допомогою BFS — «Далі» / «Назад» або <kbd>←</kbd> <kbd>→</kbd>. <a href="assets/graph_connected.html" target="_blank" rel="noopener">Відкрити в окремій вкладці</a> · <a href="https://github.com/vplanto/cpp/tree/main/docs/2_semestr/assets">вихідні файли</a>
+</p>
+
+<iframe src="assets/graph_disconnected.html" title="Пошук компонент зв'язності (Незв'язаний граф) — покрокова візуалізація" width="100%" height="680" style="display:block;width:100%;min-height:560px;height:68vh;max-height:820px;border:1px solid #d0d7de;border-radius:8px;background:#0f1419;" loading="lazy"></iframe>
+<p style="margin-top:0.5rem;margin-bottom:1.5rem;font-size:0.9rem;color:#57606a;">
+<em>Покрокова візуалізація:</em> обхід незв'язаного графа (2 окремі компоненти) за допомогою BFS — «Далі» / «Назад» або <kbd>←</kbd> <kbd>→</kbd>. <a href="assets/graph_disconnected.html" target="_blank" rel="noopener">Відкрити в окремій вкладці</a> · <a href="https://github.com/vplanto/cpp/tree/main/docs/2_semestr/assets">вихідні файли</a>
+</p>
+
 ---
 
 ## Частина 8: Dijkstra — найкоротший шлях у зваженому графі
@@ -469,6 +479,11 @@ std::vector<int> dijkstra(const Graph& graph, int start) {
     return dist;
 }
 ```
+
+<iframe src="assets/dijkstra.html" title="Алгоритм Дейкстри — покрокова візуалізація" width="100%" height="680" style="display:block;width:100%;min-height:560px;height:68vh;max-height:820px;border:1px solid #d0d7de;border-radius:8px;background:#0f1419;" loading="lazy"></iframe>
+<p style="margin-top:0.5rem;margin-bottom:1.5rem;font-size:0.9rem;color:#57606a;">
+<em>Покрокова візуалізація:</em> алгоритм Дейкстри (пошук найкоротшого шляху) — «Далі» / «Назад» або <kbd>←</kbd> <kbd>→</kbd>. <a href="assets/dijkstra.html" target="_blank" rel="noopener">Відкрити в окремій вкладці</a> · <a href="https://github.com/vplanto/cpp/tree/main/docs/2_semestr/assets">вихідні файли</a>
+</p>
 
 **Складність:** $O((V + E) \log E) \approx O((V + E) \log V)$.
 
