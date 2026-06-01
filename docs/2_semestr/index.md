@@ -55,6 +55,7 @@
 | Практикум 12 | [Performance Lab — Оптимізація коду (x10 Speedup)](p12_performance_lab.md) | Профілювання, `reserve()`, прапорці компілятора. |
 | Лекція 20b | [АТД — Stack, Queue, Deque та Priority Queue](20b_adt_stack_queue.md) | АТД як контракт; LIFO / FIFO; `std::stack`, `std::queue`, `std::deque`, `std::priority_queue`. |
 | Практикум 13 | [Algorithms & Good Taste (Torvalds Edition)](p13_algorithms_and_taste.md) | Алгоритмічна задача про потяг та робота з подвійними вказівниками. |
+| Лекція 27 | [Асоціативні контейнери — Map та Set](27_maps_sets.md) | `std::map`, `std::unordered_map`, `std::set`, `std::unordered_set` — складність, вибір та підводні камені. |
 
 ---
 
@@ -82,7 +83,6 @@
 | Лекція 24 | [Performance Deep Dive — Профілювання та Оптимізація](24_performance_deep_dive.md) | Memory hierarchy, Timer class, compiler flags, perf profiling, Makefile. |
 | Лекція 25 | [String Algorithms — Pattern Matching](25_string_algorithms.md) | Naive, Rabin-Karp, KMP. Complexity proofs and rolling hash optimization. |
 | Лекція 26 | [Tree Data Structures — BST and Red-Black Trees](26_tree_structures.md) | BST operations, rotations, Red-Black balancing mechanics, why std::map uses RB-trees. |
-| Лекція 27 | [Асоціативні контейнери — Map та Set](27_maps_sets.md) | `std::map`, `std::unordered_map`, `std::set`, `std::unordered_set` — складність, вибір та підводні камені. |
 | Практикум 17 | [1 Billion Row Challenge — Екстремальна оптимізація](p17_billion_row.md) | Прискорення обробки даних у 50+ разів. String view, integer math, zero-copy техніки. |
 | Практикум 18 | [Pattern Matching Algorithms — Реалізація та Порівняння](p18_pattern_matching.md) | Implement Naive, Rabin-Karp, KMP. Benchmark and DNA sequencing application. |
 | Практикум 19 | [Building a Binary Search Tree — Візуалізація та Benchmark](p19_bst_implementation.md) | BST from scratch, rotations, ASCII visualization, comparison with std::map. |

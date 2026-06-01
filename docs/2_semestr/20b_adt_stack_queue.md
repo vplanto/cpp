@@ -1,6 +1,6 @@
 # Лекція 20b: АТД — Stack, Queue, Deque та Priority Queue
 
-[← Лекція 20](20_lists_vector.md) | [Index](index.md) | [Далі: Лекція 21 →](21_sorting_algorithms.md)
+[← Лекція 20](20_lists_vector.md) | [Index](index.md) | [Далі: Лекція 27 →](27_maps_sets.md)
 
 ## Мета
 

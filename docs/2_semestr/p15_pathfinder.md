@@ -2,7 +2,7 @@
 
 ← [Index](index.md)
 
-**Теорія:** [Лекція 22: Graphs \u0026 Search](22_graphs_search.md)
+**Теорія:** [Лекція 22: Графи та Алгоритми пошуку](22_graphs_search.md)
 
 ---
 
@@ -31,6 +31,8 @@ S 0 1 0 0
 ```
 
 ### Структура даних
+
+Створіть заголовочний файл `Maze.h`:
 
 ```cpp
 #include <vector>
@@ -79,6 +81,8 @@ public:
    - Витягуємо позицію.
    - Якщо це ціль — знайшли!
    - Інакше додаємо всіх сусідів (вгору, вниз, ліворуч, праворуч) до черги.
+
+Створіть заголовочний файл `BFS.h`:
 
 ```cpp
 #include <queue>
@@ -158,6 +162,8 @@ std::vector<Position> reconstructPath(
 2. Інакше перевіряємо всіх сусідів рекурсивно.
 3. Якщо сусід веде до цілі → повертаємо `true`.
 
+Створіть заголовочний файл `DFS.h`:
+
 ```cpp
 bool DFSRecursive(const Maze& maze, 
                   Position current, 
@@ -201,98 +207,122 @@ std::vector<Position> DFS(const Maze& maze) {
 
 ---
 
-## Частина 4: Візуалізація шляху
+## Частина 4: Візуалізація шляху та тестування
 
 **Завдання:** Надрукуйте лабіринт з позначеним шляхом.
 
+Створіть файл `main.cpp` та додайте наступний код:
+
 ```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+#include "Maze.h"
+#include "BFS.h"
+#include "DFS.h"
+
 void printMaze(const Maze& maze, const std::vector<Position>& path) {
-    auto grid = maze.getGrid(); // Копія
+    auto grid = maze.getGrid();
     
-    // Позначаємо шлях символом '*'
     for (const auto& pos : path) {
         if (!(pos == maze.getStart()) && !(pos == maze.getEnd())) {
             grid[pos.row][pos.col] = 2; // Маркер шляху
         }
     }
     
-    for (const auto& row : grid) {
-        for (int cell : row) {
-            if (cell == 0) std::cout << ". ";       // Прохід
-            else if (cell == 1) std::cout << "# ";  // Стіна
-            else if (cell == 2) std::cout << "* ";  // Шлях
+    Position start = maze.getStart();
+    Position end = maze.getEnd();
+    
+    for (int r = 0; r < (int)grid.size(); ++r) {
+        for (int c = 0; c < (int)grid[r].size(); ++c) {
+            Position pos = {r, c};
+            if (pos == start) {
+                std::cout << "S ";
+            } else if (pos == end) {
+                std::cout << "E ";
+            } else if (grid[r][c] == 0) {
+                std::cout << ". ";
+            } else if (grid[r][c] == 1) {
+                std::cout << "# ";
+            } else if (grid[r][c] == 2) {
+                std::cout << "* ";
+            }
         }
-        std::cout << "\\n";
+        std::cout << std::endl;
     }
 }
-```
 
-**Приклад виводу:**
-```
-S * # . .
-. * # . #
-# * * * .
-# # # * E
-```
-
----
-
-## Частина 5: Порівняння BFS vs DFS
-
-**Експеримент:** Запустіть обидва алгоритми на одному лабіринті.
-
-```cpp
 int main() {
-    std::vector<std::vector<int>> grid = {
+    std::vector<std::vector<int>> grid1 = {
         {0, 0, 1, 0, 0},
         {0, 0, 1, 0, 1},
         {1, 0, 0, 0, 0},
         {1, 1, 1, 0, 0}
     };
-    
-    Maze maze(grid, {0, 0}, {3, 4});
-    
-    std::cout << "=== BFS ===\\n";
-    auto bfs_path = BFS(maze);
-    std::cout << "Path length: " << bfs_path.size() << "\\n";
-    printMaze(maze, bfs_path);
-    
-    std::cout << "\\n=== DFS ===\\n";
-    auto dfs_path = DFS(maze);
-    std::cout << "Path length: " << dfs_path.size() << "\\n";
-    printMaze(maze, dfs_path);
+    Maze maze1(grid1, {0, 0}, {3, 4});
+
+    std::vector<std::vector<int>> grid2 = {
+        {0, 0, 1, 0, 0},
+        {0, 0, 1, 0, 1},
+        {1, 0, 0, 1, 1},
+        {1, 1, 1, 1, 0}
+    };
+    Maze maze2(grid2, {0, 0}, {3, 4});
+
+    std::vector<std::vector<int>> grid3 = {
+        {0, 0, 0, 0, 0, 0},
+        {0, 1, 1, 1, 1, 0},
+        {0, 1, 0, 0, 0, 0},
+        {0, 1, 0, 1, 1, 1},
+        {0, 0, 0, 1, 0, 0},
+        {1, 1, 0, 0, 0, 0}
+    };
+    Maze maze3(grid3, {0, 0}, {5, 5});
+
+    std::vector<std::pair<std::string, Maze>> test_cases = {
+        {"Приклад 1: Стандартний лабіринт", maze1},
+        {"Приклад 2: Непрохідний лабіринт", maze2},
+        {"Приклад 3: Більший лабіринт", maze3}
+    };
+
+    for (const auto& [name, maze] : test_cases) {
+        std::cout << "\n========================================\n";
+        std::cout << name << "\n";
+        std::cout << "========================================\n";
+
+        std::cout << "\n=== BFS ===\n";
+        auto bfs_path = BFS(maze);
+        if (bfs_path.empty()) {
+            std::cout << "Шлях не знайдено!\n";
+        } else {
+            std::cout << "Довжина шляху: " << bfs_path.size() << "\n";
+            printMaze(maze, bfs_path);
+        }
+
+        std::cout << "\n=== DFS ===\n";
+        auto dfs_path = DFS(maze);
+        if (dfs_path.empty()) {
+            std::cout << "Шлях не знайдено!\n";
+        } else {
+            std::cout << "Довжина шляху: " << dfs_path.size() << "\n";
+            printMaze(maze, dfs_path);
+        }
+    }
 }
 ```
 
-**Очікуваний результат:**
-- **BFS:** Знайде **найкоротший шлях** (мінімальна кількість кроків).
-- **DFS:** Знайде **будь-який шлях** (може бути довшим).
+### Компіляція та запуск
 
----
+Для компіляції проекту за допомогою `g++` перейдіть у папку з файлами та виконайте:
 
-## Бонус: A* Algorithm
-
-**Ідея:** Покращити BFS, додавши **евристику** — оцінку відстані до цілі.
-
-**Formula:**
-```
-f(n) = g(n) + h(n)
-g(n) = реальна відстань від старту до n
-h(n) = евристична відстань від n до цілі (наприклад, Manhattan distance)
+```bash
+g++ -std=c++17 main.cpp -o pathfinder
 ```
 
-**Manhattan Distance:**
-```cpp
-int manhattanDistance(const Position& a, const Position& b) {
-    return std::abs(a.row - b.row) + std::abs(a.col - b.col);
-}
-```
+Для запуску програми:
 
-**Використання priority_queue замість звичайної черги:**
-
-```cpp
-std::priority_queue<std::pair<int, Position>> pq; // (пріоритет, позиція)
-pq.push({0 + manhattanDistance(start, end), start});
+```bash
+./pathfinder
 ```
 
 ---
@@ -345,11 +375,3 @@ while (!q.empty()) {
 
 </details>
 
-4. У чому перевага A* над BFS?
-
-<details markdown="1">
-<summary>Відповідь</summary>
-
-A* використовує **евристику**, щоб досліджувати Перше напрямки, які ближче до цілі. Це зменшує кількість відвіданих клітинок. BFS досліджує всі напрямки рівномірно, навіть якщо ціль очевидно знаходиться в іншому боці. A* — оптимізація BFS для випадків, коли ми знаємо «приблизно» де ціль.
-
-</details>
