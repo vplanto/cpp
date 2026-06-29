@@ -450,7 +450,7 @@ Which one benefits from CPU cache?
 </details>
 
 <details markdown="1">
-<summary">✅ Solution + Benchmark Code</summary>
+<summary>✅ Solution + Benchmark Code</summary>
 
 ```cpp
 #include <vector>
