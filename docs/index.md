@@ -50,7 +50,7 @@
   * [Практикум 6: std::string — Створюємо "Аналізатор логів"](p06_log_analyzer.md)
   * [Практикум 7: Динамічні масиви структур (new[])](p07_new_struct.md)
   * [Практикум 8: Файлові потоки (fstream) — Створюємо "Save Game"](p08_fstream.md)
-  * [Практикум 9: Розподіл Пуассона — бомбардування Лондону (1944)](p09_poisson_london.md) — [`00-intro/poisson.cpp`](../00-intro/poisson.cpp)
+  * [Практикум 9: Розподіл Пуассона — бомбардування Лондону (1944)](p09_poisson_london.md) — [`00-intro/poisson.cpp`](https://github.com/vplanto/cpp/blob/main/00-intro/poisson.cpp)
 
 ## Вказівки та додаткові матеріали
 

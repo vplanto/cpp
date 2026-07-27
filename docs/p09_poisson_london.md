@@ -53,9 +53,9 @@
 
 Щоб відповісти, потрібна модель. Якщо рідкісні незалежні події відбуваються зі середньою інтенсивністю **λ** на одиницю площі (тут — на один квадрат), то ймовірність отримати рівно **k** подій:
 
-\[
+$$
 P(k) = \frac{\lambda^k \cdot e^{-\lambda}}{k!}
-\]
+$$
 
 | Символ | Значення |
 | :--- | :--- |
@@ -66,17 +66,17 @@ P(k) = \frac{\lambda^k \cdot e^{-\lambda}}{k!}
 
 Для даних Clarke:
 
-\[
+$$
 \lambda = \frac{537}{576} \approx 0{,}932
-\]
+$$
 
 Очікувана кількість квадратів із **k** ударами:
 
-\[
+$$
 \text{очікувано}(k) = 576 \cdot P(k)
-\]
+$$
 
-У C++ (як у [`poisson.cpp`](../00-intro/poisson.cpp)):
+У C++ (як у [`poisson.cpp`](https://github.com/vplanto/cpp/blob/main/00-intro/poisson.cpp)):
 
 ```cpp
 double poissonProbability(double lambda, int k) {
@@ -104,9 +104,9 @@ double poissonProbability(double lambda, int k) {
 
 ## 🛠️ Завдання
 
-Напишемо невелику утиліту [`poisson.cpp`](../00-intro/poisson.cpp), яка обчислює **розподіл Пуассона**, і порівняємо з таблицею Clarke.
+Напишемо невелику утиліту [`poisson.cpp`](https://github.com/vplanto/cpp/blob/main/00-intro/poisson.cpp), яка обчислює **розподіл Пуассона**, і порівняємо з таблицею Clarke.
 
-1. Зберіть і запустіть [`poisson.cpp`](../00-intro/poisson.cpp).
+1. Зберіть і запустіть [`poisson.cpp`](https://github.com/vplanto/cpp/blob/main/00-intro/poisson.cpp).
 2. Введіть `λ = 537/576` (≈ `0.93229167`).
 3. Програма виведе:
 
