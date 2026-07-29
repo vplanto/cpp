@@ -1,3 +1,6 @@
+> **Disclaimer**  
+> Author's declaration: The base content, concept, and architecture of this course were developed by the author based on their own lectures and presentations. Artificial intelligence tools (LLMs) were used solely as a technical means for format conversion (Slides → Markdown) and expanding text theses. All final text, architectural diagrams, and code have been fully proofread, verified, and approved by the author.
+
 # Modern C++ Quick Reference Cheatsheet
 
 [← Back to Self-Study Guide](../modern_cpp_guide.md)
@@ -382,3 +385,8 @@ Start → Managing resource?
 ---
 
 [← Back to Self-Study Guide](../modern_cpp_guide.md)
+---
+
+## Sources
+
+- [Technical sources registry](../../../sources.md) — ISO/IEC 14882:2020, cppreference.com

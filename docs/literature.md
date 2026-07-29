@@ -1,3 +1,6 @@
+> **Дисклеймер / Disclaimer**  
+> Авторська декларація: Базовий контент, концепцію та архітектуру цього курсу розроблено автором на основі власних лекцій та презентацій. Інструменти штучного інтелекту (LLM) використано виключно як технічний засіб для конвертації форматів (Slides → Markdown) та розгортання текстових тез. Увесь підсумковий текст, архітектурні схеми та код повністю вичитано, верифіковано та затверджено автором.
+
 # Рекомендована література
 
 ## Основна література
@@ -12,3 +15,17 @@
 5. **Stroustrup Bjarne.** *Programming: Principles and Practice Using C++.* 2nd Edition. – Addison-Wesley, 2014. – 1312 p.
 6. **Lippman Stanley B., Lajoie Josée, Moo Barbara E.** *C++ Primer.* 5th Edition. – Addison-Wesley, 2012. – 976 p.
 7. **Prata Stephen.** *C++ Primer Plus.* 6th Edition. – Addison-Wesley, 2011. – 1200 p.
+
+## Технічні специфікації та онлайн-джерела
+
+8. **ISO/IEC 14882:2020** — *Programming languages — C++* (стандарт C++20). [iso.org](https://www.iso.org/standard/79358.html)
+9. **ISO/IEC 14882:2024** — *Programming languages — C++* (стандарт C++23). [iso.org](https://www.iso.org/standard/81727.html)
+10. **[cppreference.com](https://en.cppreference.com/w/)** — довідник стандартної бібліотеки C++ (офіційні виноски в лекціях).
+11. **[isocpp.org](https://isocpp.org/)** — портал комітету ISO C++.
+
+Див. також: [Реєстр технічних джерел](sources.md)
+---
+
+## Джерела
+
+- [Реєстр технічних джерел](sources.md) — ISO/IEC 14882:2020, cppreference.com

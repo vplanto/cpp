@@ -1,3 +1,6 @@
+> **Disclaimer**  
+> Author's declaration: The base content, concept, and architecture of this course were developed by the author based on their own lectures and presentations. Artificial intelligence tools (LLMs) were used solely as a technical means for format conversion (Slides → Markdown) and expanding text theses. All final text, architectural diagrams, and code have been fully proofread, verified, and approved by the author.
+
 # Coding Challenges: Interactive Exercises
 
 [← Back to Self-Study Guide](../modern_cpp_guide.md)
@@ -678,3 +681,8 @@ std::endl is 10x slower
 - [Legacy to Modern](../upgrades/legacy_to_modern.md) — See production patterns
 
 [← Back to Self-Study Guide](../modern_cpp_guide.md)
+---
+
+## Sources
+
+- [Technical sources registry](../../../sources.md) — ISO/IEC 14882:2020, cppreference.com

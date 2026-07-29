@@ -1,3 +1,6 @@
+> **Disclaimer**  
+> Author's declaration: The base content, concept, and architecture of this course were developed by the author based on their own lectures and presentations. Artificial intelligence tools (LLMs) were used solely as a technical means for format conversion (Slides → Markdown) and expanding text theses. All final text, architectural diagrams, and code have been fully proofread, verified, and approved by the author.
+
 # Memory Model & Execution Environment Glossary
 
 > **Audience:** Applied Mathematics students
@@ -323,3 +326,8 @@ Both threads wait forever: $\lim_{t \to \infty} \text{progress}(T_1) = \lim_{t \
 | "Deadlock" | Circular wait condition |
 
 All C++ "magic" is reducible to these mathematical models.
+---
+
+## Sources
+
+- [Technical sources registry](../../sources.md) — ISO/IEC 14882:2020, cppreference.com

@@ -1,3 +1,6 @@
+> **Дисклеймер / Disclaimer**  
+> Авторська декларація: Базовий контент, концепцію та архітектуру цього курсу розроблено автором на основі власних лекцій та презентацій. Інструменти штучного інтелекту (LLM) використано виключно як технічний засіб для конвертації форматів (Slides → Markdown) та розгортання текстових тез. Увесь підсумковий текст, архітектурні схеми та код повністю вичитано, верифіковано та затверджено автором.
+
 # Рекомендована література
 
 ## Основна література
@@ -12,3 +15,12 @@
 5. **Stroustrup Bjarne.** *The C++ Programming Language.* 4th Edition. – Addison-Wesley, 2013. – 1368 p.
 6. **Meyers Scott.** *Effective Modern C++: 42 Specific Ways to Improve Your Use of C++11 and C++14.* – O'Reilly Media, 2014. – 336 p.
 7. **Lippman Stanley B., Lajoie Josée, Moo Barbara E.** *C++ Primer.* 5th Edition. – Addison-Wesley, 2012. – 976 p.
+
+## Технічні специфікації та онлайн-джерела
+
+8. **ISO/IEC 14882:2020** — *Programming languages — C++* (стандарт C++20). [iso.org](https://www.iso.org/standard/79358.html)
+9. **ISO/IEC 14882:2024** — *Programming languages — C++* (стандарт C++23). [iso.org](https://www.iso.org/standard/81727.html)
+10. **[cppreference.com](https://en.cppreference.com/w/)** — довідник стандартної бібліотеки C++.
+11. **Cormen, Leiserson, Rivest, Stein.** *Introduction to Algorithms*, 4th ed. — алгоритми та складність.
+
+Див. також: [Реєстр технічних джерел](../sources.md)

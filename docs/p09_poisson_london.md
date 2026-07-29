@@ -1,3 +1,14 @@
+---
+title: "Практикум 9 — Розподіл Пуассона"
+semester: 1
+type: lab
+hours: 2
+prerequisites: ["05_functions"]
+---
+
+> **Дисклеймер / Disclaimer**  
+> Авторська декларація: Базовий контент, концепцію та архітектуру цього курсу розроблено автором на основі власних лекцій та презентацій. Інструменти штучного інтелекту (LLM) використано виключно як технічний засіб для конвертації форматів (Slides → Markdown) та розгортання текстових тез. Увесь підсумковий текст, архітектурні схеми та код повністю вичитано, верифіковано та затверджено автором.
+
 # Практикум 9: Розподіл Пуассона — чи бомбили Лондон прицільно?
 
 [← Практикум 8](p08_fstream.md) | [Index](index.md)
@@ -127,7 +138,9 @@ double poissonProbability(double lambda, int k) {
 
 > **Нюанс:** випадковий Пуассон **також дає кластери** (як карта A вище). Питання не «чи є групування», а «чи більше його, ніж передбачає випадковість».
 
+
 ## Джерела
 
-- R. D. Clarke, *An Application of the Poisson Distribution*, Journal of the Institute of Actuaries, 1946, 72:481.
-- S. Spiegelhalter & H. Masters, *The Flying Bomb and the Actuary*, Significance, 2019.
+- [^clarke1946] R. D. Clarke, *An Application of the Poisson Distribution*, Journal of the Institute of Actuaries, 1946, 72:481.
+- [^spiegelhalter2019] S. Spiegelhalter & H. Masters, *The Flying Bomb and the Actuary*, Significance, 2019.
+- [Реєстр технічних джерел](sources.md) — ISO/IEC 14882:2020, `<cmath>` (`exp`, `pow`)

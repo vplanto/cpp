@@ -1,3 +1,6 @@
+> **Disclaimer**  
+> Author's declaration: The base content, concept, and architecture of this course were developed by the author based on their own lectures and presentations. Artificial intelligence tools (LLMs) were used solely as a technical means for format conversion (Slides → Markdown) and expanding text theses. All final text, architectural diagrams, and code have been fully proofread, verified, and approved by the author.
+
 # Visual Diagrams: Memory & Execution Flow
 
 [← Back to Self-Study Guide](../modern_cpp_guide.md)
@@ -309,3 +312,8 @@ void func(const Base& b) { b.virtual_method(); }  // Calls Derived version!
 - [Quick Reference](../quick_reference/cheatsheet.md) — Decision trees for when to use what
 
 [← Back to Self-Study Guide](../modern_cpp_guide.md)
+---
+
+## Sources
+
+- [Technical sources registry](../../../sources.md) — ISO/IEC 14882:2020, cppreference.com
