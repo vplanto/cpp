@@ -1,3 +1,8 @@
+---
+layout: default
+hub: true
+---
+
 # Основи програмування (Семестр 2)
 ## C++ Engineering: Architecture, Modern Tooling & Performance
 
@@ -22,6 +27,8 @@
 
 ## Блок 1: Об'єктно-орієнтована архітектура (OOP Core)
 
+<div class="hub-block" markdown="1">
+
 Ми вчимося керувати складністю, захищати дані (Інваріанти) та автоматизувати управління ресурсами (RAII).
 
 | # | Матеріал | Ключова ідея |
@@ -35,9 +42,13 @@
 | Лекція 16 | [Спадкування та Архітектура класів](16_inheritance_polymorphism.md) | Is-A vs Has-A, Fragile Base Class, Coupling/Cohesion, UML-діаграми. |
 | Лекція 16а | [Поліморфізм, V-Table та Абстрактні класи](16a_polymorphism_vtable.md) | Ціна віртуальних функцій. Як працює динамічна диспетчеризація "під капотом". |
 
+</div>
+
 ---
 
 ## Блок 2: Modern C++ & Generics
+
+<div class="hub-block" markdown="1">
 
 Ми переходимо від "C з класами" до сучасного C++. Вчимося писати код, який працює з будь-якими типами даних і робить це ефективно.
 
@@ -47,9 +58,13 @@
 | Практикум 11 | [Matrix Engine (Templates & Operators)](p11_generic_matrix.md) | Створення математичної бібліотеки: `C = A * B`. |
 | Лекція 18 | [Modern C++ — Move Semantics, Smart Pointers та Lambdas](18_modern_cpp_move_smart.md) | Як прискорити код, "крадучи" ресурси (`std::move`). Чому `new`/`delete` більше не потрібні. |
 
+</div>
+
 ---
 
 ## Блок 3: Performance Engineering & Data Structures
+
+<div class="hub-block" markdown="1">
 
 Ми перестаємо вірити інтуїції і починаємо вірити цифрам. Вивчаємо, як залізо (CPU Caches) впливає на вибір алгоритмів.
 
@@ -63,9 +78,13 @@
 | Практикум 13 | [Algorithms & Good Taste (Torvalds Edition)](p13_algorithms_and_taste.md) | Алгоритмічна задача про потяг та робота з подвійними вказівниками. |
 | Лекція 27 | [Асоціативні контейнери — Map та Set](27_maps_sets.md) | `std::map`, `std::unordered_map`, `std::set`, `std::unordered_set` — складність, вибір та підводні камені. |
 
+</div>
+
 ---
 
 ## Блок 4: Фундаментальні алгоритми (Applied CS)
+
+<div class="hub-block" markdown="1">
 
 Класика Computer Science через призму практичного застосування.
 
@@ -78,9 +97,13 @@
 | Практикум 16 | [Knapsack Problem — Оптимізація вантажу (DP)](p16_knapsack.md) | Розв'язання задачі про рюкзак методом динамічного програмування. |
 | Практикум 14 | [Search Engine — Індексація файлів (Hash Maps)](p14_search_engine.md) | Побудова пошукового індексу за допомогою хеш-таблиці. |
 
+</div>
+
 ---
 
 ## Додатковий матеріал: Advanced Topics
+
+<div class="hub-block" markdown="1">
 
 Для студентів, які хочуть заглибитися у performance engineering та екстремальну оптимізацію.
 
@@ -93,9 +116,13 @@
 | Практикум 18 | [Pattern Matching Algorithms — Реалізація та Порівняння](p18_pattern_matching.md) | Implement Naive, Rabin-Karp, KMP. Benchmark and DNA sequencing application. |
 | Практикум 19 | [Building a Binary Search Tree — Візуалізація та Benchmark](p19_bst_implementation.md) | BST from scratch, rotations, ASCII visualization, comparison with std::map. |
 
+</div>
+
 ---
 
 ## Self-Study: Modern C++ Companion
+
+<div class="hub-block" markdown="1">
 
 Опціональні матеріали, які показують сучасні C++20/23 альтернативи до патернів з лекцій.
 
@@ -107,14 +134,25 @@
 
 **Навіщо?** Лекції навчають фундаментам через C++11 (розуміємо *"чому"*). Self-study показує, що пишуть професіонали у 2024 (вчимося *"як"*).
 
+</div>
+
 ---
 
 ## Для викладача
 
+<div class="hub-block" markdown="1">
+
 * [Методичні рекомендації та типові больові точки студентів](../methodology.md) — Педагогічні стратегії, технічний стек, Pain Points.
 * [Історичний чекліст оновлень](todo.md) — перенаправлення на methodology.md
+
+</div>
+
 ---
 
 ## Джерела
 
+<div class="hub-block" markdown="1">
+
 - [Реєстр технічних джерел](../sources.md) — ISO/IEC 14882:2020, cppreference.com
+
+</div>

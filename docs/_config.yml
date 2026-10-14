@@ -1,0 +1,24 @@
+markdown: kramdown
+highlighter: rouge
+
+title: "ONU C++ Course"
+description: "C++ Engineering — memory architecture and systems thinking"
+
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "default"
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - "*.sublime-project"
+  - "*.sublime-workspace"
+  - .idea
