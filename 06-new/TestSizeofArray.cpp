@@ -3,7 +3,7 @@
 using namespace std;
 
 // Прототип функції
-void fun(const int *arr, int size);
+void fun(const int arr[], int size);
 
 int main() {
   const int SIZE = 5;
@@ -15,9 +15,10 @@ int main() {
 }
 
 // Визначення функції
-void fun(const int *arr, int size) {
+void fun(const int arr[], int size) {
   // sizeof(arr) - розмір вказівника (зазвичай 4 або 8 байт), НЕ розмір масиву!
-  // У функції arr - це вказівник, а не масив, тому sizeof повертає розмір вказівника
+  // У функції arr - це вказівник, а не масив, тому sizeof повертає розмір
+  // вказівника
   cout << "sizeof in function is " << sizeof(arr) << endl;
   cout << "address in function is " << arr << endl;
 }
