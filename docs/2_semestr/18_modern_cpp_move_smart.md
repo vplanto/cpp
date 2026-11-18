@@ -216,6 +216,78 @@ void usage() {
 * **Копіювання:** Збільшує лічильник `ref_count++`.
 * **Знищення:** Зменшує `ref_count--`. Пам'ять звільняється, коли лічильник == 0.
 
+**`unique_ptr` — вибір за замовчуванням.** `shared_ptr` дорожчий (control block, атомарний лічильник) і розмиває відповідальність: незрозуміло, хто ж насправді керує об'єктом. Беріть його лише тоді, коли власників справді кілька. Перетворити `unique_ptr` на `shared_ptr` можна будь-коли (`std::shared_ptr<T> s = std::move(u);`), а навпаки — ні.
+
+### 2.1. `make_unique` / `make_shared` замість `new`
+
+Голий `new` у сучасному коді — запах. Є і практична причина:
+
+```cpp
+void process(std::unique_ptr<Sensor> s, int priority);
+int computePriority(); // може кинути виняток
+
+// НЕБЕЗПЕЧНО (до C++17): компілятор має право виконати new Sensor,
+// потім computePriority() (throw!), і лише потім конструктор unique_ptr.
+// Результат — витік пам'яті.
+process(std::unique_ptr<Sensor>(new Sensor), computePriority());
+
+// БЕЗПЕЧНО: виділення пам'яті і передача у власника — одна неподільна дія.
+process(std::make_unique<Sensor>(), computePriority());
+```
+
+`make_shared` ще й ефективніший: об'єкт і control block виділяються **одним** блоком пам'яті замість двох.
+
+### 2.2. `std::weak_ptr<T>` (Спостерігач)
+
+Цикл `shared_ptr` ніколи не звільниться: кожен тримає лічильник іншого вище нуля. `weak_ptr` дивиться на об'єкт, **не збільшуючи** лічильник.
+
+```cpp
+struct Node {
+    std::vector<std::shared_ptr<Node>> children; // батько володіє дітьми
+    std::weak_ptr<Node> parent;                  // дитина лише "знає" батька
+};
+
+void printParent(const Node& n) {
+    // lock() повертає shared_ptr: живий об'єкт або nullptr, якщо його вже знищено
+    if (auto p = n.parent.lock()) {
+        std::cout << "Батько має " << p->children.size() << " дітей\n";
+    } else {
+        std::cout << "Батька вже немає\n";
+    }
+}
+```
+
+**Правило:** напрямок володіння — "згори вниз" (`shared_ptr`/`unique_ptr`), зворотні посилання — `weak_ptr` або звичайний вказівник.
+
+### 2.3. Як передавати розумні вказівники у функції
+
+Головне питання до сигнатури: **чи цікавить функцію володіння?** Якщо ні — вона не повинна взагалі знати про розумні вказівники.
+
+| Сигнатура | Що вона означає |
+| :--- | :--- |
+| `void f(const Widget&)` / `void f(Widget*)` | Просто користується об'єктом. **Варіант за замовчуванням.** (`*` — якщо допустимий `nullptr`) |
+| `void f(std::unique_ptr<Widget>)` | **Забирає** володіння (sink). Виклик: `f(std::move(p));` |
+| `void f(std::unique_ptr<Widget>&)` | Може **замінити** вказівник (reset/reseat) |
+| `void f(std::shared_ptr<Widget>)` | Стає **співвласником** (зберігає копію) |
+| `void f(const std::shared_ptr<Widget>&)` | *Можливо* збереже копію; сама по собі — лише дивиться |
+
+```cpp
+// ПОГАНО: функції байдуже, хто володіє фігурою, але вона
+// змушує викликача мати саме shared_ptr і крутить атомарний лічильник.
+void draw(std::shared_ptr<Shape> s);
+
+// ДОБРЕ: працює з будь-якою фігурою — на стеку, в unique_ptr, в shared_ptr.
+void draw(const Shape& s);
+
+auto sp = std::make_shared<Circle>();
+auto up = std::make_unique<Square>();
+Triangle t;
+draw(*sp); draw(*up); draw(t);
+```
+
+> [!NOTE]
+> Ці правила — переказ розділів R.smart та F.call з [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines) (R.21–R.24, R.30–R.36, F.7). Їх автоматично перевіряє `clang-tidy` з набором `cppcoreguidelines-*` — корисно запускати на лабораторних.
+
 ### 3. Підсумок: Ієрархія абстракцій
 
 Що ми отримали в результаті еволюції концепції "вказівника"? Кожен наступний крок додає нову корисну властивість до базового поняття:
@@ -277,6 +349,7 @@ void lambdaDemo() {
 2. Чому `unique_ptr` швидший за `shared_ptr`?
 3. Напишіть лямбду, яка приймає два `int` і повертає їх суму.
 4. В чому небезпека `shared_ptr` при циклічних посиланнях (A посилається на B, B на A)? (Підказка: Memory Leak, для цього є `weak_ptr`).
+5. Функція `void print(std::shared_ptr<Report> r)` лише виводить звіт на екран. Що не так із сигнатурою і як її виправити?
 
 <details markdown="1">
 <summary>Відповіді</summary>
@@ -285,6 +358,7 @@ void lambdaDemo() {
 2. `unique_ptr` не має оверхеду (просто вказівник). `shared_ptr` має атомарний лічильник посилань і додатковий блок пам'яті (control block), що повільніше.
 3. `[](int a, int b) { return a + b; };`
 4. Лічильник посилань ніколи не стане нулем, бо об'єкти тримають один одного. Пам'ять ніколи не звільниться.
+5. Функції байдуже, хто володіє звітом, але вона змушує викликача мати `shared_ptr` і зайво змінює атомарний лічильник. Правильно: `void print(const Report& r)` — тоді її можна викликати і для об'єкта на стеку, і для `*unique_ptr`, і для `*shared_ptr`.
 
 </details>
 ---
@@ -292,3 +366,4 @@ void lambdaDemo() {
 ## Джерела
 
 - [Реєстр технічних джерел](../sources.md) — ISO/IEC 14882:2020, cppreference.com
+- [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines) — B. Stroustrup, H. Sutter (ред.), розділи R.smart, F.call
