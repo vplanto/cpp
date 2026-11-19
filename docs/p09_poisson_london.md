@@ -3,7 +3,7 @@ title: "Практикум 9 — Розподіл Пуассона"
 semester: 1
 type: lab
 hours: 2
-prerequisites: ["08_new", "10_struct", "11_stream"]
+prerequisites: ["08_new", "09_struct", "10_string", "11_stream"]
 ---
 
 > **Дисклеймер / Disclaimer**  

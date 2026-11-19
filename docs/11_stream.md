@@ -3,7 +3,7 @@ title: "Лекція 11 — fstream"
 semester: 1
 type: lecture
 hours: 2
-prerequisites: ["10_struct"]
+prerequisites: ["09_struct", "10_string"]
 ---
 
 > **Дисклеймер / Disclaimer**  

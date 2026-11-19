@@ -42,11 +42,11 @@
 | 4 | [03 Потік керування](03_flow_control.md) | [p03 Вказівники](p03_ptr.md) | 4 |
 | 5 | [04 Типи розширено](04_more_on_types.md) | [p04 Посилання](p04_reference.md) | 4 |
 | 6 | [05 Функції](05_functions.md) | [p05 Читання коду](p05_how_to_read_code.md) | 4 |
-| 7 | [06 Вказівники](06_pointers.md) | [p06 Логи](p06_log_analyzer.md) | 4 |
-| 8 | [07 Посилання](07_references.md) | [p07 new[]](p07_new_struct.md) | 4 |
+| 7 | [06 Вказівники](06_pointers.md) | [p06 new[]](p06_new_struct.md) | 4 |
+| 8 | [07 Посилання](07_references.md) | [p07 Логи](p07_log_analyzer.md) | 4 |
 | 9 | [08 Динамічна пам'ять](08_new.md) | [p08 Save Game](p08_fstream.md) | 4 |
-| 10 | [09 string](09_string.md) | [p09 Пуассон](p09_poisson_london.md) | 4 |
-| 11 | [10 struct](10_struct.md) | — | 2 |
+| 10 | [09 struct](09_struct.md) | [p09 Пуассон](p09_poisson_london.md) | 4 |
+| 11 | [10 string](10_string.md) | — | 2 |
 | 12 | [11 fstream](11_stream.md) | — | 2 |
 | 13 | [12 Файлові системи](12_file_system.md) | Підсумковий тест | 4 |
 

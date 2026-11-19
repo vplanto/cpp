@@ -3,7 +3,7 @@ title: "Лекція 13 — Філософія ООП"
 semester: 2
 type: lecture
 hours: 2
-prerequisites: ["10_struct"]
+prerequisites: ["09_struct"]
 ---
 
 > **Дисклеймер / Disclaimer**  

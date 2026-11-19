@@ -49,8 +49,8 @@ hub: true
 | **6** | [Вказівники (Pointers) в C++](06_pointers.md) | Memory Layout, адреси (`&`) і розіменування (`*`), `nullptr`, `const`-кваліфікатори, callbacks |
 | **7** | [Посилання (References) та передача параметрів у функції](07_references.md) | Під капотом посилань, Pass-by-Value / Pointer / Reference, `const T&`, висячі посилання |
 | **8** | [Динамічне управління пам'яттю та розширені можливості вказівників](08_new.md) | Stack vs Heap, `new` / `delete`, `new[]` / `delete[]`, арифметика вказівників, витоки пам'яті |
-| **9** | [Робота з текстом: std::string](09_string.md) | `std::string` vs C-Strings, `getline`, UTF-8 і байти, пошук/зрізи (`find`, `substr`), `<iomanip>` |
-| **10** | [struct та enum — Створюємо власні типи даних](10_struct.md) | Від паралельних масивів до `struct`, оператори `.` та `->`, перелічення (`enum`), `typedef` |
+| **9** | [struct та enum — Створюємо власні типи даних](09_struct.md) | Від паралельних масивів до `struct`, оператори `.` та `->`, перелічення (`enum`), `typedef` |
+| **10** | [Робота з текстом: std::string](10_string.md) | `std::string` vs C-Strings, `getline`, UTF-8 і байти, пошук/зрізи (`find`, `substr`), `<iomanip>` |
 | **11** | [Робота з файлами (fstream)](11_stream.md) | Абстракція потоків, `ifstream` / `ofstream`, режими відкриття (`ios::app`), парсинг через `stringstream` |
 | **12** | [Файли та Файлові Системи](12_file_system.md) | Логічна й фізична організація диска, блоки та кластери, архітектура FAT vs Inode (Linux/Windows) |
 
@@ -68,8 +68,8 @@ hub: true
 | **3** | [Вказівники — Керуємо пам'яттю як профі](p03_ptr.md) | Трасування пам'яті (aliasing), передача адрес у функції, пошук елементів через вказівники |
 | **4** | [Вказівники та Посилання — Керуємо ігровим світом](p04_reference.md) | Контракти функцій: читання (`const T&`), модифікація (`T&`), опціональність (`T*`), пастка dangling reference |
 | **5** | [Читаємо код як профі — Анатомія C++ програми](p05_how_to_read_code.md) | Декомпозиція, іменування та архітектурний розбір готової гри «Хрестики-Нулики» |
-| **6** | [std::string — Створюємо "Аналізатор логів"](p06_log_analyzer.md) | Парсинг тексту (`find`, `substr`, `stringstream`), табличний вивід (`setw`), проблема `cin` + `getline` |
-| **7** | [Динамічні масиви структур (new[])](p07_new_struct.md) | Виділення масиву `struct` у купі (`new[]`), доступ через `.` та `->`, коректне звільнення (`delete[]`) |
+| **6** | [Динамічні масиви структур (new[])](p06_new_struct.md) | Виділення масиву `struct` у купі (`new[]`), доступ через `.` та `->`, коректне звільнення (`delete[]`) |
+| **7** | [std::string — Створюємо "Аналізатор логів"](p07_log_analyzer.md) | Парсинг тексту (`find`, `substr`, `stringstream`), табличний вивід (`setw`), проблема `cin` + `getline` |
 | **8** | [Файлові потоки (fstream) — Створюємо "Save Game"](p08_fstream.md) | Серіалізація стану гри у файл, дозапис (`ios::app`), навігація (`seekg`/`tellg`), прапори стану потоку |
 | **9** | [Розподіл Пуассона — бомбардування Лондону (1944)](p09_poisson_london.md) | Статистичне моделювання реальних історичних даних (критерій $\chi^2$, `struct`, `new[]`, `fstream`) — [`08-io/poisson_chi2.cpp`](https://github.com/vplanto/cpp/blob/main/08-io/poisson_chi2.cpp) та [`00-intro/poisson.cpp`](https://github.com/vplanto/cpp/blob/main/00-intro/poisson.cpp) |
 
