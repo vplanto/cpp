@@ -71,7 +71,7 @@ hub: true
 | **6** | [std::string — Створюємо "Аналізатор логів"](p06_log_analyzer.md) | Парсинг тексту (`find`, `substr`, `stringstream`), табличний вивід (`setw`), проблема `cin` + `getline` |
 | **7** | [Динамічні масиви структур (new[])](p07_new_struct.md) | Виділення масиву `struct` у купі (`new[]`), доступ через `.` та `->`, коректне звільнення (`delete[]`) |
 | **8** | [Файлові потоки (fstream) — Створюємо "Save Game"](p08_fstream.md) | Серіалізація стану гри у файл, дозапис (`ios::app`), навігація (`seekg`/`tellg`), прапори стану потоку |
-| **9** | [Розподіл Пуассона — бомбардування Лондону (1944)](p09_poisson_london.md) | Статистичне моделювання реальних історичних даних (критерій $\chi^2$) — [`00-intro/poisson.cpp`](https://github.com/vplanto/cpp/blob/main/00-intro/poisson.cpp) |
+| **9** | [Розподіл Пуассона — бомбардування Лондону (1944)](p09_poisson_london.md) | Статистичне моделювання реальних історичних даних (критерій $\chi^2$, `struct`, `new[]`, `fstream`) — [`08-io/poisson_chi2.cpp`](https://github.com/vplanto/cpp/blob/main/08-io/poisson_chi2.cpp) та [`00-intro/poisson.cpp`](https://github.com/vplanto/cpp/blob/main/00-intro/poisson.cpp) |
 
 </div>
 
